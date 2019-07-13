@@ -4,10 +4,7 @@ import { Colors, Fonts, ApplicationStyles } from '../../Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   mainContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: 100
+    flex: 1
   },
   title: {
     fontSize: Fonts.size.h4,

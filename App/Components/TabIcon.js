@@ -2,9 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import IonIcon from 'react-native-vector-icons/Ionicons'
 
-import { Colors, Metrics } from '../Themes'
-import { Text, View } from 'react-native'
-import * as _ from 'lodash'
+import {Colors, Metrics} from '../Themes'
+import {Text, View} from 'react-native'
 import styles from './Styles/TabIconStyle'
 import {connect} from 'react-redux'
 
@@ -20,13 +19,13 @@ class TabIcon extends React.Component {
   }
   render () {
     const {IconClass, iconName, iconSize, focused, title, label} = this.props
-    const titleStyle = focused ? Colors.selectedTabText : Colors.frost
+    const titleStyle = focused ? Colors.themeColor : Colors.offWhiteI
     return (
       <View style={styles.container}>
         <IconClass name={iconName}
           size={iconSize || Metrics.icons.tabIcon}
           color={titleStyle} />
-        <Text style={[styles.tabText, {color: titleStyle}]}>{_.isEmpty(label) ? title.toUpperCase() : label.toUpperCase()}</Text>
+        <Text style={[styles.tabText, {color: titleStyle}]}>{title}</Text>
       </View>
     )
   }

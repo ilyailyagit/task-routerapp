@@ -67,8 +67,8 @@ export default {
     height: 55,
     borderTopWidth: 0.5,
     paddingTop: Metrics.smallMargin,
-    borderTopColor: Colors.steel,
-    backgroundColor: Colors.bottomTabbarBG
+    borderTopColor: Colors.offWhiteI,
+    backgroundColor: Colors.offWhite
   },
   tabBarIcon: {
     flex: 1,

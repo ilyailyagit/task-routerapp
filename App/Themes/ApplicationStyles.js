@@ -18,6 +18,13 @@ const ApplicationStyles = {
       bottom: 0,
       right: 0
     },
+    logo: {
+      width: 150,
+      height: 150,
+      alignSelf: 'center',
+      resizeMode: 'contain',
+      marginTop: Metrics.doubleBaseMargin
+    },
     container: {
       flex: 1,
       paddingTop: Metrics.baseMargin,

@@ -42,4 +42,12 @@ target 'Zeloo' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+  pod 'ReactNativeOpenSettings', :path => '../node_modules/react-native-open-settings'
+
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+
+  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+
 end
