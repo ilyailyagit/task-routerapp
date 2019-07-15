@@ -1,4 +1,4 @@
-package com.zeloo;
+package com.zeloo.app.zeloo;
 
 import com.facebook.react.ReactActivity;
 

@@ -3,7 +3,7 @@
 import {Metrics, Colors, Fonts} from '../../Themes/'
 import {Platform} from 'react-native'
 
-const navBarBottomBorder = Platform.OS === 'ios' ? {borderBottomWidth: 1, borderBottomColor: Colors.darkGray} : {}
+const navBarBottomBorder = Platform.OS === 'ios' ? {borderBottomWidth: 1, borderBottomColor: Colors.gray} : {}
 export default {
   container: {
     flex: 1

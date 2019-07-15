@@ -1,19 +1,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.zeloo">
+  package="com.zeloo.app.zeloo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-      android:name=".MainApplication"
+      android:name="com.zeloo.app.zeloo.MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBEhXXp2d0qDvVOJnDHTmQCD2hNeG2fDDg" />
       <activity
-        android:name=".MainActivity"
+        android:name="com.zeloo.app.zeloo.MainActivity"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">

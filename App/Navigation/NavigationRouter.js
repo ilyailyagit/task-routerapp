@@ -19,7 +19,12 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import Calendars from "../Containers/Calendars";
+import CreateActivity from "../Containers/CreateActivity";
+import Defaults from "../Config/ElementDefaults";
+import TextConfig from "../Config/ElementDefaults/defaultStyles";
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
+Defaults.loadGlobalTextProps(TextConfig.customTextProps)
+Defaults.loadGlobalInputTextProps(TextConfig.customTextInputProps)
 
 export const Routes = Actions.create(
     <Stack
@@ -58,6 +63,13 @@ export const Routes = Actions.create(
             key='verifyPhone'
             title='Verify Phone'
             component={PhoneVerificationScreen}
+            renderLeftButton={<BackButton/>}
+            titleStyle={styles.navBarTextTabs}
+        />
+        <Scene
+            key='createActivity'
+            title='CREATE ACTIVITY'
+            component={CreateActivity}
             renderLeftButton={<BackButton/>}
             titleStyle={styles.navBarTextTabs}
         />

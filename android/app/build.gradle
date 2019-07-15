@@ -98,12 +98,17 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.zeloo"
+        applicationId "com.zeloo.app.zeloo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     splits {
         abi {
@@ -135,6 +140,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-google-places')
     implementation project(':react-native-image-crop-picker')
     implementation 'com.android.support:design:27.1.0'
 

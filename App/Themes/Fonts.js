@@ -1,7 +1,7 @@
 const type = {
-  base: 'Avenir-Book',
-  bold: 'Avenir-Black',
-  emphasis: 'HelveticaNeue-Italic'
+  regular: 'Myriad_Pro_Regular',
+  semiBold: 'Myriad_Pro_Semibold',
+  bold: 'Myriad_Pro_Bold'
 }
 
 const size = {

@@ -18,5 +18,12 @@ export default StyleSheet.create({
     fontSize: Fonts.size.input,
     backgroundColor: Colors.snow,
     paddingHorizontal: Metrics.baseMargin
+  },
+  bottomLine: {
+    borderBottomWidth: 1.5,
+    borderBottomColor: Colors.gray
+  },
+  grayLabel: {
+    color: Colors.gray
   }
 })
