@@ -14,7 +14,6 @@ export default {
   },
   rightButtonContainer: {
     marginHorizontal: Metrics.baseMargin
-
   },
   navBarTextTabs: {
     flex: 1,
@@ -30,11 +29,11 @@ export default {
     textAlign: 'center',
     alignSelf: 'stretch',
     fontWeight: null,
-    fontFamily: Fonts.type.base,
+    fontFamily: Fonts.type.regular,
     color: Colors.snow
   },
   subNavText: {
-    fontFamily: Fonts.type.normal,
+    fontFamily: Fonts.type.regular,
     fontSize: Fonts.size.medium,
     alignSelf: 'center',
     textAlign: 'center',
@@ -49,6 +48,10 @@ export default {
   },
   navBarStyle: {
     backgroundColor: Colors.themeColor,
+    ...navBarBottomBorder
+  },
+  primaryNavBar: {
+    backgroundColor: Colors.primaryColorI,
     ...navBarBottomBorder
   },
   LeftButton: {
@@ -79,17 +82,20 @@ export default {
     color: Colors.snow,
     letterSpacing: 1,
     textAlign: 'center',
-    fontFamily: Fonts.type.medium,
+    fontFamily: Fonts.type.regular,
     backgroundColor: Colors.transparent,
     paddingHorizontal: Metrics.baseMargin
   },
   rightButtonText: {
     textAlign: 'center',
-    fontFamily: Fonts.type.medium,
+    fontFamily: Fonts.type.regular,
     color: Colors.snow
   },
   backButtonContainer: {
     marginHorizontal: Metrics.marginFifteen,
     paddingTop: 1
+  },
+  emptyRightButton: {
+    width: 40
   }
 }

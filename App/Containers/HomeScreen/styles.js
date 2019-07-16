@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import {StyleSheet} from 'react-native'
 import {Fonts, Colors, Metrics, ApplicationStyles} from '../../Themes/'
 
 export default StyleSheet.create({
@@ -16,5 +16,12 @@ export default StyleSheet.create({
     signIn: {
         color: Colors.snow,
         fontSize: Fonts.size.regular
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        alignSelf: 'center',
+        resizeMode: 'contain',
+        marginTop: Metrics.marginThirty
     }
 })

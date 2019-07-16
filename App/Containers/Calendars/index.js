@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, TouchableOpacity, View, ImageBackground} from 'react-native'
+import {Text, TouchableOpacity, View, ImageBackground, StatusBar} from 'react-native'
 import styles from './styles'
 import CustomCalendar from "../../Components/CustomCalendar";
 import {CalendarData} from "../../DummyData";
@@ -7,13 +7,18 @@ import CalendarItem from "../../Components/CalendarItem";
 import i18n from 'i18n-js'
 import {FormatDateTime} from "../../Lib/Utilities";
 import VectorIcon from "../../Components/VectorIcon";
-import {Images} from "../../Themes";
+import {Colors, Images} from "../../Themes";
 import {Actions} from "react-native-router-flux";
 
 export default class Calendars extends Component {
+    constructor(props) {
+        super(props)
+        StatusBar.setBackgroundColor(Colors.primaryColorI)
+    }
 
     renderCalendarItem = (item) => {
-        return <CalendarItem item={item}/>
+        const {dateTime} = item
+        return <CalendarItem onPress={() => Actions.activityDetail({title: FormatDateTime(dateTime, 'MMMM DD, YYYY')})} item={item}/>
     }
 
     renderNewEventButton = () => {

@@ -1,5 +1,6 @@
 import {isEmpty} from 'ramda'
 import React, {Component} from 'react'
+import {Actions} from 'react-native-router-flux'
 import ActionSheet from "react-native-actionsheet";
 import ImagePicker from "react-native-image-crop-picker";
 import {Image, TouchableOpacity, Keyboard, View, Text} from "react-native";
@@ -114,7 +115,11 @@ export default class SingupInfoScreen extends Component {
                       <CheckBox/>
                       <Text style={styles.acceptTermsConditions}>{i18n.t('acceptTermsConditions')}</Text>
                     </View>
-                    <RoundedButton buttonContainer={styles.buttonContainer} text={i18n.t('signUp')}/>
+                    <RoundedButton
+                        text={i18n.t('signUp')}
+                        buttonContainer={styles.buttonContainer}
+                        onPress={() => Actions.tabbar({type: 'reset'})}
+                    />
                 </KeyboardAwareScrollView>
             </GradientView>
         )

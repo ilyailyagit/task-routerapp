@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, View, Image} from 'react-native'
+import {Text, View, Image, Keyboard} from 'react-native'
 // Styles
 import RoundedButton from '../../Components/RoundedButton'
 import GradientView from "../../Components/GradientView";
@@ -23,6 +23,7 @@ export default class LoginScreen extends Component {
     onLogin = () => {
         Keyboard.dismiss()
         let {username, password} = this.state
+        Actions.tabbar({type: 'reset'})
     }
 
     render() {
@@ -43,7 +44,8 @@ export default class LoginScreen extends Component {
                     <Input
                         password
                         returnKeyType={'done'}
-                        onSubmitEditing={() => {}}
+                        onSubmitEditing={() => {
+                        }}
                         styleOverride={styles.input}
                         label={I18n.t('password')}
                         ref={ref => this.passwordRef = ref}
@@ -53,9 +55,13 @@ export default class LoginScreen extends Component {
                     <Text style={styles.alreadyAccount}>{i18n.t('forgotPassword')}<Text
                         style={styles.signIn}>{i18n.t('reset')}</Text></Text>
 
-                    <RoundedButton buttonContainer={styles.buttonContainer} text={i18n.t('logIn')}/>
+                    <RoundedButton
+                        text={i18n.t('logIn')}
+                        buttonContainer={styles.buttonContainer}
+                        onPress={this.onLogin}
+                    />
                     <Text style={styles.alreadyAccount}>{i18n.t('newUser')}<Text onPress={Actions.signup}
-                        style={styles.signIn}>{i18n.t('signUp')}</Text></Text>
+                                                                                 style={styles.signIn}>{i18n.t('signUp')}</Text></Text>
                 </KeyboardAwareScrollView>
             </GradientView>
         )

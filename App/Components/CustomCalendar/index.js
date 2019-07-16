@@ -1,4 +1,3 @@
-import styles from './styles'
 import PropTypes from 'prop-types'
 import {Agenda} from 'react-native-calendars'
 import Colors from '../../Themes/Colors'
@@ -28,7 +27,6 @@ export default class AgendaCalendar extends Component {
                 items={items}
                 selected={new Date()}
                 renderItem={renderItem}
-                renderKnob={this.renderKnob}
                 renderDay={this.renderDay}
                 rowHasChanged={this.rowHasChanged}
                 renderEmptyDate={<View/>}
@@ -40,33 +38,20 @@ export default class AgendaCalendar extends Component {
                     todayTextColor: Colors.black,
                     monthTextColor: Colors.black,
                     backgroundColor: Colors.snow,
-                    agendaKnobColor: Colors.frost,
+                    agendaKnobColor: Colors.primaryColorI,
                     selectedDayTextColor: Colors.snow,
                     textSectionTitleColor: Colors.black,
                     agendaDayNumColor: Colors.darkgray,
                     agendaTodayColor: Colors.black,
                     agendaDayTextColor: Colors.gray,
                     calendarBackground: Colors.snow,
-                    selectedDayBackgroundColor: Colors.themeColor,
                     dotColor: Colors.themeColor,
-                    selectedDotColor: Colors.transparent
+                    selectedDotColor: Colors.transparent,
+                    selectedDayBackgroundColor: Colors.facebook
                 }}
             />)
     }
 
-    renderKnob = () => {
-        return (
-            <View style={styles.knobContainer}>
-                <View style={styles.knob} />
-            </View>
-        )
-    }
-
-    renderEmptyDate = () => {
-        return (
-            <View/>
-        )
-    }
 
     rowHasChanged = (r1, r2) => {
         return r1.name !== r2.name

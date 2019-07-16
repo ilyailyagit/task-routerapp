@@ -32,13 +32,17 @@ export default class Input extends Component {
     textContentType: PropTypes.string,
     placeholderTextColor: PropTypes.string,
     styleOverride: PropTypes.object,
+    containerStyle: PropTypes.object,
+    labelStyle: PropTypes.object,
     inputColor: PropTypes.string,
     lineInput: PropTypes.bool
   }
 
   static defaultProps = {
     inputColor: Color.themeColor,
-    lineInput: false
+    lineInput: false,
+    containerStyle: {},
+    labelStyle: {}
   }
 
   focus () {
@@ -82,10 +86,10 @@ export default class Input extends Component {
   }
 
   render () {
-    const {lineInput, label, inputColor} = this.props
+    const {lineInput, label, containerStyle, labelStyle} = this.props
     return (
-      <TouchableOpacity activeOpacity={1} onPress={this.focus.bind(this)} style={[styles.containerStyle, lineInput && styles.bottomLine]}>
-        <Text style={[styles.label,  lineInput && styles.grayLabel]}>{label}</Text>
+      <TouchableOpacity activeOpacity={1} onPress={this.focus.bind(this)} style={[styles.containerStyle, containerStyle]}>
+        <Text style={[styles.label,  labelStyle]}>{label}</Text>
         {this.renderTextInput()}
       </TouchableOpacity>
     )

@@ -5,7 +5,8 @@ export const CalendarData = {
             dateTime: Date.now(),
             type: 'Local',
             title: 'Meal Prep',
-            location: '4113 W Johnson Cir Atlanta, GA, United States'
+            location: '4113 W Johnson Cir Atlanta, GA, United States',
+            location2: '4113 W Johnson Cir\nAtlanta, GA, United States'
         },
     ],
     '2019-07-11': [

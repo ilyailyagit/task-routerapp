@@ -10,7 +10,7 @@ export default class CheckBox extends Component {
   static propTypes = {
     style: PropTypes.object,
     checked: PropTypes.bool.isRequired,
-    fillColor: PropTypes.string,
+    borderColor: PropTypes.string,
     tickSize: PropTypes.number,
     tickColor: PropTypes.string,
     editAble: PropTypes.boolean
@@ -18,7 +18,7 @@ export default class CheckBox extends Component {
 
   static defaultProps = {
     checked: false,
-    fillColor: Colors.transparent,
+    borderColor: Colors.snow,
     tickSize: Metrics.icons.small,
     tickColor: Colors.snow,
     editAble: true
@@ -38,14 +38,14 @@ export default class CheckBox extends Component {
   }
 
   render () {
-    const {style, fillColor, tickColor, editAble} = this.props
+    const {style, borderColor, tickColor, editAble} = this.props
     const {checked} = this.state
     return (
       <TouchableOpacity
         disabled={!editAble}
         activeOpacity={0.8}
         onPress={this._toggleCheck}
-        style={[styles.checkBoxContainer, style, {backgroundColor: fillColor}]}>
+        style={[styles.checkBoxContainer, style, {borderColor: borderColor}]}>
         {
           checked &&
           <Ionicons name='md-checkmark' size={18} color={tickColor || Colors.snow} />

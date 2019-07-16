@@ -12,6 +12,8 @@ const colors = {
   offWhiteI: '#b4aea6',
   yellow: '#f6e880',
   orange: '#d87a3c',
+  green: '#6d964e',
+  promptBackground: 'rgba(0,0,0,0.4)',
   transparent: 'rgba(0,0,0,0)',
   gray: '#786f87',
   grayI: '#848587',

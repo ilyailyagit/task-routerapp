@@ -26,5 +26,6 @@
   "photosPermissionTitle": "Need Photos Permission",
   "photosPermissionMessage": "Need Photos usage permission to access photos. Please go to settings and turn photos permissions on.",
   "acceptTermsConditions": "I accept the terms and conditions",
-  "today": "Today"
+  "today": "Today",
+  "synchronizeCalendar": "Synchronize to Calendar",
 }

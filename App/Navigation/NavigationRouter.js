@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react'
+import {View, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
 import {Actions, Router, Scene, Stack, Tabs} from 'react-native-router-flux'
 import {createReactNavigationReduxMiddleware, createReduxContainer} from 'react-navigation-redux-helpers'
@@ -22,9 +23,17 @@ import Calendars from "../Containers/Calendars";
 import CreateActivity from "../Containers/CreateActivity";
 import Defaults from "../Config/ElementDefaults";
 import TextConfig from "../Config/ElementDefaults/defaultStyles";
+import ActivityDetails from "../Containers/ActivityDetails";
+import VectorIcon from "../Components/VectorIcon";
+import NavigationButton from "../Components/NavigationButton";
+
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
 Defaults.loadGlobalInputTextProps(TextConfig.customTextInputProps)
+
+const renderCalendarLeftButton = <TouchableOpacity>
+    <VectorIcon name='monetization-on' type='MaterialIcons' style={{fontSize: 30}}/>
+</TouchableOpacity>
 
 export const Routes = Actions.create(
     <Stack
@@ -40,6 +49,7 @@ export const Routes = Actions.create(
             titleStyle={styles.navBarTextTabs}
         />
         <Scene
+            initial
             key='home'
             hideNavBar
             component={HomeScreen}
@@ -51,6 +61,7 @@ export const Routes = Actions.create(
             component={LoginScreen}
             renderLeftButton={<BackButton/>}
             titleStyle={styles.navBarTextTabs}
+            renderRightButton={<View style={styles.emptyRightButton}/>}
         />
         <Scene
             key='signup'
@@ -58,6 +69,7 @@ export const Routes = Actions.create(
             component={SingupScreen}
             renderLeftButton={<BackButton/>}
             titleStyle={styles.navBarTextTabs}
+            renderRightButton={<View style={styles.emptyRightButton}/>}
         />
         <Scene
             key='verifyPhone'
@@ -65,6 +77,7 @@ export const Routes = Actions.create(
             component={PhoneVerificationScreen}
             renderLeftButton={<BackButton/>}
             titleStyle={styles.navBarTextTabs}
+            renderRightButton={<View style={styles.emptyRightButton}/>}
         />
         <Scene
             key='createActivity'
@@ -72,6 +85,16 @@ export const Routes = Actions.create(
             component={CreateActivity}
             renderLeftButton={<BackButton/>}
             titleStyle={styles.navBarTextTabs}
+            navigationBarStyle={styles.primaryNavBar}
+            renderRightButton={<View style={styles.emptyRightButton}/>}
+        />
+        <Scene
+            key='activityDetail'
+            component={ActivityDetails}
+            renderLeftButton={<BackButton/>}
+            titleStyle={styles.navBarTextTabs}
+            navigationBarStyle={styles.primaryNavBar}
+            renderRightButton={<NavigationButton iconName={'mode-edit'} iconType='MaterialIcons'/>}
         />
         <Scene
             key='profileInfo'
@@ -79,9 +102,9 @@ export const Routes = Actions.create(
             component={SignupInfoScreen}
             renderLeftButton={<BackButton/>}
             titleStyle={styles.navBarTextTabs}
+            renderRightButton={<View style={styles.emptyRightButton}/>}
         />
         <Tabs
-            initial
             key='tabbar'
             hideNavBar
             showLabel={false}
@@ -96,6 +119,7 @@ export const Routes = Actions.create(
                 component={TabScreen}
                 IconClass={Entypo}
                 title={'Route'}
+                navigationBarStyle={styles.primaryNavBar}
             />
             <Scene
                 key='tab2'
@@ -104,6 +128,9 @@ export const Routes = Actions.create(
                 component={Calendars}
                 IconClass={FontAwesome5}
                 iconName='calendar-check'
+                renderLeftButton={<NavigationButton iconName={'monetization-on'} iconType='MaterialIcons'/>}
+                renderRightButton={<NavigationButton iconName={'md-notifications-outline'} iconType='Ionicons'/>}
+                navigationBarStyle={styles.primaryNavBar}
             />
             <Scene
                 key='tab3'
@@ -112,6 +139,7 @@ export const Routes = Actions.create(
                 component={TabScreen}
                 title={'Budget'}
                 IconClass={Entypo}
+                navigationBarStyle={styles.primaryNavBar}
             />
             <Scene
                 key='tab4'
@@ -120,6 +148,7 @@ export const Routes = Actions.create(
                 title={'Locator'}
                 IconClass={SimpleLineIcons}
                 component={TabScreen}
+                navigationBarStyle={styles.primaryNavBar}
             />
             <Scene
                 key='tab5'
@@ -127,6 +156,7 @@ export const Routes = Actions.create(
                 title={'Home'}
                 iconName='ios-home'
                 component={TabScreen}
+                navigationBarStyle={styles.primaryNavBar}
             />
         </Tabs>
     </Stack>

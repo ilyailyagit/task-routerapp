@@ -5,33 +5,77 @@ export default StyleSheet.create({
     ...ApplicationStyles.screen,
     mainContainer: {
         flex: 1,
+    },
+    scrollContainer: {
+        flex: 1,
         padding: Metrics.baseMargin,
         backgroundColor: Colors.snow
     },
-
-    locationContainer: {
-        borderBottomWidth: 1.5,
-        borderBottomColor: Colors.offWhiteI,
-        paddingVertical: Metrics.smallMargin
+    scrollContent: {
+        paddingVertical: Metrics.baseMargin
     },
-    myLocationContainer: {
+    gradientStyles: {
+        padding: 0
+    },
+    dateContainer: {
         flexDirection: 'row',
-        marginVertical: Metrics.baseMargin,
+        alignItems: 'flex-end'
     },
-    label: {
+    folderContainer: {
+        width: 90,
+        height: 35,
+        borderRadius: 20,
+        borderWidth: 1.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: Metrics.baseMargin,
+        borderColor: Colors.themeColor,
+        marginBottom: Metrics.baseMargin
+    },
+    folderText: {
+        color: Colors.black,
+        fontSize: Fonts.size.input,
+        fontFamily: Fonts.type.semiBold
+    },
+    timeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    dummyItem: {
+        width: 70
+    },
+    budgetContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    dummyCategory: {
+        width: 30
+    },
+    bottomLine: {
+        borderBottomWidth: 1.5,
+        borderBottomColor: Colors.offWhiteI
+    },
+    inviteLabel: {
         color: Colors.gray,
-        fontSize: Fonts.size.regular,
-        paddingBottom: Metrics.baseMargin
+        paddingLeft: Metrics.smallMargin,
     },
-    value: {
-        flex: 1,
+    addIcon: {
+        fontSize: 50,
+        color: Colors.offWhiteI,
+        padding: Metrics.baseMargin
+    },
+    addButtonContainer: {
+        margin: Metrics.baseMargin
+    },
+    synchronizeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: Metrics.marginFifteen
+    },
+    synchronizeText: {
         color: Colors.black,
         fontSize: Fonts.size.regular,
-        paddingLeft: Metrics.smallMargin
-    },
-    myLocation: {
-        width: 25,
-        fontSize: 22,
-        color: Colors.gray
+        marginLeft: Metrics.baseMargin
     }
 })

@@ -19,8 +19,8 @@ const ApplicationStyles = {
       right: 0
     },
     logo: {
-      width: 150,
-      height: 150,
+      width: 100,
+      height: 100,
       alignSelf: 'center',
       resizeMode: 'contain',
       marginTop: Metrics.doubleBaseMargin
@@ -51,6 +51,19 @@ const ApplicationStyles = {
       ...Fonts.style.h2,
       fontSize: 14,
       color: Colors.text
+    },
+    grayLabel: {
+      color: Colors.gray
+    },
+    notesContainer: {
+      marginVertical: Metrics.marginFifteen
+    },
+    notesInputContainer: {
+      borderWidth: 1,
+      height: 100,
+      textAlignVertical: 'top',
+      borderColor: Colors.offWhiteI,
+      borderRadius: Metrics.baseMargin,
     }
   },
   darkLabelContainer: {
