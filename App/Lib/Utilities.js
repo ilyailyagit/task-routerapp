@@ -5,6 +5,7 @@ import Permissions from 'react-native-permissions'
 import {isEqual, compact, isEmpty, unionBy} from 'lodash'
 import {photosPermissionTypes} from "./AppConstants";
 import moment from 'moment'
+import OpenSettings from 'react-native-open-settings'
 
 let connectedCallbacks = []
 export const registerConnectionChangeCB = (Callback) => {
@@ -112,4 +113,15 @@ export const showAlertDialog = (title, message, okCallBack, cancelable = false) 
 
 export const FormatDateTime = (date, format) => {
   return moment(date).format(format)
+}
+
+export const showSettingsDialog = (
+    title = 'Location Permission',
+    message = 'Allow Ziloo to access this device\'s location?',
+    onCancel = () => {
+    }) => {
+  Alert.alert(title, message,
+      [{text: 'Cancel', style: 'cancel', onPress: onCancel},
+        {text: 'Settings', onPress: () => OpenSettings.openSettings()}
+      ])
 }

@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'
-import { Fonts, Colors, Metrics, ApplicationStyles } from '../../Themes/'
+import {StyleSheet} from 'react-native'
+import {ApplicationStyles, Colors, Fonts, Metrics} from '../../Themes/'
 
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
@@ -19,14 +19,28 @@ export default StyleSheet.create({
         paddingVertical: Metrics.baseMargin,
     },
     codeInputContainer: {
-        marginTop: 30
+        marginTop: 30,
+        alignSelf: 'center'
     },
     codeInput: {
         borderWidth: 1.5,
         borderRadius: 2.5,
-        color: Colors.black,
+        borderColor: Colors.snow,
         backgroundColor: Colors.snow,
-        fontSize: Fonts.size.input
+    },
+    codeInputFocused: {
+        borderWidth: 1.5,
+        borderRadius: 2.5,
+        borderColor: Colors.themeColor,
+        backgroundColor: Colors.snow,
+    },
+    codeInputText: {
+        color: Colors.black,
+        fontSize: Fonts.size.regular
+    },
+    codeInputTextFocused: {
+        color: Colors.green,
+        fontSize: Fonts.size.regular
     },
     buttonContainer: {
         marginTop: Metrics.section

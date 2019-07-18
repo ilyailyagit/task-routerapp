@@ -9,15 +9,19 @@ export default StyleSheet.create({
     buttonContainer: {
         marginTop: Metrics.section
     },
+    profileImageContainer: {
+        height: 150,
+        width: 150,
+        alignSelf: 'center',
+        marginVertical: Metrics.baseMargin
+    },
     profileImage: {
         height: 150,
         width: 150,
         borderRadius: 75,
-        alignSelf: 'center',
         borderWidth: 1.5,
         borderColor: Colors.snow,
-        backgroundColor: Colors.silver,
-        marginVertical: Metrics.baseMargin
+        backgroundColor: Colors.silver
     },
     termsConditionsContainer: {
         flexDirection: 'row',

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import {View, TouchableOpacity} from 'react-native'
+import {TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 import {Actions, Router, Scene, Stack, Tabs} from 'react-native-router-flux'
 import {createReactNavigationReduxMiddleware, createReduxContainer} from 'react-navigation-redux-helpers'
@@ -30,10 +30,6 @@ import NavigationButton from "../Components/NavigationButton";
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
 Defaults.loadGlobalInputTextProps(TextConfig.customTextInputProps)
-
-const renderCalendarLeftButton = <TouchableOpacity>
-    <VectorIcon name='monetization-on' type='MaterialIcons' style={{fontSize: 30}}/>
-</TouchableOpacity>
 
 export const Routes = Actions.create(
     <Stack
@@ -128,9 +124,9 @@ export const Routes = Actions.create(
                 component={Calendars}
                 IconClass={FontAwesome5}
                 iconName='calendar-check'
+                navigationBarStyle={styles.primaryNavBar}
                 renderLeftButton={<NavigationButton iconName={'monetization-on'} iconType='MaterialIcons'/>}
                 renderRightButton={<NavigationButton iconName={'md-notifications-outline'} iconType='Ionicons'/>}
-                navigationBarStyle={styles.primaryNavBar}
             />
             <Scene
                 key='tab3'

@@ -3,6 +3,8 @@ package com.zeloo.app.zeloo;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.zyu.ReactNativeWheelPickerPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -32,6 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFusedLocationPackage(),
+            new RNDeviceInfo(),
             new ReactNativeWheelPickerPackage(),
             new RNGooglePlacesPackage(),
             new PickerPackage(),
