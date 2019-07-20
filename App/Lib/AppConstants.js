@@ -12,7 +12,7 @@ export const photosPermissionTypes = {
   PHOTOS: 'photo'
 }
 
-export const APP_URL = 'http://192.168.8.100:3030/api/'
+export const APP_URL = 'http://192.168.8.103:3030/api/'
 
 export const CloudinaryCred  = {
   "apiKey": "713915523318189",

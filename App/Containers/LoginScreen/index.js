@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import {isEmpty, trim} from 'lodash'
 import {Text, View, Image, Keyboard} from 'react-native'
-// Styles
+
 import RoundedButton from '../../Components/RoundedButton'
 import GradientView from "../../Components/GradientView";
 import i18n from 'i18n-js'
@@ -13,6 +14,7 @@ import {Actions} from "react-native-router-flux";
 import UserActions from "../../Redux/UserRedux";
 import {connect} from "react-redux";
 import {ProgressDialog} from "../../Components/ProgressDialog";
+import {showMessage} from "../../Lib/Utilities";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -26,9 +28,14 @@ class LoginScreen extends Component {
     onLogin = () => {
         Keyboard.dismiss()
         const {username, password} = this.state
-        Actions.tabbar({type: 'reset'})
         const {loginReq} = this.props
-        loginReq({username, password})
+        if (isEmpty(trim(username))) {
+            showMessage('Please enter username')
+        } else if (isEmpty(trim(password))) {
+            showMessage('Please enter password')
+        } else {
+            loginReq({username, password})
+        }
     }
 
     render() {
