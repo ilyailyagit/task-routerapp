@@ -125,7 +125,7 @@ class SingupInfoScreen extends Component {
                 <KeyboardAwareScrollView keyboardShouldPersistTaps='handled' style={styles.mainContainer}
                                          showsVerticalScrollIndicator={false}>
                     <TouchableOpacity style={styles.profileImageContainer} onPress={this.showActionSheet}>
-                        <Image source={image} style={styles.profileImage}/>
+                        <Image source={image} style={styles.profileImage} key={'image'}/>
                         <ActionSheet
                             ref={o => this.ImageSheet = o}
                             options={[I18n.t('captureImage'), I18n.t('selectFromGallery'), I18n.t('cancel')]}

@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Platform} from 'react-native'
 import {ApplicationStyles, Colors, Metrics, Fonts} from '../../Themes/index'
 
 export default StyleSheet.create({
@@ -16,11 +16,12 @@ export default StyleSheet.create({
         height: 40,
         elevation: Metrics.smallMargin,
         backgroundColor: Colors.snow,
-        marginRight: Metrics.baseMargin
+        marginRight: Metrics.baseMargin,
     },
     priority: {
         flex: 1,
         textAlign: 'center',
-        textAlignVertical: 'center'
+        textAlignVertical: 'center',
+        paddingTop: Platform.OS === 'ios' ? Metrics.baseMargin : 0
     }
 })
