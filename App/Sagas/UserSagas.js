@@ -44,7 +44,7 @@ export function* onLoginSuccess(api, {user}) {
         api.setHeaders({'x-access-token': token})
         Actions.tabbar({type: 'reset'})
     } catch (e) {
-        console.tron.warn(e)
+        //console.tron.warn(e)
     }
 }
 

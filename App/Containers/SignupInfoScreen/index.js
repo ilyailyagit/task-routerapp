@@ -50,7 +50,7 @@ class SingupInfoScreen extends Component {
                         this.setState({locationCoordinates})
                     },
                     (error) => {
-                        console.tron.warn({code: error.code, message: error.message})
+                      //  console.tron.warn({code: error.code, message: error.message})
                     },
                     {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
                 )
@@ -68,7 +68,7 @@ class SingupInfoScreen extends Component {
         UploadImage(path).then((picUrl) => {
             this.setState({picUrl, uploadingImage: false})
         }).catch(err => {
-            console.tron.warn({err})
+          //  console.tron.warn({err})
             this.setState({uploadingImage: false})
         })
     }

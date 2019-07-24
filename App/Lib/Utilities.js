@@ -26,8 +26,8 @@ const updateConnected = ({type}) => {
     for (const Cb of connectedCallbacks) {
         Cb(isConnected)
     }
-   /* console.tron.log('Network Connection = ' + isConnected)
-    console.log('Network Connection = ' + isConnected)*/
+    /* console.tron.log('Network Connection = ' + isConnected)
+     console.log('Network Connection = ' + isConnected)*/
 }
 
 export const checkConnected = () => {
@@ -152,7 +152,7 @@ const formatEvent = async (options) => {
         await RNCalendarEvents.findCalendars().catch(err => console.log(err))
     const primaryCalendar =
         calendars.find(c => c.isPrimary && c.allowsModifications)
-    console.tron.warn({primaryCalendar})
+
     if (!primaryCalendar) {
         return null
     }
@@ -168,7 +168,7 @@ const formatEvent = async (options) => {
 }
 
 export const createEvent = options => {
- return new Promise(resolve =>
+    return new Promise(resolve =>
         validateAuth(
             () => RNCalendarEvents
                 .saveEvent(options.title, formatEvent(options))

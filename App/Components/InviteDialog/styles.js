@@ -68,7 +68,7 @@ export default StyleSheet.create({
         marginLeft: Metrics.doubleBaseMargin
     },
     dropdownOffset: {
-        top: 10
+        top: 10,
     },
     addButton: {
         alignSelf: 'center',

@@ -1,13 +1,14 @@
 import styles from './styles'
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
-import {Text, TouchableOpacity, View} from 'react-native'
+import {Text, TouchableOpacity, View, Keyboard} from 'react-native'
 import Input from "../Input";
 import VectorIcon from "../VectorIcon";
 import {Budget_Types, User_Roles} from "../../Lib/AppConstants";
 import {Dropdown} from "react-native-material-dropdown";
 import {Colors} from "../../Themes";
 import RoundedButton from "../RoundedButton";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 
 export default class BudgetDialog extends Component {
@@ -57,7 +58,7 @@ export default class BudgetDialog extends Component {
             <TouchableOpacity activeOpacity={1} style={styles.mainContainer}>
                 <TouchableOpacity activeOpacity={1} style={styles.innerContainer}>
                     {this.renderHeader()}
-                    <View style={styles.contentContainer}>
+                    <KeyboardAwareScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
                         <Dropdown
                             value={type}
                             data={Budget_Types}
@@ -83,9 +84,12 @@ export default class BudgetDialog extends Component {
                                 onChangeText={(amount) => {
                                     this.setState({amount})
                                 }}
+                                returnKeyType={'next'}
+                                onSubmitEditing={() => this.description.focus()}
                             />
                         </View>
                         <Input
+                            ref={ref => this.description = ref}
                             value={description}
                             label={'Description'}
                             placeholder={'Description'}
@@ -94,14 +98,16 @@ export default class BudgetDialog extends Component {
                             onChangeText={(description) => {
                                 this.setState({description})
                             }}
+                            returnKeyType={'Done'}
+                            onSubmitEditing={Keyboard.dismiss}
                         />
-                    </View>
+                    </KeyboardAwareScrollView>
                     <RoundedButton
                         text={'ADD NOW'}
                         onPress={this.saveBudget}
                         buttonContainer={styles.buttonContainer}
                     />
-                </TouchableOpacity>
+                    </TouchableOpacity>
             </TouchableOpacity>
         )
     }
