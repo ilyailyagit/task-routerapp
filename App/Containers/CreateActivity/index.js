@@ -73,9 +73,9 @@ class CreateActivity extends Component {
         RNGooglePlaces.openAutocompleteModal()
             .then((place) => {
                 const {address, location: {latitude = '', longitude = ''} = {}} = place
-                const locationCoordinates = []
-                locationCoordinates.push(latitude)
-                locationCoordinates.push(longitude)
+                const locationCoordinates = [0, 0]
+                locationCoordinates[0] = latitude
+                locationCoordinates[1] = longitude
                 this.setState({locationName: address || '', locationCoordinates})
             })
             .catch(error => console.log(error.message));  // error is a Javascript Error object

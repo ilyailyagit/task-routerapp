@@ -88,7 +88,7 @@ export function* onAddProfile(api, {userId, info}) {
     try {
         const {res} = yield call(Api.callServer, api.addProfile, info, true, userId)
         if (res && res.isSuccess) {
-            Actions.tabbar({type: 'reset'})
+            Actions.login({type: 'reset'})
             yield put(UserActions.addProfileSuccess(res.data))
         } else {
             if (res.error && typeof res.error === "string") {

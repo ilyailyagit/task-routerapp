@@ -47,7 +47,7 @@ export default class ActivityInputItem extends Component {
                     containerStyle={styles.dropdownContainer}
                     data={Activity_category}/>
             default:
-                return <Text style={[styles.value, label === value && styles.grayLabel]}>{value}</Text>
+                return <Text style={[styles.value, label === value && {color: Colors.grayI}]}>{value}</Text>
 
         }
     }
