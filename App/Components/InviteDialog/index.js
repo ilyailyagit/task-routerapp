@@ -31,6 +31,7 @@ export default class InviteDialog extends Component {
     }
 
     addInvite = () => {
+        Keyboard.dismiss()
         const {onDone} = this.props
         const {name, phone, role} = this.state
         onDone({name, phone, role})
@@ -73,6 +74,7 @@ export default class InviteDialog extends Component {
                                  ref={ref => this.phone = ref}
                                  labelStyle={styles.inputLabel}
                                  onSubmitEditing={Keyboard.dismiss}
+                                 returnKeyType={'done'}
                                  containerStyle={styles.phoneInputContainer}
                                  onChangeText={(phone) => {this.setState({phone})}}
                              />

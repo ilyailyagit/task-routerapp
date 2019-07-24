@@ -13,7 +13,6 @@ export default StyleSheet.create({
         backgroundColor: Colors.promptBackground
     },
     innerContainer: {
-        height: 450,
         width: Metrics.screenWidth - 40,
         marginTop: Metrics.marginThirty,
         borderRadius: Metrics.marginFifteen,
@@ -59,7 +58,6 @@ export default StyleSheet.create({
         borderBottomColor: Colors.offWhiteI
     },
     contentContainer: {
-        flex: 1,
         backgroundColor: Colors.snow,
         padding: Metrics.baseMargin
     },

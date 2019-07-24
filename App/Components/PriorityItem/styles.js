@@ -14,6 +14,10 @@ export default StyleSheet.create({
     itemContainer: {
         width: 75,
         height: 40,
+        shadowColor: '#ccc',
+        shadowOffset: {width: 3, height: 3},
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
         elevation: Metrics.smallMargin,
         backgroundColor: Colors.snow,
         marginRight: Metrics.baseMargin,

@@ -8,7 +8,6 @@ import {Budget_Types, User_Roles} from "../../Lib/AppConstants";
 import {Dropdown} from "react-native-material-dropdown";
 import {Colors} from "../../Themes";
 import RoundedButton from "../RoundedButton";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 
 export default class BudgetDialog extends Component {
@@ -33,6 +32,7 @@ export default class BudgetDialog extends Component {
     }
 
     saveBudget = () => {
+        Keyboard.dismiss()
         const {onDone} = this.props
         const {amount, description, type} = this.state
         onDone({amount, description, type})
@@ -58,7 +58,7 @@ export default class BudgetDialog extends Component {
             <TouchableOpacity activeOpacity={1} style={styles.mainContainer}>
                 <TouchableOpacity activeOpacity={1} style={styles.innerContainer}>
                     {this.renderHeader()}
-                    <KeyboardAwareScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+                    <View style={styles.contentContainer}>
                         <Dropdown
                             value={type}
                             data={Budget_Types}
@@ -98,10 +98,10 @@ export default class BudgetDialog extends Component {
                             onChangeText={(description) => {
                                 this.setState({description})
                             }}
-                            returnKeyType={'Done'}
+                            returnKeyType={'done'}
                             onSubmitEditing={Keyboard.dismiss}
                         />
-                    </KeyboardAwareScrollView>
+                    </View>
                     <RoundedButton
                         text={'ADD NOW'}
                         onPress={this.saveBudget}

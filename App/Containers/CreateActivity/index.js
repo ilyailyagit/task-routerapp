@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import RNGooglePlaces from 'react-native-google-places';
-import {Text, TouchableOpacity, View, StatusBar} from 'react-native'
+import {Text, TouchableOpacity, View, StatusBar, Keyboard} from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import moment from "moment";
@@ -122,6 +122,8 @@ class CreateActivity extends Component {
                         label={'Name'}
                         placeholder={'Name'}
                         labelStyle={styles.grayLabel}
+                        returnKeyType={'done'}
+                        onSubmitEditing={Keyboard.dismiss}
                         containerStyle={styles.bottomLine}
                         onChangeText={(name) => {
                             this.setState({name})

@@ -10,12 +10,12 @@ export default StyleSheet.create({
         bottom: 0,
         position: 'absolute',
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: Colors.promptBackground
     },
     innerContainer: {
         borderRadius: 15,
         borderWidth: 1,
+        marginTop: Metrics.marginThirty,
         borderColor: Colors.snow,
         backgroundColor: Colors.snow,
         width: Metrics.screenWidth - 20
@@ -72,6 +72,8 @@ export default StyleSheet.create({
     },
     addButton: {
         alignSelf: 'center',
+        justifyContent:  'center',
+        borderRadius: Metrics.baseMargin,
         backgroundColor: Colors.purple,
         marginTop: Metrics.marginFifteen,
         paddingVertical: Metrics.baseMargin,

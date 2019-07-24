@@ -16,7 +16,7 @@ import Input from "../../Components/Input";
 import CheckBox from "../../Components/CheckBox";
 import GradientView from "../../Components/GradientView";
 import RoundedButton from '../../Components/RoundedButton'
-import {handlePermissionError, showMessage, showSettingsDialog} from "../../Lib/Utilities";
+import {handlePermissionError, isValidPassword, showMessage, showSettingsDialog} from "../../Lib/Utilities";
 import {CloudinaryCred, imageOptions, photosPermissionTypes} from "../../Lib/AppConstants";
 import UserActions from "../../Redux/UserRedux";
 import {connect} from "react-redux";
@@ -101,6 +101,7 @@ class SingupInfoScreen extends Component {
         const {firstName, lastName, userName, password, picUrl, locationCoordinates, acceptedTerms} = this.state
         const {addProfile, user: {id: userId} = {}} = this.props
         const userInfo = {name: `${firstName} ${lastName}`, username: userName, picUrl, password, locationCoordinates}
+        Keyboard.dismiss()
         if (isEmpty(firstName)) {
             showMessage('Please enter first name')
         } else if (isEmpty(lastName)) {
@@ -109,7 +110,9 @@ class SingupInfoScreen extends Component {
             showMessage('Please enter username')
         } else if (isEmpty(password)) {
             showMessage('Please enter password')
-        } else if (!acceptedTerms) {
+        } else if(!isValidPassword(password)){
+            showMessage(i18n.t('passwordLength'))
+        }else if (!acceptedTerms) {
             showMessage('Please accept terms and conditions')
         } else {
             addProfile(userId, userInfo)
@@ -163,13 +166,13 @@ class SingupInfoScreen extends Component {
                         password
                         value={password}
                         returnKeyType={'done'}
-                        onSubmitEditing={() => {
-                        }}
+                        onSubmitEditing={Keyboard.dismiss}
                         label={I18n.t('password')}
                         ref={ref => this.passwordRef = ref}
                         placeholder={I18n.t('password')}
                         onChangeText={(password) => this.setState({password})}
                     />
+                    <Text style={styles.passwordInfo}>{i18n.t('passwordLength')}</Text>
                     <View style={styles.termsConditionsContainer}>
                         <CheckBox
                             checked={acceptedTerms}

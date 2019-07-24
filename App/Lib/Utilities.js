@@ -80,6 +80,11 @@ export const isValidEmail = (email: string) => {
     return re.test(email)
 }
 
+export const isValidPassword = (password: string) => {
+    var re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/
+    return re.test(password)
+}
+
 export const isValidPhoneNo = (phoneNo: string) => {
     var phoneRe = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g
     return phoneRe.test(phoneNo)
