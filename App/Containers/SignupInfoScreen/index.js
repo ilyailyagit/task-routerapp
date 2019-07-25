@@ -32,7 +32,7 @@ class SingupInfoScreen extends Component {
             password: '',
             picUrl: '',
             uploadingImage: false,
-            locationCoordinates: [],
+            locationCoordinates: [0, 0],
             acceptedTerms: false
         }
         init(CloudinaryCred.apiKey, CloudinaryCred.secret, CloudinaryCred.name)

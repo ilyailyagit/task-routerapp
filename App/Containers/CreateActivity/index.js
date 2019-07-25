@@ -40,7 +40,7 @@ class CreateActivity extends Component {
             priority: 1,
             note: '',
             syncCalendar: false,
-            locationCoordinates: [],
+            locationCoordinates: [0,0],
             showFolderDialog: false,
             showInviteDialog: false,
             showBudgetDialog: false,

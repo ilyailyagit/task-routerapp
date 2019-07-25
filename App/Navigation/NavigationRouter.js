@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import {TouchableOpacity, View} from 'react-native'
+import {View} from 'react-native'
 import {connect} from 'react-redux'
 import {Actions, Router, Scene, Stack, Tabs} from 'react-native-router-flux'
 import {createReactNavigationReduxMiddleware, createReduxContainer} from 'react-navigation-redux-helpers'
@@ -24,7 +24,6 @@ import CreateActivity from "../Containers/CreateActivity";
 import Defaults from "../Config/ElementDefaults";
 import TextConfig from "../Config/ElementDefaults/defaultStyles";
 import ActivityDetails from "../Containers/ActivityDetails";
-import VectorIcon from "../Components/VectorIcon";
 import NavigationButton from "../Components/NavigationButton";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
