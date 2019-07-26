@@ -54,7 +54,7 @@ export function* onVerifyPin(api, {info}) {
         const {res} = yield call(Api.callServer, api.verifyPinCode, info, true)
         if (res && res.isSuccess) {
             yield put(UserActions.verifyPinSuccess(res.data))
-            Actions.profileInfo()
+            Actions.profileInfo({type: 'reset', isFromVerifyPin: true})
         } else {
             if (res.error && typeof res.error === "string") {
                 showMessage(res.error)

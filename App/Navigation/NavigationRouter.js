@@ -95,7 +95,7 @@ export const Routes = Actions.create(
             key='profileInfo'
             title='BASIC INFO'
             component={SignupInfoScreen}
-            renderLeftButton={<BackButton/>}
+            renderLeftButton={<BackButton onLeft={() => Actions.home({type: 'reset'})}/>}
             titleStyle={styles.navBarTextTabs}
             renderRightButton={<View style={styles.emptyRightButton}/>}
         />
@@ -146,6 +146,7 @@ export const Routes = Actions.create(
                 navigationBarStyle={styles.primaryNavBar}
             />
             <Scene
+                initial
                 key='tab5'
                 icon={TabIcon}
                 title={'Home'}

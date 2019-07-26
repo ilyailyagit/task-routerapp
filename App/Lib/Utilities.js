@@ -81,7 +81,7 @@ export const isValidEmail = (email: string) => {
 }
 
 export const isValidPassword = (password: string) => {
-    var re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/
+    var re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")
     return re.test(password)
 }
 
