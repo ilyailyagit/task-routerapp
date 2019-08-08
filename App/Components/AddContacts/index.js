@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import styles from './styles'
 import AddContact from "../AddContact";
+import CreateNewContact from "../CreateNewContact";
 export default class AddContacts extends Component {
     static propTypes = {
         selectedContacts: PropTypes.array,
@@ -20,6 +21,7 @@ export default class AddContacts extends Component {
     render () {
         const { selectedContacts } = this.props
         return <View style={styles.mainContainer}>
+            <CreateNewContact />
             <FlatList data={selectedContacts}
                       keyExtractor={(item, indx) => String(item.id || indx)}
                       renderItem={this.renderContactItem}

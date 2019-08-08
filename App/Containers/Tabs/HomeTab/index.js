@@ -8,7 +8,7 @@ import images from "../../../Themes/Images";
 import FamilyActions from "../../../Redux/FamilyRedux";
 import {connect} from "react-redux";
 import FamilyMember from "../../../Components/FamilyMember";
-import { ADD_FAMILY_MEMBER_BUTTON_ID } from "../../../Lib/AppConstants";
+import {ADD_FAMILY_MEMBER_BUTTON_ID} from "../../../Lib/AppConstants";
 import Colors from "../../../Themes/Colors";
 import AddContacts from "../../../Components/AddContacts";
 
@@ -30,15 +30,15 @@ class HomeTab extends Component {
 
     renderFamilyMember = ({item, index}) => {
         return (
-            <FamilyMember item={item} />
+            <FamilyMember item={item}/>
         )
     }
 
     render() {
-        const { familyName } = this.state
-        const { isSignup, family = {}, fetching } = this.props
-        const { name, users = [] } = family
-        console.tron.warn({ users })
+        const {familyName} = this.state
+        const {isSignup, family = {}, fetching} = this.props
+        const {name, users = []} = family
+        console.tron.warn({users})
         if (fetching) {
             return (
                 <View style={styles.mainContainer}>
@@ -64,23 +64,25 @@ class HomeTab extends Component {
                             </View>
                         </ImageBackground>
                     </> : <>
-                        <ImageBackground style={[styles.topHeaderImage, styles.contentFlexEnd]}
+                        <ImageBackground style={[styles.topHeaderImage]}
                                          source={images.addFamily}>
-                            <Text style={styles.enterFamilyName}>Enter Your Family Name</Text>
-                            <View style={styles.familyNameInputContainer}>
-                                <TextInput value={familyName}
-                                           style={styles.familyNameInput}
-                                           placeholder={`Your's family`}
-                                           placeholderTextColor={Colors.snow}
-                                           onChangeText={familyName => this.setState({familyName})}/>
-                                <TouchableOpacity style={styles.goBtnContainer}>
-                                    <Text style={styles.goTxt}>GO</Text>
-                                </TouchableOpacity>
+                            <View style={styles.contentFlexEnd}>
+                                <Text style={styles.enterFamilyName}>Enter Your Family Name</Text>
+                                <View style={styles.familyNameInputContainer}>
+                                    <TextInput value={familyName}
+                                               style={styles.familyNameInput}
+                                               placeholder={`Your's family`}
+                                               placeholderTextColor={Colors.snow}
+                                               onChangeText={familyName => this.setState({familyName})}/>
+                                    <TouchableOpacity style={styles.goBtnContainer}>
+                                        <Text style={styles.goTxt}>GO</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <AddContacts />
                         </ImageBackground>
                     </>
                 }
+                <AddContacts />
             </View>
         )
     }

@@ -14,6 +14,7 @@ export default StyleSheet.create({
         paddingTop: Metrics.baseMargin
     },
     contentFlexEnd: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
         padding: Metrics.baseMargin
@@ -70,7 +71,7 @@ export default StyleSheet.create({
     familyNameInputContainer: {
         flexDirection: 'row',
         marginTop: Metrics.baseMargin,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     goBtnContainer: {
         width: 70,

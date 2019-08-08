@@ -57,6 +57,8 @@ target 'Zeloo' do
   pod 'react-native-calendar-events', :path => '../node_modules/react-native-calendar-events'
 
 
+  pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
+
 end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
