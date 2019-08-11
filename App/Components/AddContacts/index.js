@@ -22,10 +22,10 @@ export default class AddContacts extends Component {
 
 
     render () {
-        const { selectedContacts, onSelectContact } = this.props
+        const { selectedContacts, onSelectContact, contact } = this.props
 
         return <View style={styles.mainContainer}>
-            <CreateNewContact onSelectContact={onSelectContact}/>
+            <CreateNewContact onSelectContact={onSelectContact} contact={contact}/>
             <FlatList data={selectedContacts}
                       keyExtractor={(item, indx) => String(item.id || indx)}
                       renderItem={this.renderContactItem}

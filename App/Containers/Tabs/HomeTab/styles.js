@@ -5,6 +5,7 @@ import Metrics from "../../../Themes/Metrics";
 import Colors from "../../../Themes/Colors";
 import Fonts from "../../../Themes/Fonts";
 
+const avatarSize = 50
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     topHeaderImage: {
@@ -87,5 +88,30 @@ export default StyleSheet.create({
         color: Colors.themeColor,
         textAlignVertical: 'center',
         fontSize: Fonts.size.medium
+    },
+    contactItemRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: Metrics.smallMargin,
+        paddingHorizontal: Metrics.baseMargin
+    },
+    thumbnail: {
+        width: avatarSize,
+        height: avatarSize,
+        borderRadius: avatarSize/2,
+        overflow: 'hidden',
+        marginHorizontal: Metrics.baseMargin,
+        backgroundColor: Colors.offWhiteI,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    initials: {
+        fontSize: Fonts.size.h5,
+        color: Colors.themeColor,
+        paddingTop: Metrics.marginSeven
+    },
+    contactName: {
+        fontSize: Fonts.size.regular,
+        paddingTop: Metrics.smallMargin
     }
 })

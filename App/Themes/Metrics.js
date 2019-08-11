@@ -21,6 +21,7 @@ const metrics = {
     navBarHeight: (Platform.OS === 'ios') ? 64 : 54,
     statusBarHeight: Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT,
     buttonRadius: 4,
+    marginSeven: 7,
     icons: {
         tiny: 15,
         small: 20,

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {Menu, MenuOption, MenuOptions, MenuTrigger} from 'react-native-popup-menu';
 import PropTypes from 'prop-types'
+import * as _ from 'lodash'
 
 import styles from './style'
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -36,9 +37,23 @@ export default class CreateNewContact extends Component {
     }
     constructor (props) {
         super(props)
+        const { contact: { phoneNumbers: {0: firstItem = {}} = [], name = ''} = {}} = props
+        const { number = '' } = firstItem
         this.state = {
-            userName: '',
+            userName: name,
+            phoneNumber: number
+        }
+    }
 
+    componentWillReceiveProps({contact: newContact = {}}) {
+        const { contact = {} } = this.props
+        if(newContact && !_.isEqual(contact, newContact)) {
+            const { phoneNumbers: {0: firstItem = {}} = [], name = '' } = newContact
+            const { number = '' } = firstItem
+            this.setState({
+                userName: name,
+                phoneNumber: number
+            })
         }
     }
 
