@@ -50,7 +50,7 @@ function * handleDeniedLocationPermissions(permissionType){
     }
 }
 
-function * handleAuthorizedLocationPermissions() {
+function * handleAuthorizedLocationPermissions () {
     console.tron.warn('inside authorized handling location')
     const location = yield getCurrentGPSLocation().then(res => res)
     console.tron.warn(location)

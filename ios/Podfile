@@ -14,6 +14,7 @@ target 'Zeloo' do
     'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
     'cxxreact',
     #'jschelpers',
+    'RCTAnimation',
     'RCTAnimation', # Needed for FlatList and animations running on native UI thread
     'RCTBlob',
     'RCTPushNotification', # Needed if using push notification

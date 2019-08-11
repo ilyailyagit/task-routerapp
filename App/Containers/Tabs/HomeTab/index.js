@@ -11,6 +11,8 @@ import FamilyMember from "../../../Components/FamilyMember";
 import {ADD_FAMILY_MEMBER_BUTTON_ID} from "../../../Lib/AppConstants";
 import Colors from "../../../Themes/Colors";
 import AddContacts from "../../../Components/AddContacts";
+import ModalComponent from "../../../Components/ModalComponent";
+import { ContactsSectionList } from "../../../Components/SelectableContactsSectionList";
 
 class HomeTab extends Component {
 
@@ -19,7 +21,9 @@ class HomeTab extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            showFamilyMembers: false
+            showFamilyMembers: false,
+            selectedContacts: [],
+            showContactsList: false
         }
     }
 
@@ -34,9 +38,27 @@ class HomeTab extends Component {
         )
     }
 
-    render() {
-        const {familyName} = this.state
-        const {isSignup, family = {}, fetching} = this.props
+    onContactSelected = (contact) => {
+        this.setState({selectedContacts: [contact, ...this.state.selectedContacts]})
+    }
+
+    onSelectContact = () => {
+        const { showContactsList } = this.state
+        if (!showContactsList) {
+            this.setState({ showContactsList: true })
+        }
+    }
+
+    onHideContactList = () => {
+        const { showContactsList } = this.state
+        if (showContactsList) {
+            this.setState({ showContactsList: false })
+        }
+    }
+
+    render () {
+        const { familyName, selectedContacts, showContactsList } = this.state
+        const { isSignup, family = {}, fetching } = this.props
         const {name, users = []} = family
         console.tron.warn({users})
         if (fetching) {
@@ -82,7 +104,16 @@ class HomeTab extends Component {
                         </ImageBackground>
                     </>
                 }
-                <AddContacts />
+                <AddContacts selectedContacts={selectedContacts}
+                             onSelectContact={this.onSelectContact}
+                             onContactSelected={this.onContactSelected} />
+
+                <ModalComponent isModalVisible={showContactsList}
+                                closeModal={this.onHideContactList}>
+                    <View style={{ flex: 1 }}>
+                        <ContactsSectionList />
+                    </View>
+                </ModalComponent>
             </View>
         )
     }

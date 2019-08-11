@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Text, TextInput, TouchableOpacity, View} from 'react-native'
-import {Menu, MenuOption, MenuOptions, MenuTrigger,} from 'react-native-popup-menu';
-
+import {Menu, MenuOption, MenuOptions, MenuTrigger} from 'react-native-popup-menu';
+import PropTypes from 'prop-types'
 
 import styles from './style'
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -31,6 +31,9 @@ export const rolesData = [
 ]
 
 export default class CreateNewContact extends Component {
+    static propTypes = {
+        onSelectContact: PropTypes.func,
+    }
     constructor (props) {
         super(props)
         this.state = {
@@ -41,6 +44,13 @@ export default class CreateNewContact extends Component {
 
     onCreateNew = () => {
 
+    }
+
+    handleSelectContact = () => {
+        const { onSelectContact } = this.props
+        if (onSelectContact && typeof onSelectContact === 'function') {
+            onSelectContact()
+        }
     }
 
     render () {
@@ -68,7 +78,7 @@ export default class CreateNewContact extends Component {
                                        placeholder={strings.enterPhoneNumber}
                                        style={[styles.inputs, styles.grayBottomBorder]}/>
                         </View>
-                        <TouchableOpacity style={styles.contactIconContainer}>
+                        <TouchableOpacity style={styles.contactIconContainer} onPress={this.handleSelectContact}>
                             <FontAwesome5 name={'address-book'} color={Colors.gray} size={20} />
                         </TouchableOpacity>
                         <View style={styles.userTypeContainer}>
