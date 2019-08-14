@@ -47,7 +47,7 @@ const create = (baseURL = 'http://18.191.149.64:3030/api/') => {
     const deleteTask = (taskId) => api.delete(`tasks/${taskId}`)
 
     // family
-    const createFamily = () => api.post('families')
+    const createFamily = (data) => api.post('families', data)
     const fetchFamily = ({ familyId }) => api.get(`families/${familyId}`)
 
     // ------

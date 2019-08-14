@@ -1,4 +1,5 @@
 import {createActions, createReducer} from 'reduxsauce'
+import * as _ from 'lodash'
 import Immutable from 'seamless-immutable'
 
 /* ------------- Types and Action Creators ------------- */
@@ -55,7 +56,14 @@ export const signUpFailure = (state) => state.merge({fetching: false, error: tru
 
 // Login
 export const loginRequest = (state) => state.merge({fetching: true})
-export const loginSuccess = (state, {user}: Object) => state.merge({fetching: false, error: null, user})
+export const loginSuccess = (state, {user}) => {
+    const { user: stateUser = {} } = state
+    let newUser = user
+    if (!_.isEmpty(stateUser) && stateUser.id === user.id) {
+        newUser.familyId = (newUser.familyId || stateUser.familyId)
+    }
+    return state.merge({fetching: false, error: null, user: newUser})
+}
 export const loginFailure = (state) => state.merge({fetching: false, error: true})
 
 // Verify PIN

@@ -24,6 +24,8 @@ import Colors from "../../../Themes/Colors";
 import AddContacts from "../../../Components/AddContacts";
 import ModalComponent from "../../../Components/ModalComponent";
 import ContactsSectionList from "react-native-sectionlist-contacts";
+import strings from "../../../Constants/strings";
+import {showErrorMessage} from "../../../Lib/Utilities";
 
 class HomeTab extends Component {
 
@@ -70,7 +72,11 @@ class HomeTab extends Component {
 
     componentWillMount() {
         const {fetchFamilyReq, user} = this.props
-        fetchFamilyReq(user.familyId || -1)
+        if (user.familyId) {
+            fetchFamilyReq(user.familyId)
+        } else {
+            showErrorMessage(strings.hasNoFamily)
+        }
     }
 
     renderFamilyMember = ({item, index}) => {
@@ -80,14 +86,49 @@ class HomeTab extends Component {
     }
 
     onContactSelected = (contact) => {
-        this.setState({contact, selectedContacts: [contact, ...this.state.selectedContacts], showContactsList: false})
+        this.setState({ contact, showContactsList: false })
+    }
+
+    onAddContact = (newContact) => {
+        const { contact: stateContact, selectedContacts } = this.state
+        const contact = !_.isEmpty(newContact) ? newContact : stateContact
+        console.tron.warn({
+            cond: !contact || _.isEmpty(contact),
+            contact,
+            newContact,
+            stateContact
+        })
+        if (!contact || _.isEmpty(contact)) {
+            Alert.alert('kinldy select a contact first')
+            return
+        }
+        const prevIndex = selectedContacts.findIndex(item => item.phone === newContact.phone)
+        if (prevIndex === -1) {
+            this.setState({ contact, selectedContacts: [contact, ...selectedContacts] })
+        } else if(!_.isEqual(selectedContacts[prevIndex], contact)) {
+            const newSelected = selectedContacts
+            newSelected.splice(prevIndex, 1, contact)
+            this.setState({ contact, selectedContacts: newSelected })
+        } else {
+            Alert.alert(strings.contactAlreadyAdded)
+        }
     }
 
     onSelectContact = () => {
         const {showContactsList} = this.state
         if (!showContactsList) {
-            this.setState({showContactsList: true})
+            this.setState({showContactsList: true, contact: null})
         }
+    }
+
+    onEditContact = (contact) => {
+        this.setState({ contact, role: contact.role })
+    }
+
+    onDeleteContact = (contact) => {
+        const { selectedContacts } = this.state
+        const newSelectedContacts = selectedContacts.filter(item => !_.isEqual(item, contact))
+        this.setState({selectedContacts: newSelectedContacts})
     }
 
     onHideContactList = () => {
@@ -109,11 +150,20 @@ class HomeTab extends Component {
         )
     }
 
+    onCreateFamily = () => {
+        const { familyName, selectedContacts } = this.state
+        const { createFamilyReq } = this.props
+        if (!familyName) {
+           showErrorMessage(strings.familyNameEmpty)
+           return
+        }
+        createFamilyReq(familyName, selectedContacts)
+    }
+
     render() {
         const {familyName, selectedContacts, showContactsList, contact} = this.state
         const {isSignup, family = {}, fetching, contacts} = this.props
         const {name, users = []} = family
-        console.tron.warn({users})
         if (fetching) {
             return (
                 <View style={styles.mainContainer}>
@@ -149,19 +199,22 @@ class HomeTab extends Component {
                                                placeholder={`Your's family`}
                                                placeholderTextColor={Colors.snow}
                                                onChangeText={familyName => this.setState({familyName})}/>
-                                    <TouchableOpacity style={styles.goBtnContainer}>
+                                    <TouchableOpacity style={styles.goBtnContainer}
+                                                      onPress={this.onCreateFamily}>
                                         <Text style={styles.goTxt}>GO</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                         </ImageBackground>
+                        <AddContacts selectedContacts={selectedContacts}
+                                     onSelectContact={this.onSelectContact}
+                                     contact={contact}
+                                     onAddContact={this.onAddContact}
+                                     onEditContact={this.onEditContact}
+                                     onDeleteContact={this.onDeleteContact}
+                                     onContactSelected={this.onContactSelected} />
                     </>
                 }
-                <AddContacts selectedContacts={selectedContacts}
-                             onSelectContact={this.onSelectContact}
-                             contact={contact}
-                             onContactSelected={this.onContactSelected}/>
-
                 <ModalComponent isModalVisible={showContactsList}
                                 closeModal={this.onHideContactList}>
                     <SafeAreaView style={{flex: 1, backgroundColor: Colors.snow}}>
@@ -181,7 +234,8 @@ const mapStateToProps = ({config: {contacts = []} = {}, user: {user, isSignup}, 
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchFamilyReq: (familyId) => dispatch(FamilyActions.fetchFamily(familyId))
+        fetchFamilyReq: (familyId) => dispatch(FamilyActions.fetchFamily(familyId)),
+        createFamilyReq: (familyName, invites) => dispatch(FamilyActions.createFamily(familyName, invites))
     }
 }
 

@@ -8,7 +8,6 @@ import Permissions from 'react-native-permissions'
 import {getCurrentGPSLocation, requestPermissions, showSettingsDialog} from "../Lib/Utilities";
 import {PERMISSION_RESPONSES} from "../Lib/AppConstants";
 import Contacts from "react-native-contacts";
-import {ConfigTypes} from "../Redux/ConfigRedux";
 
 export function* startup(api) {
     yield delay(500)
@@ -124,7 +123,10 @@ const getAllContacts = () => new Promise((resolve, reject) => {
                 //     dataObject.push(currentObject);
                 // }
 
-                resolve(finalizedContacts)
+                resolve(finalizedContacts.map(item => {
+                    const { recordID, name, phoneNumbers: { 0: {number = ''} = {} } = []} = item
+                    return {recordID, name, phone: number}
+                }))
                 console.tron.warn({ dataObject, finalizedContacts })
                 // this.setState({ finalData: dataObject });
             }
