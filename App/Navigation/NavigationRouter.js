@@ -26,6 +26,7 @@ import TextConfig from "../Config/ElementDefaults/defaultStyles";
 import ActivityDetails from "../Containers/ActivityDetails";
 import NavigationButton from "../Components/NavigationButton";
 import HomeTab from "../Containers/Tabs/HomeTab";
+import BudgetScreen from "../Containers/BudgetScreen";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
@@ -132,10 +133,12 @@ export const Routes = Actions.create(
                 key='tab3'
                 iconName='map'
                 icon={TabIcon}
-                component={TabScreen}
                 title={'Budget'}
                 IconClass={Entypo}
+                component={BudgetScreen}
                 navigationBarStyle={styles.primaryNavBar}
+                renderLeftButton={<NavigationButton iconName={'monetization-on'} iconType='MaterialIcons'/>}
+                renderRightButton={<NavigationButton iconName={'md-notifications-outline'} iconType='Ionicons'/>}
             />
             <Scene
                 key='tab4'
