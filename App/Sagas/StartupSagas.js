@@ -8,11 +8,13 @@ import Permissions from 'react-native-permissions'
 import {getCurrentGPSLocation, requestPermissions, showSettingsDialog} from "../Lib/Utilities";
 import {PERMISSION_RESPONSES} from "../Lib/AppConstants";
 import Contacts from "react-native-contacts";
+import CalendarActions from "../Redux/CalendarRedux";
 
 export function* startup(api) {
     yield delay(500)
     const {user} = yield select(state => (state.user))
     if (!isEmpty(user) && user.token && !isEmpty(user.token)) {
+        yield put(CalendarActions.getAllTasks())
         yield put(UserActions.loginSuccess(user))
     } else {
         Actions.home({type: 'reset'})

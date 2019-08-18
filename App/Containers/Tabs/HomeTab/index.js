@@ -34,6 +34,7 @@ import {showErrorMessage} from "../../../Lib/Utilities";
 import CreateNewContact from "../../../Components/CreateNewContact";
 import Metrics from "../../../Themes/Metrics";
 import FoldersComponent from "../../../Components/FoldersComponent";
+import {Actions} from "react-native-router-flux";
 
 class HomeTab extends Component {
 
@@ -317,6 +318,16 @@ class HomeTab extends Component {
 
     onAddFolder = () => {
         // todo: handle add folder
+        Alert.alert('api needs to be integerated.')
+    }
+
+    onCreateTask = () => {
+        Actions.createActivity()
+    }
+
+    onCreateRoute = () => {
+        // todo: handle create new route
+        Alert.alert('in progress')
     }
 
     render() {
@@ -406,7 +417,7 @@ class HomeTab extends Component {
                                        size={Metrics.doubleSection}
                                        textStyle={styles.buttonText}
                                        textContainerStyle={styles.textContainer}
-                                       onPress={() => console.log("notes tapped!")}>
+                                       onPress={this.onCreateTask}>
                         <Icon name="md-create"
                               style={styles.actionButtonIcon} />
                     </ActionButton.Item>
@@ -415,8 +426,7 @@ class HomeTab extends Component {
                                        size={Metrics.doubleSection}
                                        textStyle={styles.buttonText}
                                        textContainerStyle={styles.textContainer}
-                                       onPress={() => {
-                                       }}>
+                                       onPress={this.onCreateRoute}>
                         <MaterialIcons name="my-location"
                                        style={styles.actionButtonIcon} />
                     </ActionButton.Item>
