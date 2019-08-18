@@ -41,7 +41,7 @@ export default class FoldersComponent extends Component {
                         <Text style={styles.folderSubHeading}>{strings.browseTasksInFolders}</Text>
                     </View>
                     <IconButton IconClass={Ionicons}
-                                iconSize={Metrics.icons.medium}
+                                iconSize={Metrics.icons.large}
                                 iconName={'ios-add-circle-outline'}
                                 onPress={onAddFolder}
                                 iconColor={'#d6d5d0'} />
