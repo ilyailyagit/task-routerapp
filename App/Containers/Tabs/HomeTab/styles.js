@@ -6,6 +6,12 @@ import Colors from "../../../Themes/Colors";
 import Fonts from "../../../Themes/Fonts";
 
 const avatarSize = 50
+const panelHeadingsCommon = {
+    fontSize: Fonts.size.h5,
+    fontFamily: Fonts.type.semiBold,
+    paddingVertical: Metrics.smallMargin
+}
+
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     contentContainer: {
@@ -154,7 +160,7 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.2)'
     },
-    currentTaskContainer: {
+    taskAndRoutePanels: {
         marginHorizontal: Metrics.doubleBaseMargin,
         marginTop: Metrics.doubleBaseMargin
     },
@@ -163,11 +169,28 @@ export default StyleSheet.create({
         paddingVertical: Metrics.baseMargin,
         paddingHorizontal: Metrics.marginThirty
     },
+    routeHeaderContainer: {
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        backgroundColor: Colors.transparent,
+        paddingVertical: Metrics.baseMargin,
+        paddingHorizontal: Metrics.marginThirty
+    },
+    activeRouteBg: {
+        minHeight: Metrics.hundredTwenty,
+
+    },
     taskHeadingText: {
         color: Colors.snow,
-        fontSize: Fonts.size.h5,
-        fontFamily: Fonts.type.semiBold,
-        paddingVertical: Metrics.smallMargin
+        ...panelHeadingsCommon
+    },
+    routeHeadingText: {
+        color: Colors.black,
+        ...panelHeadingsCommon
+    },
+    activeRouteheading: {
+        color: Colors.green,
+        ...panelHeadingsCommon
     },
     currentTaskContent: {
         minHeight: Metrics.hundredTwenty,
@@ -177,6 +200,11 @@ export default StyleSheet.create({
         borderRightColor: Colors.orange,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: Colors.orange
+    },
+    activeRouteContent: {
+        flexDirection: 'row',
+        backgroundColor: Colors.transparent,
+        minHeight: Metrics.hundredTwenty
     },
     noTaskText: {
         color: Colors.orange,
@@ -198,6 +226,7 @@ export default StyleSheet.create({
         borderBottomWidth: Metrics.marginSeven,
         borderBottomColor: Colors.green,
         minHeight: Metrics.hundred,
+        backgroundColor: Colors.snow
     },
     taskRightActionBtn: {
         flex: 3.5,
@@ -233,5 +262,33 @@ export default StyleSheet.create({
         fontSize: Fonts.size.h5,
         fontFamily: Fonts.type.semiBold,
         color: Colors.black
+    },
+    routeLeftIconContainer: {
+        flex: 0.2,
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+    },
+    routeLeftIcon: {
+        height: Metrics.hundredTen,
+        width: Metrics.doubleSection,
+        resizeMode: 'contain'
+    },
+    activeRouteDetailsContainer: {
+        flex: 0.8,
+        paddingLeft: Metrics.baseMargin,
+        justifyContent: 'center'
+    },
+    routerHorizontalSeperator: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: Colors.gray,
+        marginVertical: Metrics.baseMargin
+    },
+    activeRouteTaskName: {
+        fontFamily: Fonts.type.semiBold,
+        fontSize: Fonts.size.h5,
+
+    },
+    activeRouteLocationName: {
+        fontSize: Fonts.size.h5
     }
 })

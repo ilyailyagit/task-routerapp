@@ -19,5 +19,11 @@ export default {
     tasks: 'Tasks',
     noTaskPlanned: 'No current task planned',
     markDone: 'MARK DONE',
-    ignoreForNow: 'IGNORE \nFOR NOW'
+    ignoreForNow: 'IGNORE \nFOR NOW',
+    active: 'Active',
+    route: 'Route',
+    noTaskAvailable: 'No task available',
+    noLocationAvailable: 'No location available',
+    pause: 'PAUSE',
+    stopRoute: 'STOP ROUTE'
 }

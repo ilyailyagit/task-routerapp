@@ -17,6 +17,7 @@ const metrics = {
     doubleSection: 50,
     seventy: 70,
     hundred: 100,
+    hundredTen: 110,
     hundredTwenty: 120,
     doubleBaseMargin: 20,
     horizontalLineHeight: 1,

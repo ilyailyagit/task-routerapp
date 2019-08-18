@@ -13,25 +13,26 @@ import {
     ScrollView
 } from 'react-native'
 import * as _ from 'lodash'
+import LinearGradient from 'react-native-linear-gradient';
+import {connect} from "react-redux";
+import ContactsSectionList from "react-native-sectionlist-contacts";
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import styles from './styles'
 import {ProgressDialog} from "../../../Components/ProgressDialog";
 import images from "../../../Themes/Images";
 import FamilyActions from "../../../Redux/FamilyRedux";
-import {connect} from "react-redux";
 import FamilyMember from "../../../Components/FamilyMember";
 import {ADD_FAMILY_MEMBER_BUTTON_ID} from "../../../Lib/AppConstants";
 import Colors from "../../../Themes/Colors";
 import AddContacts from "../../../Components/AddContacts";
 import ModalComponent from "../../../Components/ModalComponent";
-import ContactsSectionList from "react-native-sectionlist-contacts";
 import strings from "../../../Constants/strings";
 import {showErrorMessage} from "../../../Lib/Utilities";
 import CreateNewContact from "../../../Components/CreateNewContact";
-import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Metrics from "../../../Themes/Metrics";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 class HomeTab extends Component {
 
@@ -197,12 +198,76 @@ class HomeTab extends Component {
         // todo: render the task if exists.
     }
 
+    renderActiveRoute = () => {
+        const { activeRoute: {
+            taskName = strings.noTaskAvailable,
+            location = strings.noLocationAvailable
+        } = {} } = this.props
+        return (
+            <>
+                <View style={styles.routeLeftIconContainer}>
+                    <Image source={images.greenLocationFull}
+                           style={styles.routeLeftIcon}/>
+                </View>
+                <View style={styles.activeRouteDetailsContainer}>
+                    <Text style={styles.activeRouteTaskName}>{taskName}</Text>
+                    <View style={styles.routerHorizontalSeperator}/>
+                    <Text style={styles.activeRouteLocationName}>{location}</Text>
+                </View>
+            </>
+        )
+    }
+
+    renderCurrentTaskPanel = () => {
+        return (
+            <View style={styles.taskAndRoutePanels}>
+                <View style={styles.taskHeaderContainer}>
+                    <Text style={styles.taskHeadingText}>{strings.tasks}</Text>
+                </View>
+                <View style={styles.currentTaskContent}>
+                    {this.renderCurrentTask()}
+                </View>
+                <View>
+                    {this.renderTaskActions()}
+                </View>
+
+            </View>
+        )
+    }
+
+    renderCurrentRoutePanel = () => {
+        return (
+            <View style={styles.taskAndRoutePanels}>
+                <ImageBackground style={styles.activeRouteBg} source={images.activeRouteBg}>
+                    <View style={styles.routeHeaderContainer}>
+                        <Text style={styles.routeHeadingText}>{strings.route}</Text>
+                        <Text style={styles.activeRouteheading}>{strings.active}</Text>
+                    </View>
+                    <View style={styles.activeRouteContent}>
+                        {this.renderActiveRoute()}
+                    </View>
+                </ImageBackground>
+                <View>
+                    {this.renderActiveRouteActions()}
+                </View>
+            </View>
+        )
+    }
+
     onMarkTaskDone = () => {
         // todo: mark Task as Done
     }
 
     onIgnoreTask = () => {
         // todo: ignore current task
+    }
+
+    onPauseActiveRoute = () => {
+        // todo: PAUSE CURRENT ACTIVE ROUTE
+    }
+
+    onStopActiveRoute = () => {
+        // todo: stop current active route
     }
 
     renderTaskActions = () => {
@@ -222,6 +287,28 @@ class HomeTab extends Component {
                                   activeOpacity={0.8}
                                   onPress={this.onIgnoreTask}>
                     <Text style={styles.taskBtnText}>{strings.ignoreForNow}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    renderActiveRouteActions = () => {
+        return (
+            <View style={styles.bottomActionsRow}>
+                <TouchableOpacity style={styles.taskLeftActionBtn}
+                                  activeOpacity={0.8}
+                                  onPress={this.onPauseActiveRoute}>
+                    <Text style={styles.taskBtnText}>{strings.pause}</Text>
+                </TouchableOpacity>
+                <View style={styles.taskMiddleBtn}>
+                    <View style={styles.verticalActionSeperator}/>
+                    <Text style={styles.tasksStatusText}>2 out of 6 Done</Text>
+                    <View style={styles.verticalActionSeperator}/>
+                </View>
+                <TouchableOpacity style={styles.taskRightActionBtn}
+                                  activeOpacity={0.8}
+                                  onPress={this.onStopActiveRoute}>
+                    <Text style={styles.taskBtnText}>{strings.stopRoute}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -294,18 +381,8 @@ class HomeTab extends Component {
                         </>
                     }
 
-                    <View style={styles.currentTaskContainer}>
-                        <View style={styles.taskHeaderContainer}>
-                            <Text style={styles.taskHeadingText}>{strings.tasks}</Text>
-                        </View>
-                        <View style={styles.currentTaskContent}>
-                            {this.renderCurrentTask()}
-                        </View>
-                        <View>
-                            {this.renderTaskActions()}
-                        </View>
-
-                    </View>
+                    {this.renderCurrentTaskPanel()}
+                    {this.renderCurrentRoutePanel()}
 
                 </ScrollView>
                 <ModalComponent isModalVisible={showContactsList}
@@ -314,7 +391,6 @@ class HomeTab extends Component {
                         <ContactsSectionList sectionListData={contacts} renderItem={this.renderContactItem}/>
                     </SafeAreaView>
                 </ModalComponent>
-
                 <ActionButton buttonColor={Colors.actionButton}
                               backdrop={<View style={styles.actionBtnBackdrop}/>}
                               buttonTextStyle={styles.plusText}>
