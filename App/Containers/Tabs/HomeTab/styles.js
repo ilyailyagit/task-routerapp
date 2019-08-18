@@ -8,6 +8,9 @@ import Fonts from "../../../Themes/Fonts";
 const avatarSize = 50
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
+    contentContainer: {
+        paddingBottom: Metrics.tabbarHeight
+    },
     topHeaderImage: {
         width: Dimensions.get('window').width,
         height: 3 * Metrics.doubleSection,
@@ -150,5 +153,85 @@ export default StyleSheet.create({
     actionBtnBackdrop: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.2)'
+    },
+    currentTaskContainer: {
+        marginHorizontal: Metrics.doubleBaseMargin,
+        marginTop: Metrics.doubleBaseMargin
+    },
+    taskHeaderContainer: {
+        backgroundColor: Colors.primaryColorI,
+        paddingVertical: Metrics.baseMargin,
+        paddingHorizontal: Metrics.marginThirty
+    },
+    taskHeadingText: {
+        color: Colors.snow,
+        fontSize: Fonts.size.h5,
+        fontFamily: Fonts.type.semiBold,
+        paddingVertical: Metrics.smallMargin
+    },
+    currentTaskContent: {
+        minHeight: Metrics.hundredTwenty,
+        justifyContent: 'center',
+        backgroundColor: Colors.snow,
+        borderRightWidth: Metrics.marginSeven,
+        borderRightColor: Colors.orange,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: Colors.orange
+    },
+    noTaskText: {
+        color: Colors.orange,
+        fontFamily: Fonts.type.semiBold,
+        textAlign: 'center',
+        fontSize: Fonts.size.input
+    },
+    bottomActionsRow: {
+        flexDirection: 'row',
+        minHeight: Metrics.hundred,
+        alignItems: 'center',
+        backgroundColor: Colors.snow
+    },
+    taskLeftActionBtn: {
+        flex: 3.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: Metrics.baseMargin,
+        borderBottomWidth: Metrics.marginSeven,
+        borderBottomColor: Colors.green,
+        minHeight: Metrics.hundred,
+    },
+    taskRightActionBtn: {
+        flex: 3.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: Metrics.baseMargin,
+        borderBottomWidth: Metrics.marginSeven,
+        borderBottomColor: Colors.orange,
+        minHeight: Metrics.hundred,
+    },
+    taskMiddleBtn: {
+        flex: 3,
+        flexDirection:'row',
+        alignItems: 'center',
+        minHeight: Metrics.hundred,
+        marginTop: Metrics.baseMargin
+    },
+    verticalActionSeperator: {
+        height: Metrics.marginThirty,
+        width: 1,
+        backgroundColor: Colors.gray
+    },
+    tasksStatusText: {
+        flex: 1,
+        textAlign: 'center',
+        paddingHorizontal: Metrics.baseMargin,
+        fontSize: Fonts.size.input,
+        fontFamily: Fonts.type.semiBold
+    },
+    taskBtnText: {
+        textAlign: 'center',
+        paddingHorizontal: Metrics.baseMargin,
+        fontSize: Fonts.size.h5,
+        fontFamily: Fonts.type.semiBold,
+        color: Colors.black
     }
 })

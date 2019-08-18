@@ -189,6 +189,44 @@ class HomeTab extends Component {
         createFamilyReq(familyName, selectedContacts)
     }
 
+    renderCurrentTask = () => {
+        const { currentTask = {} } = this.props
+        if (_.isEmpty(currentTask)) {
+            return <Text style={styles.noTaskText}>{strings.noTaskPlanned}</Text>
+        }
+        // todo: render the task if exists.
+    }
+
+    onMarkTaskDone = () => {
+        // todo: mark Task as Done
+    }
+
+    onIgnoreTask = () => {
+        // todo: ignore current task
+    }
+
+    renderTaskActions = () => {
+        return (
+            <View style={styles.bottomActionsRow}>
+                <TouchableOpacity style={styles.taskLeftActionBtn}
+                                  activeOpacity={0.8}
+                                  onPress={this.onMarkTaskDone}>
+                    <Text style={styles.taskBtnText}>{strings.markDone}</Text>
+                </TouchableOpacity>
+                <View style={styles.taskMiddleBtn}>
+                    <View style={styles.verticalActionSeperator}/>
+                    <Text style={styles.tasksStatusText}>No Tasks for today</Text>
+                    <View style={styles.verticalActionSeperator}/>
+                </View>
+                <TouchableOpacity style={styles.taskRightActionBtn}
+                                  activeOpacity={0.8}
+                                  onPress={this.onIgnoreTask}>
+                    <Text style={styles.taskBtnText}>{strings.ignoreForNow}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     render() {
         const {familyName, selectedContacts, showContactsList, contact, showAddFamilyMember} = this.state
         const {isSignup, family = {}, fetching, contacts} = this.props
@@ -202,7 +240,7 @@ class HomeTab extends Component {
         }
         return (
             <View style={styles.mainContainer}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={styles.contentContainer}>
                     {
                         !_.isEmpty(family) ? <>
                             <ImageBackground style={styles.topHeaderImage}
@@ -255,6 +293,20 @@ class HomeTab extends Component {
                                          onContactSelected={this.onContactSelected}/>
                         </>
                     }
+
+                    <View style={styles.currentTaskContainer}>
+                        <View style={styles.taskHeaderContainer}>
+                            <Text style={styles.taskHeadingText}>{strings.tasks}</Text>
+                        </View>
+                        <View style={styles.currentTaskContent}>
+                            {this.renderCurrentTask()}
+                        </View>
+                        <View>
+                            {this.renderTaskActions()}
+                        </View>
+
+                    </View>
+
                 </ScrollView>
                 <ModalComponent isModalVisible={showContactsList}
                                 closeModal={this.onHideContactList}>
@@ -263,7 +315,8 @@ class HomeTab extends Component {
                     </SafeAreaView>
                 </ModalComponent>
 
-                <ActionButton buttonColor={Colors.actionButton} backdrop={<View style={styles.actionBtnBackdrop}/>}
+                <ActionButton buttonColor={Colors.actionButton}
+                              backdrop={<View style={styles.actionBtnBackdrop}/>}
                               buttonTextStyle={styles.plusText}>
                     <ActionButton.Item buttonColor={Colors.actionButton}
                                        title={strings.createTask}
@@ -271,7 +324,8 @@ class HomeTab extends Component {
                                        textStyle={styles.buttonText}
                                        textContainerStyle={styles.textContainer}
                                        onPress={() => console.log("notes tapped!")}>
-                        <Icon name="md-create" style={styles.actionButtonIcon}/>
+                        <Icon name="md-create"
+                              style={styles.actionButtonIcon} />
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor={Colors.actionButton}
                                        title={strings.createRoute}
@@ -280,7 +334,8 @@ class HomeTab extends Component {
                                        textContainerStyle={styles.textContainer}
                                        onPress={() => {
                                        }}>
-                        <MaterialIcons name="my-location" style={styles.actionButtonIcon}/>
+                        <MaterialIcons name="my-location"
+                                       style={styles.actionButtonIcon} />
                     </ActionButton.Item>
                 </ActionButton>
             </View>

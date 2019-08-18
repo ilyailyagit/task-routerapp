@@ -15,6 +15,9 @@ export default {
     cancel: 'Cancel',
     createTask: 'Create Task',
     createRoute: 'Create Route',
-    zeloo: 'Zeloo'
-
+    zeloo: 'Zeloo',
+    tasks: 'Tasks',
+    noTaskPlanned: 'No current task planned',
+    markDone: 'MARK DONE',
+    ignoreForNow: 'IGNORE \nFOR NOW'
 }
