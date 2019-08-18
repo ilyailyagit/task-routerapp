@@ -1,1 +1,0 @@
-export { ContactsSectionList } from "./ContactsSectionList";
