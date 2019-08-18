@@ -19,28 +19,25 @@ export function* startup(api) {
     }
     yield delay(1500)
     yield onGetCurrentLocation()
-    if (Platform.OS === "android") {
-        yield this.requestContactPermissionAndroid();
-        yield fetchContacts();
-    } else {
-        yield fetchContacts();
-    }
+    yield fetchContacts();
 }
 
-const getAllContacts = () => new Promise((resolve, reject) => {
+
+
+const getAllContacts = () => new Promise(async (resolve, reject) => {
     try {
         if (Platform.OS === 'android') {
-            const granted = PermissionsAndroid.requestMultiple([
+            const granted = await PermissionsAndroid.requestMultiple([
                 PermissionsAndroid.PERMISSIONS.READ_CONTACTS
             ]);
-            console.tron.warn('contactsPermission: ' + String(granted))
+            console.tron.warn({granted})
             if (
                 granted[PermissionsAndroid.PERMISSIONS.READ_CONTACTS] === PermissionsAndroid.RESULTS.GRANTED
             ) {
-                this.setState({androidPermission: true});
+                console.tron.warn('granted permissions')
             } else {
                 Alert.alert("Permissions Denied. Please restart app and grant permissions.");
-                throw new Error('rejected contacts permissions.')
+
             }
         }
         Contacts.getAll((err, fetchedContactsList) => {
@@ -85,50 +82,11 @@ const getAllContacts = () => new Promise((resolve, reject) => {
                     }
                     return 0;
                 });
-
-                // let titles = [];
-                //
-                // /**
-                //  * @description gets a list of unique characters @param titles based on sorted @param nameList.
-                //  */
-                // finalizedContacts.map(item => item.name).map((val, index, arr) => {
-                //     // For array members with members after them, we compare them with the members after them.
-                //     if (arr[index + 1]) {
-                //         if (val[0] !== arr[index + 1][0]) {
-                //             titles.push(val[0]);
-                //         }
-                //     }
-                //     // For the last array member, we compare it with the member before it.
-                //     else if (index === arr.length - 1) {
-                //         if (val[0] !== arr[index - 1][0]) titles.push(val[0]);
-                //     }
-                // });
-                //
-                // // magic
-                // for (let i = 0; i < titles.length; i++) {
-                //     let currentObject = {
-                //         title: titles[i],
-                //         data: []
-                //     };
-                //     for (let j = 0; j < finalizedContacts.length; j++) {
-                //         console.tron.warn({
-                //             cond: finalizedContacts[j].name.toLowerCase().startsWith(titles[i].toLowerCase()),
-                //             nameFirstLetter: finalizedContacts[j].name.toLowerCase(),
-                //             titlesI: titles[i].toLowerCase()
-                //         })
-                //         if (finalizedContacts[j].name.toLowerCase().startsWith(titles[i].toLowerCase())) {
-                //             currentObject.data.push(finalizedContacts[j]);
-                //         }
-                //     }
-                //     dataObject.push(currentObject);
-                // }
-
                 resolve(finalizedContacts.map(item => {
                     const { recordID, name, phoneNumbers: { 0: {number = ''} = {} } = []} = item
                     return {recordID, name, phone: number}
                 }))
                 console.tron.warn({ dataObject, finalizedContacts })
-                // this.setState({ finalData: dataObject });
             }
         })
     } catch (e) {
@@ -137,6 +95,9 @@ const getAllContacts = () => new Promise((resolve, reject) => {
 })
 
 function* fetchContacts () {
+    if (Platform.OS === 'android') {
+        yield delay(3000)
+    }
     const contacts = yield getAllContacts()
     console.tron.warn({contacts})
     yield put(ConfigActions.setContactsData(contacts))

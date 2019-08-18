@@ -9,6 +9,12 @@ export default {
     phoneNumberEmpty: 'phone number is mandatory',
     contactAlreadyAdded: 'This contact number is already added.',
     familyNameEmpty: 'Kindly enter family name',
-    hasNoFamily: 'No Family found for you. Kindly add a family.'
+    hasNoFamily: 'No Family found for you. Kindly add a family.',
+    createNew: 'Create New',
+    externalInvites: 'External Invites',
+    cancel: 'Cancel',
+    createTask: 'Create Task',
+    createRoute: 'Create Route',
+    zeloo: 'Zeloo'
 
 }

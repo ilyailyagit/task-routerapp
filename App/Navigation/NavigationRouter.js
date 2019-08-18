@@ -26,6 +26,7 @@ import TextConfig from "../Config/ElementDefaults/defaultStyles";
 import ActivityDetails from "../Containers/ActivityDetails";
 import NavigationButton from "../Components/NavigationButton";
 import HomeTab from "../Containers/Tabs/HomeTab";
+import strings from "../Constants/strings";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
@@ -150,7 +151,7 @@ export const Routes = Actions.create(
                 initial
                 key='tab5'
                 icon={TabIcon}
-                title={'Home'}
+                title={strings.zeloo}
                 iconName='ios-home'
                 component={HomeTab}
                 navigationBarStyle={styles.primaryNavBar}

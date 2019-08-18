@@ -9,7 +9,8 @@ import {
     TextInput,
     TouchableOpacity,
     Platform,
-    PermissionsAndroid, Image
+    PermissionsAndroid, Image,
+    ScrollView
 } from 'react-native'
 import * as _ from 'lodash'
 
@@ -26,6 +27,11 @@ import ModalComponent from "../../../Components/ModalComponent";
 import ContactsSectionList from "react-native-sectionlist-contacts";
 import strings from "../../../Constants/strings";
 import {showErrorMessage} from "../../../Lib/Utilities";
+import CreateNewContact from "../../../Components/CreateNewContact";
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Metrics from "../../../Themes/Metrics";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 class HomeTab extends Component {
 
@@ -36,7 +42,8 @@ class HomeTab extends Component {
         this.state = {
             showFamilyMembers: false,
             selectedContacts: [],
-            showContactsList: false
+            showContactsList: false,
+            showAddFamilyMember: false
         }
     }
 
@@ -46,6 +53,13 @@ class HomeTab extends Component {
             this.processData();
         } else {
             this.processData();
+        }
+    }
+
+    componentWillReceiveProps({fetching: newFetching}) {
+        const {showAddFamilyMember} = this.state
+        if (!newFetching && newFetching !== this.props.fetching && showAddFamilyMember) {
+            this.setState({showAddFamilyMember: false})
         }
     }
 
@@ -81,16 +95,30 @@ class HomeTab extends Component {
 
     renderFamilyMember = ({item, index}) => {
         return (
-            <FamilyMember item={item}/>
+            <FamilyMember item={item} onAddFamilyMember={this.onAddFamilyMember}/>
         )
     }
 
+    onAddFamilyMember = () => {
+        const {showAddFamilyMember} = this.state
+        if (!showAddFamilyMember) {
+            this.setState({showAddFamilyMember: true})
+        }
+    }
+
+    onAddNewFamilyMember = (contact) => {
+        const {family: {name} = {}, createFamilyReq} = this.props
+        if (name && !_.isEmpty(contact) && createFamilyReq && typeof createFamilyReq === 'function') {
+            createFamilyReq(name, [contact])
+        }
+    }
+
     onContactSelected = (contact) => {
-        this.setState({ contact, showContactsList: false })
+        this.setState({contact, showContactsList: false})
     }
 
     onAddContact = (newContact) => {
-        const { contact: stateContact, selectedContacts } = this.state
+        const {contact: stateContact, selectedContacts} = this.state
         const contact = !_.isEmpty(newContact) ? newContact : stateContact
         console.tron.warn({
             cond: !contact || _.isEmpty(contact),
@@ -104,11 +132,11 @@ class HomeTab extends Component {
         }
         const prevIndex = selectedContacts.findIndex(item => item.phone === newContact.phone)
         if (prevIndex === -1) {
-            this.setState({ contact, selectedContacts: [contact, ...selectedContacts] })
-        } else if(!_.isEqual(selectedContacts[prevIndex], contact)) {
+            this.setState({contact, selectedContacts: [contact, ...selectedContacts]})
+        } else if (!_.isEqual(selectedContacts[prevIndex], contact)) {
             const newSelected = selectedContacts
             newSelected.splice(prevIndex, 1, contact)
-            this.setState({ contact, selectedContacts: newSelected })
+            this.setState({contact, selectedContacts: newSelected})
         } else {
             Alert.alert(strings.contactAlreadyAdded)
         }
@@ -122,11 +150,11 @@ class HomeTab extends Component {
     }
 
     onEditContact = (contact) => {
-        this.setState({ contact, role: contact.role })
+        this.setState({contact, role: contact.role})
     }
 
     onDeleteContact = (contact) => {
-        const { selectedContacts } = this.state
+        const {selectedContacts} = this.state
         const newSelectedContacts = selectedContacts.filter(item => !_.isEqual(item, contact))
         this.setState({selectedContacts: newSelectedContacts})
     }
@@ -139,29 +167,30 @@ class HomeTab extends Component {
     }
 
     renderContactItem = (item, index, section) => {
-        const { thumbnailPath = '', name = '' } = item
+        const {thumbnailPath = '', name = ''} = item
         return (
             <TouchableOpacity style={styles.contactItemRow} onPress={() => this.onContactSelected(item)}>
-                {!!thumbnailPath ? <Image style={styles.thumbnail} source={{uri: thumbnailPath}}/> : <View style={styles.thumbnail}>
-                    <Text style={styles.initials}>{name.substring(0, 1)}</Text>
-                </View>}
+                {!!thumbnailPath ? <Image style={styles.thumbnail} source={{uri: thumbnailPath}}/> :
+                    <View style={styles.thumbnail}>
+                        <Text style={styles.initials}>{name.substring(0, 1)}</Text>
+                    </View>}
                 <Text style={styles.contactName}>{name}</Text>
             </TouchableOpacity>
         )
     }
 
     onCreateFamily = () => {
-        const { familyName, selectedContacts } = this.state
-        const { createFamilyReq } = this.props
+        const {familyName, selectedContacts} = this.state
+        const {createFamilyReq} = this.props
         if (!familyName) {
-           showErrorMessage(strings.familyNameEmpty)
-           return
+            showErrorMessage(strings.familyNameEmpty)
+            return
         }
         createFamilyReq(familyName, selectedContacts)
     }
 
     render() {
-        const {familyName, selectedContacts, showContactsList, contact} = this.state
+        const {familyName, selectedContacts, showContactsList, contact, showAddFamilyMember} = this.state
         const {isSignup, family = {}, fetching, contacts} = this.props
         const {name, users = []} = family
         if (fetching) {
@@ -173,54 +202,87 @@ class HomeTab extends Component {
         }
         return (
             <View style={styles.mainContainer}>
-                {
-                    !_.isEmpty(family) ? <>
-                        <ImageBackground style={styles.topHeaderImage}
-                                         source={images.bg}>
-                            <View style={styles.familyTitleContainer}>
-                                <View style={styles.userNameContainer}>
-                                    <Text style={styles.familyName}>{name}</Text>
+                <ScrollView>
+                    {
+                        !_.isEmpty(family) ? <>
+                            <ImageBackground style={styles.topHeaderImage}
+                                             source={images.bg}>
+                                <View style={styles.familyTitleContainer}>
+                                    <View style={styles.userNameContainer}>
+                                        <Text style={styles.familyName}>{name}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={styles.familyMembersContainer}>
-                                <FlatList data={[{id: ADD_FAMILY_MEMBER_BUTTON_ID}, ...users]}
-                                          renderItem={this.renderFamilyMember} horizontal
-                                          extraData={this.props.family}/>
-                            </View>
-                        </ImageBackground>
-                    </> : <>
-                        <ImageBackground style={[styles.topHeaderImage]}
-                                         source={images.addFamily}>
-                            <View style={styles.contentFlexEnd}>
-                                <Text style={styles.enterFamilyName}>Enter Your Family Name</Text>
-                                <View style={styles.familyNameInputContainer}>
-                                    <TextInput value={familyName}
-                                               style={styles.familyNameInput}
-                                               placeholder={`Your's family`}
-                                               placeholderTextColor={Colors.snow}
-                                               onChangeText={familyName => this.setState({familyName})}/>
-                                    <TouchableOpacity style={styles.goBtnContainer}
-                                                      onPress={this.onCreateFamily}>
-                                        <Text style={styles.goTxt}>GO</Text>
-                                    </TouchableOpacity>
+                                <View style={styles.familyMembersContainer}>
+                                    <FlatList data={[{id: ADD_FAMILY_MEMBER_BUTTON_ID}, ...users]}
+                                              renderItem={this.renderFamilyMember} horizontal
+                                              extraData={this.props.family}/>
                                 </View>
-                            </View>
-                        </ImageBackground>
-                        <AddContacts selectedContacts={selectedContacts}
-                                     onSelectContact={this.onSelectContact}
-                                     contact={contact}
-                                     onAddContact={this.onAddContact}
-                                     onEditContact={this.onEditContact}
-                                     onDeleteContact={this.onDeleteContact}
-                                     onContactSelected={this.onContactSelected} />
-                    </>
-                }
+                            </ImageBackground>
+                            {
+                                showAddFamilyMember ? <CreateNewContact contact={contact}
+                                                                        headerText={strings.externalInvites}
+                                                                        onAddContact={this.onAddNewFamilyMember}
+                                                                        onCancel={() => this.setState({
+                                                                            showAddFamilyMember: false,
+                                                                            showContactsList: false
+                                                                        })}
+                                                                        onSelectContact={this.onSelectContact}/> : null
+                            }
+                        </> : <>
+                            <ImageBackground style={[styles.topHeaderImage]}
+                                             source={images.addFamily}>
+                                <View style={styles.contentFlexEnd}>
+                                    <Text style={styles.enterFamilyName}>Enter Your Family Name</Text>
+                                    <View style={styles.familyNameInputContainer}>
+                                        <TextInput value={familyName}
+                                                   style={styles.familyNameInput}
+                                                   placeholder={`Your's family`}
+                                                   placeholderTextColor={Colors.snow}
+                                                   onChangeText={familyName => this.setState({familyName})}/>
+                                        <TouchableOpacity style={styles.goBtnContainer}
+                                                          onPress={this.onCreateFamily}>
+                                            <Text style={styles.goTxt}>GO</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </ImageBackground>
+                            <AddContacts selectedContacts={selectedContacts}
+                                         onSelectContact={this.onSelectContact}
+                                         contact={contact}
+                                         onAddContact={this.onAddContact}
+                                         onEditContact={this.onEditContact}
+                                         onDeleteContact={this.onDeleteContact}
+                                         onContactSelected={this.onContactSelected}/>
+                        </>
+                    }
+                </ScrollView>
                 <ModalComponent isModalVisible={showContactsList}
                                 closeModal={this.onHideContactList}>
                     <SafeAreaView style={{flex: 1, backgroundColor: Colors.snow}}>
                         <ContactsSectionList sectionListData={contacts} renderItem={this.renderContactItem}/>
                     </SafeAreaView>
                 </ModalComponent>
+
+                <ActionButton buttonColor={Colors.actionButton} backdrop={<View style={styles.actionBtnBackdrop}/>}
+                              buttonTextStyle={styles.plusText}>
+                    <ActionButton.Item buttonColor={Colors.actionButton}
+                                       title={strings.createTask}
+                                       size={Metrics.doubleSection}
+                                       textStyle={styles.buttonText}
+                                       textContainerStyle={styles.textContainer}
+                                       onPress={() => console.log("notes tapped!")}>
+                        <Icon name="md-create" style={styles.actionButtonIcon}/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor={Colors.actionButton}
+                                       title={strings.createRoute}
+                                       size={Metrics.doubleSection}
+                                       textStyle={styles.buttonText}
+                                       textContainerStyle={styles.textContainer}
+                                       onPress={() => {
+                                       }}>
+                        <MaterialIcons name="my-location" style={styles.actionButtonIcon}/>
+                    </ActionButton.Item>
+                </ActionButton>
             </View>
         )
     }

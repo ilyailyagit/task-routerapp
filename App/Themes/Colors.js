@@ -38,6 +38,7 @@ const colors = {
   text: '#E0D7E5',
     semiTransBlack: 'rgba(0, 0, 0, 0.3)',
     halfSemiTransBlack: 'rgba(0, 0, 0, 0.15)',
+    actionButton: '#d47e4c',
 
   bottomTabbarBG: '#3b5998',
   selectedTabText: '#fb5f26'

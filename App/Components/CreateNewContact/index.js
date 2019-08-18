@@ -35,7 +35,15 @@ export const rolesData = [
 export default class CreateNewContact extends Component {
     static propTypes = {
         onSelectContact: PropTypes.func,
+        headerText: PropTypes.string,
+        onAddContact: PropTypes.func,
+        onCancel: PropTypes.func,
     }
+
+    static defaultProps = {
+        headerText: strings.createNew
+    }
+
     constructor (props) {
         super(props)
         const { contact: { role = rolesData[0].value, phone = '', name = ''} = {}} = props
@@ -96,11 +104,12 @@ export default class CreateNewContact extends Component {
 
     render () {
         const { userName, phoneNumber, role = strings.userType } = this.state
+        const { onCancel, headerText} = this.props
         return (
             <View style={[styles.container, ApplicationStyles.shadow]}>
                 <View style={styles.contentContainer}>
                     <View style={styles.headerContainer}>
-                        <Text style={styles.headerText}>Create New</Text>
+                        <Text style={styles.headerText}>{headerText}</Text>
                     </View>
                     <Text style={styles.headings}>{strings.userName}</Text>
                     <TextInput value={userName}
@@ -148,6 +157,14 @@ export default class CreateNewContact extends Component {
                     <RoundedButton text={strings.add}
                                    buttonContainer={styles.addBtn}
                                    onPress={this.onCreateNew}/>
+
+                    {
+                        onCancel && typeof onCancel === 'function' ? <RoundedButton text={strings.cancel}
+                                    buttonContainer={styles.cancelBtn} btnText={styles.cancelBtnTxt}
+                                    onPress={onCancel}/>
+                            : null
+
+                    }
                 </View>
             </View>
         )

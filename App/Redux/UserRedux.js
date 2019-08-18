@@ -91,7 +91,7 @@ export const getCurrentLocationFailure = (state, {error}) => (
     state.merge({fetchingLocation: false, error})
 )
 
-export const logoutUser = (state: Object) => {
+export const logoutUser = (state) => {
     return state.merge({...INITIAL_STATE})
 }
 

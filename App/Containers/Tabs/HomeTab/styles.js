@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet, Dimensions, Platform } from 'react-native'
 
 import ApplicationStyles from "../../../Themes/ApplicationStyles";
 import Metrics from "../../../Themes/Metrics";
@@ -108,10 +108,47 @@ export default StyleSheet.create({
     initials: {
         fontSize: Fonts.size.h5,
         color: Colors.themeColor,
-        paddingTop: Metrics.marginSeven
+        ...Platform.select({
+            ios: {
+                paddingTop: Metrics.marginSeven
+            }
+        })
     },
     contactName: {
         fontSize: Fonts.size.regular,
-        paddingTop: Metrics.smallMargin
+        ...Platform.select({
+          ios: {
+              paddingTop: Metrics.smallMargin
+          }
+        })
+    },
+    actionButtonIcon: {
+        fontSize: 20,
+        height: 22,
+        color: 'white',
+    },
+    textContainer: {
+        backgroundColor: Colors.transparent,
+        shadowOpacity: 0,
+        elevation: 0,
+        ...Platform.select({
+            ios: {
+                paddingTop: Metrics.smallMargin,
+            }
+        })
+    },
+    plusText: {
+        ...Platform.select({
+            ios: {
+                paddingTop: Metrics.baseMargin
+            }
+        }),
+    },
+    buttonText: {
+        color: Colors.snow
+    },
+    actionBtnBackdrop: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.2)'
     }
 })
