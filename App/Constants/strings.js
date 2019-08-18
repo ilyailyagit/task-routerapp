@@ -25,5 +25,7 @@ export default {
     noTaskAvailable: 'No task available',
     noLocationAvailable: 'No location available',
     pause: 'PAUSE',
-    stopRoute: 'STOP ROUTE'
+    stopRoute: 'STOP ROUTE',
+    folder: 'Folder',
+    browseTasksInFolders: 'Browse tasks in each folders'
 }

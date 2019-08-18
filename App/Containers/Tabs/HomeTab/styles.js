@@ -158,7 +158,7 @@ export default StyleSheet.create({
     },
     actionBtnBackdrop: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.2)'
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
     taskAndRoutePanels: {
         marginHorizontal: Metrics.doubleBaseMargin,
@@ -290,5 +290,9 @@ export default StyleSheet.create({
     },
     activeRouteLocationName: {
         fontSize: Fonts.size.h5
+    },
+    foldersComponentContainer: {
+        marginHorizontal: Metrics.doubleBaseMargin,
+        marginTop: Metrics.doubleBaseMargin
     }
 })

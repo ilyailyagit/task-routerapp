@@ -50,6 +50,9 @@ const create = (baseURL = 'http://18.191.149.64:3030/api/') => {
     const createFamily = (data) => api.post('families', data)
     const fetchFamily = ({ familyId }) => api.get(`families/${familyId}`)
 
+    //folders
+    const getFolders = () => api.get('folders')
+
     // ------
     // STEP 3
     // ------
@@ -76,7 +79,9 @@ const create = (baseURL = 'http://18.191.149.64:3030/api/') => {
         deleteTask,
 
         createFamily,
-        fetchFamily
+        fetchFamily,
+
+        getFolders
     }
 }
 

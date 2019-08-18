@@ -33,6 +33,7 @@ import strings from "../../../Constants/strings";
 import {showErrorMessage} from "../../../Lib/Utilities";
 import CreateNewContact from "../../../Components/CreateNewContact";
 import Metrics from "../../../Themes/Metrics";
+import FoldersComponent from "../../../Components/FoldersComponent";
 
 class HomeTab extends Component {
 
@@ -314,9 +315,13 @@ class HomeTab extends Component {
         )
     }
 
+    onAddFolder = () => {
+        // todo: handle add folder
+    }
+
     render() {
         const {familyName, selectedContacts, showContactsList, contact, showAddFamilyMember} = this.state
-        const {isSignup, family = {}, fetching, contacts} = this.props
+        const {isSignup, family = {}, fetching, contacts, folders} = this.props
         const {name, users = []} = family
         if (fetching) {
             return (
@@ -383,7 +388,9 @@ class HomeTab extends Component {
 
                     {this.renderCurrentTaskPanel()}
                     {this.renderCurrentRoutePanel()}
-
+                    <FoldersComponent containerStyles={styles.foldersComponentContainer}
+                                      folders={folders}
+                                      onAddFolder={this.onAddFolder} />
                 </ScrollView>
                 <ModalComponent isModalVisible={showContactsList}
                                 closeModal={this.onHideContactList}>
@@ -419,9 +426,13 @@ class HomeTab extends Component {
     }
 }
 
-const mapStateToProps = ({config: {contacts = []} = {}, user: {user, isSignup}, family: {fetching, family}}) => {
+const mapStateToProps = ({   config: {contacts = []} = {},
+                             user: {user, isSignup} = {},
+                             family: {fetching, family} = {},
+                             folder: {folders = [], hasNoMore: noMoreFolders = false} = {}
+                        }) => {
     return {
-        user, isSignup, fetching, family, contacts
+        user, isSignup, fetching, family, contacts, folders, noMoreFolders
     }
 }
 

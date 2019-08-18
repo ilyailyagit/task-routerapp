@@ -51,7 +51,7 @@ export const INITIAL_STATE = Immutable({
 
 // SingUp
 export const signUpRequest = (state) => state.merge({fetching: true})
-export const signUpSuccess = (state, {user}: Object) => state.merge({fetching: false, error: null, user})
+export const signUpSuccess = (state, {user}) => state.merge({fetching: false, error: null, user})
 export const signUpFailure = (state) => state.merge({fetching: false, error: true})
 
 // Login
@@ -68,12 +68,12 @@ export const loginFailure = (state) => state.merge({fetching: false, error: true
 
 // Verify PIN
 export const verifyPinRequest = (state) => state.merge({fetching: true})
-export const verifyPinSuccess = (state, {user}: Object) => state.merge({fetching: false, error: null, user})
+export const verifyPinSuccess = (state, {user}) => state.merge({fetching: false, error: null, user})
 export const verifyPinFailure = (state) => state.merge({fetching: false, error: true})
 
 // Resend PIN
 export const resendPinRequest = (state) => state.merge({fetching: true})
-export const resendPinSuccess = (state, {user}: Object) => state.merge({fetching: false, error: null, user})
+export const resendPinSuccess = (state, {user}) => state.merge({fetching: false, error: null, user})
 export const resendPinFailure = (state) => state.merge({fetching: false, error: true})
 
 // Resend PIN
