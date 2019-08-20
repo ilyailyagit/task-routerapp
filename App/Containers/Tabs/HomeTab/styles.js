@@ -259,7 +259,7 @@ export default StyleSheet.create({
     taskBtnText: {
         textAlign: 'center',
         paddingHorizontal: Metrics.baseMargin,
-        fontSize: Fonts.size.h5,
+        fontSize: Fonts.size.input,
         fontFamily: Fonts.type.semiBold,
         color: Colors.black
     },

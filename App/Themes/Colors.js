@@ -20,6 +20,7 @@ const colors = {
   transparent: 'rgba(0,0,0,0)',
   gray: '#786f87',
   grayI: '#848587',
+  grayII: '#b1b0ac',
   silver: '#F7F7F7',
   error: 'rgba(200, 0, 0, 0.8)',
   ricePaper: 'rgba(255,255,255, 0.75)',
@@ -41,6 +42,7 @@ const colors = {
     semiTransBlack: 'rgba(0, 0, 0, 0.3)',
     halfSemiTransBlack: 'rgba(0, 0, 0, 0.15)',
     actionButton: '#d47e4c',
+    veryLightGrey: '#f4f1ee',
 
   bottomTabbarBG: '#3b5998',
   selectedTabText: '#fb5f26'

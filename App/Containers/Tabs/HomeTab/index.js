@@ -371,7 +371,7 @@ class HomeTab extends Component {
                             }
                         </> : <>
                             <ImageBackground style={[styles.topHeaderImage]}
-                                             source={images.addFamily}>
+                                             source={images.mountainsPurpleBg}>
                                 <View style={styles.contentFlexEnd}>
                                     <Text style={styles.enterFamilyName}>Enter Your Family Name</Text>
                                     <View style={styles.familyNameInputContainer}>

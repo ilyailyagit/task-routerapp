@@ -27,5 +27,9 @@ export default {
     pause: 'PAUSE',
     stopRoute: 'STOP ROUTE',
     folder: 'Folder',
-    browseTasksInFolders: 'Browse tasks in each folders'
+    browseTasksInFolders: 'Browse tasks in each folders',
+    profile: 'Profile',
+    reportBug: 'Report Bug',
+    settings: 'Settings',
+    logout: 'Logout'
 }
