@@ -27,8 +27,8 @@ import HomeTab from "../Containers/Tabs/HomeTab";
 import strings from "../Constants/strings";
 import BudgetScreen from "../Containers/BudgetScreen";
 import LocatorScreen from "../Containers/LocatorScreen";
+import SettingsScreen from "../Containers/SettingsScreen";
 import DrawerComponent from "../Components/DrawerComponent";
-import Metrics from "../Themes/Metrics";
 import {drawerWidth} from "../Components/DrawerComponent/DrawerHeader/styles";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
@@ -106,6 +106,14 @@ export const Routes = Actions.create(
                 title='BASIC INFO'
                 component={SignupInfoScreen}
                 renderLeftButton={<BackButton onLeft={() => Actions.home({type: 'reset'})}/>}
+                titleStyle={styles.navBarTextTabs}
+                renderRightButton={<View style={styles.emptyRightButton}/>}
+            />
+            <Scene
+                key='settings'
+                title='SETTINGS'
+                component={SettingsScreen}
+                renderLeftButton={<BackButton/>}
                 titleStyle={styles.navBarTextTabs}
                 renderRightButton={<View style={styles.emptyRightButton}/>}
             />

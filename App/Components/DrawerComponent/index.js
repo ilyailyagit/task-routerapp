@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { SafeAreaView } from 'react-native'
+import {Actions} from 'react-native-router-flux'
 
 import styles from './styles'
 import DrawerHeader from "./DrawerHeader";
@@ -23,7 +24,7 @@ class DrawerComponent extends Component {
                 <DrawerItem title={strings.reportBug}
                             IconClass={MaterialIcons}
                             iconName={'bug-report'} />
-                <DrawerItem title={strings.settings} />
+                <DrawerItem title={strings.settings} onPress={Actions.settings} />
                 <DrawerItem title={strings.logout}
                             IconClass={MaterialCommunityIcons}
                             iconName={'logout'} />

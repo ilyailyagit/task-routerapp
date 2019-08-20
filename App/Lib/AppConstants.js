@@ -96,6 +96,19 @@ export const ActivityActions = [
   }
 ]
 
+export const CalendarTypes = [
+  'My Calendar',
+    'Kayleegpowell@gmail.com',
+    'Our Calendar',
+    '432hz',
+    'jkevinpowell@gmail.com',
+    'Rachel & Kevin',
+    'Family',
+    '#Meg+Grant',
+    'Contacts'
+
+]
+
 
 export const ASYNC_STORAGE_KEYS = {
     HAS_LOADED_BEFORE: 'HAS_LOADED_BEFORE'
