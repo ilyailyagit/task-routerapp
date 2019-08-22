@@ -74,9 +74,8 @@ class BudgetScreen extends Component {
                     data={Budgets}
                     extraData={Budgets}
                     renderItem={this.renderItem}
-                    ListHeaderComponent={this.renderListHeader}
                     keyExtractor={item => String(item.id)}
-                    contentContainerStyle={styles.contentContainerStyle}
+                    ListHeaderComponent={this.renderListHeader}
                     columnWrapperStyle={{justifyContent: 'space-between'}}
                 />
                 <DateTimePicker

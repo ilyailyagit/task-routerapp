@@ -14,7 +14,7 @@ export default {
     externalInvites: 'External Invites',
     cancel: 'Cancel',
     createTask: 'Create Task',
-    createRoute: 'Create Route',
+    createRoute: 'CREATE ROUTE',
     zeloo: 'Zeloo',
     tasks: 'Tasks',
     noTaskPlanned: 'No current task planned',
@@ -35,5 +35,11 @@ export default {
     profile: 'Profile',
     reportBug: 'Report Bug',
     settings: 'Settings',
-    logout: 'Logout'
+    logout: 'Logout',
+    routeName: 'Route Name',
+    name: 'Name',
+    numberOfEvents: 'No. of Events',
+    markActive: 'Mark Active',
+    delete: 'Delete',
+    selectOption: 'Please select an Option',
 }

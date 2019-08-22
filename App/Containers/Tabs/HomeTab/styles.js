@@ -131,35 +131,6 @@ export default StyleSheet.create({
           }
         })
     },
-    actionButtonIcon: {
-        fontSize: 20,
-        height: 22,
-        color: 'white',
-    },
-    textContainer: {
-        backgroundColor: Colors.transparent,
-        shadowOpacity: 0,
-        elevation: 0,
-        ...Platform.select({
-            ios: {
-                paddingTop: Metrics.smallMargin,
-            }
-        })
-    },
-    plusText: {
-        ...Platform.select({
-            ios: {
-                paddingTop: Metrics.baseMargin
-            }
-        }),
-    },
-    buttonText: {
-        color: Colors.snow
-    },
-    actionBtnBackdrop: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
-    },
     taskAndRoutePanels: {
         marginHorizontal: Metrics.doubleBaseMargin,
         marginTop: Metrics.doubleBaseMargin

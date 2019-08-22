@@ -23,7 +23,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: Metrics.baseMargin,
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.primaryColorI,
         borderTopLeftRadius: Metrics.marginFifteen,
         borderTopRightRadius: Metrics.marginFifteen
     },
@@ -41,7 +41,7 @@ export default StyleSheet.create({
     },
     checkCircle: {
         fontSize: 25,
-        color: Colors.purple
+        color: Colors.primaryColorI
     },
     itemContainer: {
         flexDirection: 'row',

@@ -21,6 +21,7 @@ const colors = {
   gray: '#786f87',
   grayI: '#848587',
   grayII: '#b1b0ac',
+  grayIII: '#767876',
   silver: '#F7F7F7',
   error: 'rgba(200, 0, 0, 0.8)',
   ricePaper: 'rgba(255,255,255, 0.75)',

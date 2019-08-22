@@ -10,7 +10,7 @@ export default StyleSheet.create({
         color: Colors.snow,
         padding: Metrics.baseMargin,
         fontSize: Fonts.size.regular,
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.primaryColorI,
     },
     currentLocation: {
         height: 50,

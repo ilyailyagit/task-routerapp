@@ -8,7 +8,7 @@ export default StyleSheet.create({
         padding: Metrics.baseMargin,
     },
     headingContainer: {
-        backgroundColor: Colors.purple
+        backgroundColor: Colors.primaryColorI
     },
     label: {
         flex: 1,

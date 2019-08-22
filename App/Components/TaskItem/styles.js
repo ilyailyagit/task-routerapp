@@ -8,9 +8,15 @@ const commonStyles = {
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     mainContainer: {
-        height: 120,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.frost,
+        paddingVertical: Metrics.smallMargin,
+        paddingHorizontal: Metrics.smallMargin
+    },
+    innerContainer: {
+        height: 100,
         flexDirection: 'row',
-        backgroundColor: Colors.snow
+        backgroundColor: Colors.snow,
     },
     rightContainer: {
         flex: 1,
@@ -20,33 +26,28 @@ export default StyleSheet.create({
     },
     yellowLine: {
         width: 8,
-        backgroundColor: Colors.yellow
+        backgroundColor: Colors.orange
     },
     timeContainer: {
-        width: 100,
         borderRightWidth: 1,
         borderRightColor: Colors.frost,
         paddingVertical: Metrics.marginFifteen,
         paddingHorizontal: Metrics.smallMargin,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.frost
     },
     titleContainer: {
-        height: 120,
+        flex: 1,
         padding: Metrics.marginFifteen,
-        width: Metrics.screenWidth - 100,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.frost
+        width: Metrics.screenWidth - 100
     },
     title: {
         fontWeight: 'bold',
-        color: Colors.black,
+        color: Colors.grayIII,
         fontSize: Fonts.size.h6
     },
     time: {
         flex: 1,
         fontWeight: 'bold',
-        color: Colors.black,
+        color: Colors.grayIII,
         fontSize: Fonts.size.h6,
         paddingTop: Metrics.baseMargin
     },
@@ -56,11 +57,12 @@ export default StyleSheet.create({
         paddingTop: Metrics.marginFifteen
     },
     locationIcon: {
-        fontSize: 22,
-        color: Colors.black
+        fontSize: 15,
+        color: Colors.grayIII
     },
     location: {
-        color: Colors.offWhiteI,
+        flex: 1,
+        color: Colors.grayIII,
         fontSize: Fonts.size.medium,
         paddingLeft: Metrics.smallMargin
     },
@@ -69,18 +71,25 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     type: {
-        color: Colors.grayI,
+        color: Colors.grayIII,
         fontSize: Fonts.size.medium,
         marginLeft: Metrics.baseMargin
     },
     carIcon: {
         fontSize: 22,
-        color: Colors.black
+        color: Colors.grayIII
     },
-    userIcon: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        marginLeft: Metrics.smallMargin
+    dot: {
+        width: 25,
+        height: 25,
+        borderRadius: 12.5,
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+        backgroundColor: Colors.primaryColorI,
+        marginRight: Metrics.baseMargin
+    },
+    itemId: {
+        color: Colors.snow,
+        textAlign: 'center',
     }
 })

@@ -77,10 +77,18 @@ export default StyleSheet.create({
         fontSize: 22,
         color: Colors.black
     },
-    userIcon: {
+    dot: {
         width: 30,
         height: 30,
         borderRadius: 15,
-        marginLeft: Metrics.smallMargin
+        alignSelf: 'flex-end',
+        marginRight: Metrics.baseMargin,
+        backgroundColor: Colors.primaryColorI
+    },
+    checkIcon: {
+        fontSize: 20,
+        color: Colors.black,
+        alignSelf: 'flex-end',
+        marginRight: Metrics.baseMargin
     }
 })

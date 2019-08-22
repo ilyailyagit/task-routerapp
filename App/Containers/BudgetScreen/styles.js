@@ -45,10 +45,9 @@ export default StyleSheet.create({
     categoryBar: {
         padding: 12.5,
         flexDirection: 'row',
-        backgroundColor: Colors.purple,
+        margin: Metrics.smallMargin,
         justifyContent: 'space-between',
-        marginVertical: Metrics.smallMargin,
-        marginHorizontal: Metrics.baseMargin
+        backgroundColor: Colors.primaryColorI,
     },
     categoryText: {
         color: Colors.snow,

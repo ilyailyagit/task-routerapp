@@ -6,7 +6,6 @@ import {createReactNavigationReduxMiddleware, createReduxContainer} from 'react-
 import styles from './Styles/NavigationContainerStyle'
 import TabIcon from '../Components/TabIcon'
 import HomeScreen from '../Containers/HomeScreen'
-import TabScreen from '../Containers/TabScreen'
 import CustomWebview from '../Components/CustomWebview'
 import {Colors} from '../Themes'
 import LoginScreen from "../Containers/LoginScreen";
@@ -30,6 +29,9 @@ import LocatorScreen from "../Containers/LocatorScreen";
 import SettingsScreen from "../Containers/SettingsScreen";
 import DrawerComponent from "../Components/DrawerComponent";
 import {drawerWidth} from "../Components/DrawerComponent/DrawerHeader/styles";
+import RouteScreen from "../Containers/RouteScreen";
+import CreateRoute from "../Containers/CreateRoute";
+import SelectTaskOrder from "../Containers/SelectTaskOrder";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
@@ -94,6 +96,24 @@ export const Routes = Actions.create(
                 renderRightButton={<View style={styles.emptyRightButton}/>}
             />
             <Scene
+                key='createRoute'
+                title='CREATE ROUTE'
+                component={CreateRoute}
+                renderLeftButton={<BackButton/>}
+                titleStyle={styles.navBarTextTabs}
+                navigationBarStyle={styles.primaryNavBar}
+                renderRightButton={<View style={styles.emptyRightButton}/>}
+            />
+            <Scene
+                key='selectTaskOrder'
+                title='SELECT TASK ORDER'
+                component={SelectTaskOrder}
+                renderLeftButton={<BackButton/>}
+                titleStyle={styles.navBarTextTabs}
+                navigationBarStyle={styles.primaryNavBar}
+                renderRightButton={<View style={styles.emptyRightButton}/>}
+            />
+            <Scene
                 key='activityDetail'
                 component={ActivityDetails}
                 renderLeftButton={<BackButton/>}
@@ -105,9 +125,9 @@ export const Routes = Actions.create(
                 key='profileInfo'
                 title='BASIC INFO'
                 component={SignupInfoScreen}
-                renderLeftButton={<BackButton onLeft={() => Actions.home({type: 'reset'})}/>}
                 titleStyle={styles.navBarTextTabs}
                 renderRightButton={<View style={styles.emptyRightButton}/>}
+                renderLeftButton={<BackButton onLeft={() => Actions.home({type: 'reset'})}/>}
             />
             <Scene
                 key='settings'
@@ -115,6 +135,7 @@ export const Routes = Actions.create(
                 component={SettingsScreen}
                 renderLeftButton={<BackButton/>}
                 titleStyle={styles.navBarTextTabs}
+                navigationBarStyle={styles.primaryNavBar}
                 renderRightButton={<View style={styles.emptyRightButton}/>}
             />
             <Tabs
@@ -129,9 +150,9 @@ export const Routes = Actions.create(
                     iconName='map'
                     key='tab1'
                     icon={TabIcon}
-                    component={TabScreen}
+                    component={RouteScreen}
                     IconClass={Entypo}
-                    title={'Route'}
+                    title={'VIEW ROUTE'}
                     navigationBarStyle={styles.primaryNavBar}
                 />
                 <Scene
