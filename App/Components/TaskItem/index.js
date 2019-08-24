@@ -14,18 +14,22 @@ export default class TaskItem extends Component {
     static propTypes = {
         item: PropTypes.object,
         onPress: PropTypes.function,
+        move: PropTypes.function,
+        moveEnd: PropTypes.function
     }
     static defaultProps = {
         item: {},
-        onPress: () => {
-        }
+        onPress: () => {},
+        move: () => {},
+        moveEnd: () => {},
     }
 
     render() {
-        const {item, onPress,} = this.props
+        const {item, onPress, move, moveEnd, index} = this.props
         const {id, fromTime = moment(), type = 'Errand', locationName = 'Building No 1', name = 'MC'} = item || {}
         return (
-            <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={styles.mainContainer}>
+            <TouchableOpacity onLongPress={move}
+            onPressOut={moveEnd} activeOpacity={0.8} onPress={onPress} style={styles.mainContainer}>
                 <View style={styles.innerContainer}>
                     <View style={styles.yellowLine}/>
                     <View style={styles.rightContainer}>
@@ -42,7 +46,7 @@ export default class TaskItem extends Component {
                                 <VectorIcon name={'location-pin'} type={'SimpleLineIcons'} style={styles.locationIcon}/>
                                 <Text style={styles.location}>{locationName}</Text>
                                 <View style={styles.dot}>
-                                    <Text style={styles.itemId}>{id}</Text>
+                                    <Text style={styles.itemId}>{index}</Text>
                                 </View>
                             </View>
                         </View>

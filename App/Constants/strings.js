@@ -42,4 +42,10 @@ export default {
     markActive: 'Mark Active',
     delete: 'Delete',
     selectOption: 'Please select an Option',
+    firstName: 'FIRST NAME',
+    userName: 'USER NAME',
+    familyName: 'FAMILY NAME',
+    edit: 'EDIT',
+
+
 }

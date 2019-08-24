@@ -88,7 +88,7 @@ export default class CreateRoute extends Component {
                 />
                 <Text style={styles.routeName}>{strings.routeName}</Text>
                 {this.renderRouteData()}
-                <TouchableOpacity style={styles.createRouteButton}>
+                <TouchableOpacity onPress={Actions.selectTaskOrder} style={styles.createRouteButton}>
                     <Text style={styles.createRouteText}>{strings.createRoute}</Text>
                 </TouchableOpacity>
                 <DateTimePicker

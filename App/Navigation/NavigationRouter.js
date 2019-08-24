@@ -32,6 +32,7 @@ import {drawerWidth} from "../Components/DrawerComponent/DrawerHeader/styles";
 import RouteScreen from "../Containers/RouteScreen";
 import CreateRoute from "../Containers/CreateRoute";
 import SelectTaskOrder from "../Containers/SelectTaskOrder";
+import UserProfile from '../Containers/UserProfile';
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
@@ -104,6 +105,16 @@ export const Routes = Actions.create(
                 navigationBarStyle={styles.primaryNavBar}
                 renderRightButton={<View style={styles.emptyRightButton}/>}
             />
+             <Scene
+                key='userProfile'
+                title='PROFILE'
+                component={UserProfile}
+                renderLeftButton={<BackButton/>}
+                titleStyle={styles.navBarTextTabs}
+                navigationBarStyle={styles.primaryNavBar}
+                renderRightButton={<View style={styles.emptyRightButton}/>}
+            />
+
             <Scene
                 key='selectTaskOrder'
                 title='SELECT TASK ORDER'

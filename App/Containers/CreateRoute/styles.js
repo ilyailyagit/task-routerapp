@@ -51,7 +51,7 @@ export default StyleSheet.create({
     },
     inputContainer: {
         borderBottomWidth: 1,
-        borderBottomColor: Colors.frost
+        borderBottomColor: Colors.primaryColor
     },
     routeDataContainer: {
         padding: Metrics.marginFifteen

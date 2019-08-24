@@ -68,7 +68,7 @@ export default class RouteScreen extends Component {
                     keyExtractor={item => String(item.id)}
                     ListHeaderComponent={this.renderListHeaderComponent}
                 />
-                <ActionButtons onPressActionButton1={Actions.selectTaskOrder}
+                <ActionButtons onPressActionButton1={Actions.createActivity}
                                onPressActionButton2={Actions.createRoute}/>
                 <ActionSheet
                     cancelButtonIndex={2}
