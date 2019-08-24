@@ -45,7 +45,13 @@ export default {
     firstName: 'FIRST NAME',
     userName: 'USER NAME',
     familyName: 'FAMILY NAME',
-    edit: 'EDIT',
+    sureEditFolder: 'Are you sure? do you want to edit folder image',
+    editFolder: 'Edit folder Image',
+    renameFolder: 'Rename Folder',
+    deleteFolder: 'Delete Folder',
+    chooseIcon: 'Choose icon for folder',
+    takePhoto: 'Take photo',
+    chooseFromLibrary: 'Choose form Library',
 
 
 }

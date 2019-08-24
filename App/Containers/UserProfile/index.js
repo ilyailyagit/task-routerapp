@@ -6,46 +6,50 @@ import styles from "./styles";
 import Input from "../../Components/Input";
 import RoundedButton from "../../Components/RoundedButton";
 import strings from "../../Constants/strings";
+import {connect} from "react-redux";
 
-export default class UserProfile extends Component {
+
+class UserProfile extends Component {
   constructor(props) {
     super(props);
+    const {user: {name = '', username = ''} = {}} = props
     this.state = {
-      firstName: "",
-      userName: "",
-      familyName: ""
-    };
+      name,
+      username,
+      familyName: ''
+    }
   }
 
   render() {
-    const { firstName, userName, familyName } = this.state;
+    const { name, username, familyName } = this.state;
+    const {user: {picUrl = ''} = {}} = this.props
     return (
       <GradientView>
         <Image
-          source={Images.avatar}
+          source={{uri: picUrl}}
           defaultSource={Images.avatar}
           style={styles.userImage}
         />
         <Input
-          value={firstName}
+          value={name}
           label={strings.firstName}
           labelStyle={styles.inputLabel}
           styleOverride={styles.inputContainerMain}
           containerStyle={styles.inputContainer}
           onSubmitEditing={() => Keyboard.dismiss()}
-          onChangeText={firstName => {
-            this.setState({ firstName });
+          onChangeText={name => {
+            this.setState({ name });
           }}
         />
         <Input
-          value={userName}
+          value={username}
           label={strings.userName}
           labelStyle={styles.inputLabel}
           styleOverride={styles.inputContainerMain}
           containerStyle={styles.inputContainer}
           onSubmitEditing={() => Keyboard.dismiss()}
-          onChangeText={userName => {
-            this.setState({ userName });
+          onChangeText={username => {
+            this.setState({ username });
           }}
         />
         <Input
@@ -64,3 +68,12 @@ export default class UserProfile extends Component {
     );
   }
 }
+
+const mapStateToProps = ({user: { user } = {}}) => {
+  console.tron.warn(user)
+  return {
+      user
+  }
+}
+
+export default connect(mapStateToProps, null)(UserProfile)

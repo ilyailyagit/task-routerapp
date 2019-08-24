@@ -19,7 +19,7 @@ export default StyleSheet.create({
     },
     topHeaderImage: {
         width: Dimensions.get('window').width,
-        height: 3 * Metrics.doubleSection,
+        height: Metrics.hundredTen,
         paddingHorizontal: Metrics.marginFifteen,
         paddingTop: Metrics.baseMargin
     },
@@ -61,7 +61,7 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: Metrics.baseMargin
+        paddingVertical: Metrics.baseMargin
     },
     enterFamilyName: {
         color: Colors.snow,
@@ -132,8 +132,8 @@ export default StyleSheet.create({
         })
     },
     taskAndRoutePanels: {
-        marginHorizontal: Metrics.doubleBaseMargin,
-        marginTop: Metrics.doubleBaseMargin
+        marginHorizontal: Metrics.baseMargin,
+        marginTop: Metrics.baseMargin
     },
     taskHeaderContainer: {
         backgroundColor: Colors.primaryColorI,
@@ -164,7 +164,7 @@ export default StyleSheet.create({
         ...panelHeadingsCommon
     },
     currentTaskContent: {
-        minHeight: Metrics.hundredTwenty,
+        minHeight: Metrics.hundred,
         justifyContent: 'center',
         backgroundColor: Colors.snow,
         borderRightWidth: Metrics.marginSeven,
@@ -175,7 +175,7 @@ export default StyleSheet.create({
     activeRouteContent: {
         flexDirection: 'row',
         backgroundColor: Colors.transparent,
-        minHeight: Metrics.hundredTwenty
+        minHeight: Metrics.hundred
     },
     noTaskText: {
         color: Colors.orange,
@@ -185,7 +185,7 @@ export default StyleSheet.create({
     },
     bottomActionsRow: {
         flexDirection: 'row',
-        minHeight: Metrics.hundred,
+        minHeight: Metrics.seventy,
         alignItems: 'center',
         backgroundColor: Colors.snow
     },
@@ -193,27 +193,24 @@ export default StyleSheet.create({
         flex: 3.5,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: Metrics.baseMargin,
         borderBottomWidth: Metrics.marginSeven,
         borderBottomColor: Colors.green,
-        minHeight: Metrics.hundred,
+        minHeight: Metrics.seventy,
         backgroundColor: Colors.snow
     },
     taskRightActionBtn: {
         flex: 3.5,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: Metrics.baseMargin,
         borderBottomWidth: Metrics.marginSeven,
         borderBottomColor: Colors.orange,
-        minHeight: Metrics.hundred,
+        minHeight: Metrics.seventy,
     },
     taskMiddleBtn: {
         flex: 3,
         flexDirection:'row',
         alignItems: 'center',
-        minHeight: Metrics.hundred,
-        marginTop: Metrics.baseMargin
+        minHeight: Metrics.seventy,
     },
     verticalActionSeperator: {
         height: Metrics.marginThirty,
@@ -263,7 +260,7 @@ export default StyleSheet.create({
         fontSize: Fonts.size.h5
     },
     foldersComponentContainer: {
-        marginHorizontal: Metrics.doubleBaseMargin,
+        marginHorizontal: Metrics.baseMargin,
         marginTop: Metrics.doubleBaseMargin
     }
 })

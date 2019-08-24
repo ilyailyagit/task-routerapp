@@ -14,6 +14,7 @@ const colors = {
   yellow: '#f6e880',
   orange: '#d87a3c',
   green: '#6d964e',
+  greenXDark: '#65b74a',
   greenDark: '#c6dbb7',
   greenLight: '#f3f6e7',
   promptBackground: 'rgba(0,0,0,0.4)',

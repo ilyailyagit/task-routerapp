@@ -43,7 +43,7 @@ export function* onLoginSuccess(api, {user}) {
     try {
         const {token = ''} = user || {}
         api.setHeaders({'x-access-token': token})
-        Actions.userProfile({type: 'reset'})
+        Actions.tabbar({type: 'reset'})
         yield put(FolderActions.getFolders())
     } catch (e) {
         //console.tron.warn(e)

@@ -1,5 +1,5 @@
 import React from 'react'
-import {View} from 'react-native'
+import {View, Text} from 'react-native'
 import {connect} from 'react-redux'
 import {Actions, Drawer, Router, Scene, Stack, Tabs} from 'react-native-router-flux'
 import {createReactNavigationReduxMiddleware, createReduxContainer} from 'react-navigation-redux-helpers'
@@ -33,6 +33,7 @@ import RouteScreen from "../Containers/RouteScreen";
 import CreateRoute from "../Containers/CreateRoute";
 import SelectTaskOrder from "../Containers/SelectTaskOrder";
 import UserProfile from '../Containers/UserProfile';
+import FamilyMembers from '../Containers/FamilyMembers';
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
@@ -112,9 +113,17 @@ export const Routes = Actions.create(
                 renderLeftButton={<BackButton/>}
                 titleStyle={styles.navBarTextTabs}
                 navigationBarStyle={styles.primaryNavBar}
+                renderRightButton={<Text onPress={() => Actions.familyMembers()} style={styles.selectFamily}>SEE FAMILY</Text>}
+            />
+               <Scene
+                key='familyMembers'
+                title='FAMILY MEMBERS'
+                component={FamilyMembers}
+                renderLeftButton={<BackButton/>}
+                titleStyle={styles.navBarTextTabs}
+                navigationBarStyle={styles.primaryNavBar}
                 renderRightButton={<View style={styles.emptyRightButton}/>}
             />
-
             <Scene
                 key='selectTaskOrder'
                 title='SELECT TASK ORDER'

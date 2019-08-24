@@ -15,6 +15,7 @@ import {
 } from 'react-native'
 import * as _ from 'lodash'
 import {connect} from "react-redux";
+import ActionSheet from "react-native-actionsheet";
 import ContactsSectionList from "react-native-sectionlist-contacts";
 
 import styles from './styles'
@@ -128,7 +129,7 @@ class HomeTab extends Component {
             stateContact
         })
         if (!contact || _.isEmpty(contact)) {
-            Alert.alert('kinldy select a contact first')
+            Alert.alert('kindly select a contact first')
             return
         }
         const prevIndex = selectedContacts.findIndex(item => item.phone === newContact.phone)
@@ -325,6 +326,16 @@ class HomeTab extends Component {
         Actions.createActivity()
     }
 
+    onFolderActionPressed = (index) => {
+        switch (index){
+            case 0: this.photoAction.show()
+            break
+            case 1: () => {}
+            break
+            default: () => {}
+        }
+    }
+
     render() {
         const {familyName, selectedContacts, showContactsList, contact, showAddFamilyMember} = this.state
         const {isSignup, family = {}, fetching, contacts, folders} = this.props
@@ -372,7 +383,7 @@ class HomeTab extends Component {
                                     <View style={styles.familyNameInputContainer}>
                                         <TextInput value={familyName}
                                                    style={styles.familyNameInput}
-                                                   placeholder={`Your's family`}
+                                                   placeholder={`Yours family`}
                                                    placeholderTextColor={Colors.snow}
                                                    onChangeText={familyName => this.setState({familyName})}/>
                                         <TouchableOpacity style={styles.goBtnContainer}
@@ -396,6 +407,7 @@ class HomeTab extends Component {
                     {this.renderCurrentRoutePanel()}
                     <FoldersComponent containerStyles={styles.foldersComponentContainer}
                                       folders={folders}
+                                      onPressFolder={() => this.folderActions.show()}
                                       onAddFolder={this.onAddFolder}/>
                 </ScrollView>
                 <ModalComponent isModalVisible={showContactsList}
@@ -405,6 +417,19 @@ class HomeTab extends Component {
                     </SafeAreaView>
                 </ModalComponent>
                 <ActionButtons onPressActionButton1={this.onCreateTask} onPressActionButton2={Actions.createRoute}/>
+                <ActionSheet
+                    cancelButtonIndex={3}
+                    title={strings.sureEditFolder}
+                    ref={o => this.folderActions = o}
+                    onPress={this.onFolderActionPressed}
+                    options={[strings.editFolder, strings.renameFolder, strings.deleteFolder, strings.cancel]}
+                />
+                 <ActionSheet
+                    cancelButtonIndex={2}
+                    title={strings.chooseIcon}
+                    ref={o => this.photoAction = o}
+                    options={[strings.takePhoto, strings.chooseFromLibrary, strings.cancel]}
+                />
             </View>
         )
     }

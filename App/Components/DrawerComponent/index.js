@@ -19,6 +19,7 @@ class DrawerComponent extends Component {
                 <DrawerHeader user={user} />
                 <DrawerItem title={strings.profile}
                             IconClass={EvilIcons}
+                            onPress={Actions.userProfile}
                             iconSize={Metrics.icons.mediumI}
                             iconName={'user'} />
                 <DrawerItem title={strings.reportBug}
