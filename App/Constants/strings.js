@@ -43,7 +43,6 @@ export default {
     delete: 'Delete',
     selectOption: 'Please select an Option',
     firstName: 'FIRST NAME',
-    userName: 'USER NAME',
     familyName: 'FAMILY NAME',
     sureEditFolder: 'Are you sure? do you want to edit folder image',
     editFolder: 'Edit folder Image',

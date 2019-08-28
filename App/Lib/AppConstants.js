@@ -11,7 +11,7 @@ export const photosPermissionTypes = {
   CAMERA: 'camera',
   PHOTOS: 'photo'
 }
-
+export const MAPS_KEY = 'AIzaSyBEhXXp2d0qDvVOJnDHTmQCD2hNeG2fDDg'
 export const APP_URL = 'http://18.191.149.64:3030/api/' //http://18.191.149.64:3030/api/'
 
 export const CloudinaryCred  = {
