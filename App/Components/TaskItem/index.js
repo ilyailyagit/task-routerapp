@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
-import {TouchableOpacity, View, Text, Image} from 'react-native'
+import {Text, TouchableOpacity, View} from 'react-native'
 
 import styles from './styles'
 import moment from "moment";
 import VectorIcon from "../VectorIcon";
-import Images from "../../Themes/Images";
 import {FormatDateTime} from "../../Lib/Utilities";
-import {Colors} from "../../Themes";
 
 
 export default class TaskItem extends Component {

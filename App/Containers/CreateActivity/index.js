@@ -107,6 +107,12 @@ class CreateActivity extends Component {
         this.setState({budget, showBudgetDialog: false})
     }
 
+    getCurrentLocation = () => {
+        RNGooglePlaces.getCurrentPlace()
+            .then((results) => console.tron.log(results))
+            .catch((error) => console.tron.log(error.message));
+    }
+
     render() {
         const {fetching} = this.props
         const {name, locationName, showDatePicker, date, toTime, fromTime, pickerKey, budget, category, priority, showFolderDialog, note, syncCalendar, showInviteDialog, showBudgetDialog} = this.state
@@ -136,6 +142,7 @@ class CreateActivity extends Component {
                         value={locationName}
                         iconName='my-location'
                         iconType='MaterialIcons'
+                        onIconPress={this.getCurrentLocation}
                         onPress={this.openPlacePicker}
                     />
 
