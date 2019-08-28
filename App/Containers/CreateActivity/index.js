@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {isEmpty} from 'lodash'
 import RNGooglePlaces from 'react-native-google-places';
 import {Text, TouchableOpacity, View, StatusBar, Keyboard} from 'react-native'
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -44,7 +45,9 @@ class CreateActivity extends Component {
             showFolderDialog: false,
             showInviteDialog: false,
             showBudgetDialog: false,
-            invites: []
+            invites: [],
+            currentLocation: {},
+            fetchingCurrentLocation: false
         }
         StatusBar.setBackgroundColor(Colors.primaryColorI)
     }
@@ -71,6 +74,7 @@ class CreateActivity extends Component {
     }
 
     openPlacePicker = () => {
+        this.setState({currentLocation: {}})
         RNGooglePlaces.openAutocompleteModal()
             .then((place) => {
                 const {address, location: {latitude = '', longitude = ''} = {}} = place
@@ -108,15 +112,23 @@ class CreateActivity extends Component {
     }
 
     getCurrentLocation = () => {
+        this.setState({fetchingCurrentLocation: true})
         RNGooglePlaces.getCurrentPlace()
-            .then((results) => console.tron.log(results))
-            .catch((error) => console.tron.log(error.message));
+            .then((results) => {
+                const sortedResults = results.sort((a, b) => { return (a.likelihood > b.likelihood) ? -1 : ((b.likelihood > a.likelihood) ? 1: 0) })
+                this.setState({currentLocation: sortedResults[0], fetchingCurrentLocation: false})
+            })
+            .catch((error) =>{
+                this.setState({fetchingCurrentLocation: false})
+                console.tron.log(error.message)
+            });
     }
 
     render() {
         const {fetching} = this.props
-        const {name, locationName, showDatePicker, date, toTime, fromTime, pickerKey, budget, category, priority, showFolderDialog, note, syncCalendar, showInviteDialog, showBudgetDialog} = this.state
+        const {currentLocation: {address: currentLocation = ''}, name, locationName, showDatePicker, date, toTime, fromTime, pickerKey, budget, category, priority, showFolderDialog, note, syncCalendar, showInviteDialog, showBudgetDialog, fetchingCurrentLocation} = this.state
         const mode = pickerKey === 'date' ? 'date' : 'time'
+        const location = isEmpty(currentLocation) ? locationName : currentLocation
         return (
             <GradientView gradientStyles={styles.gradientStyles}>
                 <KeyboardAwareScrollView
@@ -139,11 +151,12 @@ class CreateActivity extends Component {
 
                     <ActivityInputItem
                         label='Location'
-                        value={locationName}
+                        value={location}
                         iconName='my-location'
                         iconType='MaterialIcons'
-                        onIconPress={this.getCurrentLocation}
                         onPress={this.openPlacePicker}
+                        onIconPress={this.getCurrentLocation}
+                        fetchingCurrentLocation={fetchingCurrentLocation}
                     />
 
                     <View style={styles.dateContainer}>
