@@ -1,8 +1,26 @@
 import {StyleSheet} from 'react-native'
 import {ApplicationStyles, Colors, Fonts, Metrics} from '../../Themes/'
-
+const border = {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.frost,
+    paddingVertical: Metrics.baseMargin
+}
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
+    filterDateContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: Metrics.baseMargin
+    },
+    filterDate: {
+        flex: 1,
+        textAlign: 'center',
+        color: Colors.grayIII
+    },
+    arrowIcon: {
+        fontSize: 25,
+        color: Colors.grayIII,
+    },
     mainContainer: {
         flex: 1,
         backgroundColor: Colors.snow
@@ -39,11 +57,9 @@ export default StyleSheet.create({
         padding: 5
     },
     dateContainer: {
+        ...border,
         width: 140,
-        borderBottomWidth: 1,
         flexDirection: 'row',
-        borderBottomColor: Colors.frost,
-        paddingVertical: Metrics.doubleBaseMargin
     },
     inputLabel: {
         padding: 0,
@@ -51,9 +67,14 @@ export default StyleSheet.create({
     },
     inputContainer: {
         borderBottomWidth: 1,
-        borderBottomColor: Colors.primaryColor
+        borderBottomColor: Colors.frost
     },
     routeDataContainer: {
         padding: Metrics.marginFifteen
-    }
-})
+    },
+    noOfEventsContainer: {
+        ...border,
+        width: Metrics.screenWidth - 180,
+        flexDirection: 'row',
+    },
+   })

@@ -51,6 +51,5 @@ export default {
     chooseIcon: 'Choose icon for folder',
     takePhoto: 'Take photo',
     chooseFromLibrary: 'Choose form Library',
-
-
+    noTaskFound: 'No task found on this date',
 }

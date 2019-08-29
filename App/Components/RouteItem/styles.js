@@ -23,20 +23,18 @@ export default StyleSheet.create({
         backgroundColor: Colors.yellow
     },
     timeContainer: {
+        ...commonStyles,
         width: 100,
         borderRightWidth: 1,
         borderRightColor: Colors.frost,
         paddingVertical: Metrics.marginFifteen,
         paddingHorizontal: Metrics.smallMargin,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.frost
     },
     titleContainer: {
+        ...commonStyles,
         height: 120,
         padding: Metrics.marginFifteen,
         width: Metrics.screenWidth - 100,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.frost
     },
     title: {
         fontWeight: 'bold',
@@ -62,7 +60,7 @@ export default StyleSheet.create({
     location: {
         color: Colors.offWhiteI,
         fontSize: Fonts.size.medium,
-        paddingLeft: Metrics.smallMargin
+        paddingHorizontal: Metrics.smallMargin
     },
     typeContainer: {
         flexDirection: 'row',

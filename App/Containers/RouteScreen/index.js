@@ -12,6 +12,9 @@ import moment from "moment";
 import ActionSheet from "react-native-actionsheet";
 import strings from "../../Constants/strings";
 import {Colors} from "../../Themes";
+import RouteActions from "../../Redux/RouteRedux";
+import {connect} from "react-redux";
+import {ProgressDialog} from "../../Components/ProgressDialog";
 
 const Route = {
     fromTime: moment(), locationName: '4113 W Johnson Cir\nAtlanta, GA, United States', name: 'Meal Prep'
@@ -20,7 +23,7 @@ const DefaultDelta = {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
 }
-export default class RouteScreen extends Component {
+class RouteScreen extends Component {
     constructor(props) {
         super(props)
         StatusBar.setBackgroundColor(Colors.primaryColorI)
@@ -29,6 +32,11 @@ export default class RouteScreen extends Component {
         }
     }
 
+    componentDidMount() {
+        this.locateCurrentLocation()
+        const {getAllRoutes} = this.props
+        getAllRoutes({})
+    }
 
     locateCurrentLocation = () => {
         const location = getCurrentGPSLocation().then((location) => {
@@ -36,9 +44,6 @@ export default class RouteScreen extends Component {
         })
     }
 
-    componentDidMount() {
-        this.locateCurrentLocation()
-    }
 
     renderRouteItem = ({item}) => {
         return <CalendarItem onPress={() => this.RouteAction.show()} item={item}/>
@@ -49,8 +54,10 @@ export default class RouteScreen extends Component {
     }
 
     render() {
+        const {fetching, routes} = this.props
         const {location: {latitude = 0.0, longitude = 0.0}} = this.state
         const location = {latitude, longitude, ...DefaultDelta}
+
         return (
             <SafeAreaView style={styles.mainContainer}>
                 <MapView
@@ -62,7 +69,7 @@ export default class RouteScreen extends Component {
                 <CircleIcon iconName='navigation' iconType='Feather' iconContainer={styles.navigationContainer}/>
                 <CircleIcon onPress={this.locateCurrentLocation} iconContainer={styles.locationContainer}/>
                 <FlatList
-                    data={[Route]}
+                    data={routes}
                     style={styles.routeContainer}
                     renderItem={this.renderRouteItem}
                     keyExtractor={item => String(item.id)}
@@ -78,7 +85,20 @@ export default class RouteScreen extends Component {
                     onPress={this.onImageActionPressed}
                     options={[strings.markActive, strings.delete, strings.cancel]}
                 />
+                <ProgressDialog hide={!fetching}/>
             </SafeAreaView>
         )
     }
 }
+
+const mapStateToProps = ({route: {fetching, routes}}) => {
+    return {fetching, routes}
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAllRoutes: (params) => dispatch(RouteActions.getRoutes(params))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RouteScreen)
