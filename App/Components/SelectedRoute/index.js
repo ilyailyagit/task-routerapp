@@ -18,7 +18,7 @@ export default class SelectedRoute extends Component {
     }
 
     render() {
-        const {item: {locationName = '', name = '',}} = this.props
+        const {item: {locationName = 'No Location', name = 'No Task',}} = this.props
         return (
             <LinearGradient start={{x: 0, y: 0.3}} end={{x: 0, y: 0.8}}
                             colors={[Colors.primaryColor, Colors.primaryColorI]} style={styles.gradientContainer}>

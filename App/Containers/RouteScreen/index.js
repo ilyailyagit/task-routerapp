@@ -4,7 +4,6 @@ import MapView from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
 
 import styles from "./styles";
-import {getCurrentGPSLocation} from "../../Lib/Utilities";
 import CircleIcon from "../../Components/CircleIcon";
 import ActionButtons from "../../Components/ActionButtons";
 import {Actions} from "react-native-router-flux";
@@ -26,32 +25,6 @@ const DefaultDelta = {
     longitudeDelta: 0.0421,
 }
 
-const tasksList = [
-    {
-        id: 317,
-        order: 0,
-        taskId: 2569,
-        routeId: 142,
-        status: 'active',
-        name: 'Test Task 1',
-        locationName: 'Test Location 1',
-        createdAt: '2019-08-31T10:47:12.000Z',
-        stepCoordinates: [30.191660, 70.734894],
-        updatedAt: '2019 - 08 - 31T10:47:12.000Z'
-    },
-    {
-        id: 317,
-        order: 1,
-        routeId: 142,
-        taskId: 2568,
-        status: 'inactive',
-        name: 'Test Task 2',
-        locationName: 'Test Location 2',
-        createdAt: '2019-08-31T10:47:12.000Z',
-        stepCoordinates: [30.047101, 70.647506],
-        updatedAt: '2019 - 08 - 31T10:47:12.000Z'
-    }]
-
 class RouteScreen extends Component {
     constructor(props) {
         super(props)
@@ -61,35 +34,30 @@ class RouteScreen extends Component {
             selectedRouteId: '',
         }
         this.mapView = null;
-
+        this.activeRoute = false
     }
 
     componentDidMount() {
-        this.locateCurrentLocation()
         const {getAllRoutes} = this.props
         getAllRoutes({status: 'active'})
-    }
-
-    locateCurrentLocation = () => {
-        const location = getCurrentGPSLocation().then((location) => {
-            this.setState({location})
-        })
     }
 
     onPressedRoutesActions = (index) => {
         const {selectedRouteId} = this.state
         const {updateRouteStatus, deleteRoute, getSpecificRoute} = this.props
         if (index === 0) {
-            getSpecificRoute(selectedRouteId)
             updateRouteStatus(selectedRouteId, {status: 'active'})
+            getSpecificRoute(selectedRouteId)
         } else if (index === 1) {
             deleteRoute(selectedRouteId)
         }
     }
 
     onPressedRouteItem = (selectedRouteId) => {
-        this.setState({selectedRouteId})
-        this.RouteAction.show()
+        if (!this.activeRoute) {
+            this.setState({selectedRouteId})
+            this.RouteAction.show()
+        }
     }
 
     renderRouteItem = ({item}) => {
@@ -101,23 +69,27 @@ class RouteScreen extends Component {
     }
 
     render() {
-        const {fetching, routes = [], route = {}, currentLocation} = this.props
-        let tasksRoutes = routes
+        const {fetching, fetchingTasks, routes = [], route = {}, currentLocation} = this.props
         let activeRoute = {}
+        let tasksList = []
         const {selectedRouteId} = this.state
         const originLocation = {...currentLocation, ...DefaultDelta}
-
         let locationCoordinates = []
-        const wayPoints = (locationCoordinates.length > 2) ? locationCoordinates.slice(1, -1) : null
-        if (route.id.toString() === selectedRouteId.toString() && route.routeStatus === 'active') {
-            tasksRoutes = tasksList || []
-            activeRoute =  tasksList[0]
-            locationCoordinates.push(currentLocation)
-            locationCoordinates = tasksList.map((item) => {
-                const {stepCoordinates} = item || {}
-                const latlong = {latitude: stepCoordinates[0], longitude: stepCoordinates[1]}
-                return latlong
-            })
+        let wayPoints = null
+        if (!fetchingTasks) {
+            const {id = '', tasks = []} = route || {}
+            if (id.toString() === selectedRouteId.toString() && route.routeStatus === 'active') {
+                this.activeRoute = true
+                tasksList = tasks.map((item) => item.task || {})
+                activeRoute = routes[0]
+                locationCoordinates.push(currentLocation)
+                locationCoordinates = tasksList.map((item) => {
+                    const {locationCoordinates = []} = item || {}
+                    const latlong = {latitude: locationCoordinates[0], longitude: locationCoordinates[1]}
+                    return latlong
+                })
+                wayPoints = (locationCoordinates.length > 2) ? locationCoordinates.slice(1, -1) : null
+            }
         }
         return (
             <SafeAreaView style={styles.mainContainer}>
@@ -159,9 +131,9 @@ class RouteScreen extends Component {
                     )}
                 </MapView>
                 <CircleIcon iconName='navigation' iconType='Feather' iconContainer={styles.navigationContainer}/>
-                <CircleIcon onPress={this.locateCurrentLocation} iconContainer={styles.locationContainer}/>
+                <CircleIcon onPress={() => {}} iconContainer={styles.locationContainer}/>
                 <FlatList
-                    data={tasksRoutes}
+                    data={this.activeRoute ? tasksList : routes}
                     style={styles.routeContainer}
                     renderItem={this.renderRouteItem}
                     keyExtractor={item => String(item.id)}
@@ -178,14 +150,14 @@ class RouteScreen extends Component {
                     onPress={this.onPressedRoutesActions}
                     options={[strings.markActive, strings.delete, strings.cancel]}
                 />
-                <ProgressDialog hide={!fetching}/>
+                <ProgressDialog hide={!fetching && !fetchingTasks}/>
             </SafeAreaView>
         )
     }
 }
 
-const mapStateToProps = ({route: {fetching, routes = [], route = {}}, user: {currentLocation}}) => {
-    return {fetching, routes, route, currentLocation}
+const mapStateToProps = ({route: {fetching, fetchingTasks, routes = [], route = {}}, user: {currentLocation}}) => {
+    return {fetching, routes, route, currentLocation, fetchingTasks}
 }
 
 const mapDispatchToProps = (dispatch) => {
