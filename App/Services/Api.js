@@ -56,6 +56,9 @@ const create = (baseURL = 'http://18.191.149.64:3030/api/') => {
     //Route
     const createRoute = (route) => api.post('routes', route)
     const getRoutes = (params) => api.get('routes', params)
+    const updateRouteStatus = (params, routeId) => api.post(`routes/updateStatus/${routeId}`, params)
+    const deleteRoute = (routeId) => api.delete(`routes/${routeId}`)
+    const getSpecificRoute = (routeId) => api.get(`routes/${routeId}`)
 
     // ------
     // STEP 3
@@ -86,8 +89,12 @@ const create = (baseURL = 'http://18.191.149.64:3030/api/') => {
         fetchFamily,
 
         getFolders,
+
         createRoute,
-        getRoutes
+        getRoutes,
+        updateRouteStatus,
+        deleteRoute,
+        getSpecificRoute
     }
 }
 

@@ -167,6 +167,7 @@ export const Routes = Actions.create(
                 titleStyle={styles.navBarTextTabs}
                 tabStyle={styles.tabBarIcon}>
                 <Scene
+                    initial
                     iconName='map'
                     key='tab1'
                     icon={TabIcon}
@@ -207,7 +208,6 @@ export const Routes = Actions.create(
                     navigationBarStyle={styles.primaryNavBar}
                 />
                 <Scene
-                    initial
                     key='tab5'
                     icon={TabIcon}
                     title={strings.zeloo}

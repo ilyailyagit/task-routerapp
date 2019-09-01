@@ -10,7 +10,19 @@ const {Types, Creators} = createActions({
 
     getRoutes: ['params'],
     getRoutesSuccess: ['routes'],
-    getRoutesFailure: ['error']
+    getRoutesFailure: ['error'],
+
+    getSpecificRoute: ['routeId'],
+    getSpecificRouteSuccess: ['route'],
+    getSpecificRouteFailure: ['error'],
+
+    updateRouteStatus: ['routeId', 'params'],
+    updateRouteStatusSuccess: ['route'],
+    updateRouteStatusFailure: ['error'],
+
+    deleteRoute: ['routeId'],
+    deleteRouteSuccess: ['routeId'],
+    deleteRouteFailure: ['error']
 })
 
 export const RouteTypes = Types
@@ -28,7 +40,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 
 // Create New Route
-export const createRoute = (state) => state.merge({fetching: true})
+export const createRoute = (state) => state.merge({fetching: true, route: {}})
 export const createRouteSuccess = (state, {route}) => state.merge({fetching: false, error: null, route})
 export const createRouteFailure = (state) => state.merge({fetching: false, error: true})
 
@@ -36,6 +48,25 @@ export const createRouteFailure = (state) => state.merge({fetching: false, error
 export const getRoutes = (state) => state.merge({fetching: true})
 export const getRoutesSuccess = (state, {routes}) => state.merge({fetching: false, error: null, routes})
 export const getRoutesFailure = (state) => state.merge({fetching: false, error: true})
+
+//Update Route Status
+export const updateRouteStatus = (state) => state.merge({fetching: true})
+export const updateRouteStatusSuccess = (state, {route}) => state.merge({fetching: false, error: null, route})
+export const updateRouteStatusFailure = (state) => state.merge({fetching: false, error: true})
+
+//Delete Route
+export const deleteRoute = (state) => state.merge({fetching: true})
+export const deleteRouteSuccess = (state, {routeId}) =>{
+    let routes = Immutable.asMutable(state.routes || [])
+    routes = routes.filter(({id}) => id.toString() !== routeId.toString())
+    return state.merge({fetching: false, error: null, routes})
+}
+export const deleteRouteFailure = (state) => state.merge({fetching: false, error: true})
+
+//Get Specific Route
+export const getSpecificRoute = (state) => state.merge({fetching: true})
+export const getSpecificRouteSuccess = (state, {route}) => state.merge({fetching: false, error: null, route})
+export const getSpecificRouteFailure = (state) => state.merge({fetching: false, error: true})
 
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -48,5 +79,18 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_ROUTES]: getRoutes,
     [Types.GET_ROUTES_SUCCESS]: getRoutesSuccess,
     [Types.GET_ROUTES_FAILURE]: getRoutesFailure,
+
+    [Types.UPDATE_ROUTE_STATUS]: updateRouteStatus,
+    [Types.UPDATE_ROUTE_STATUS_SUCCESS]: updateRouteStatusSuccess,
+    [Types.UPDATE_ROUTE_STATUS_FAILURE]: updateRouteStatusFailure,
+
+    [Types.DELETE_ROUTE]: deleteRoute,
+    [Types.DELETE_ROUTE_SUCCESS]: deleteRouteSuccess,
+    [Types.DELETE_ROUTE_FAILURE]: deleteRouteFailure,
+
+
+    [Types.GET_SPECIFIC_ROUTE]: getSpecificRoute,
+    [Types.GET_SPECIFIC_ROUTE_SUCCESS]: getSpecificRouteSuccess,
+    [Types.GET_SPECIFIC_ROUTE_FAILURE]: getSpecificRouteFailure,
 
 })

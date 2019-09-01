@@ -52,4 +52,7 @@ export default {
     takePhoto: 'Take photo',
     chooseFromLibrary: 'Choose form Library',
     noTaskFound: 'No task found on this date',
+    newRouteCreated: 'New route created successfully',
+    markedActive: 'Route is marked as active successfully',
+    noRouteFound: 'No Route Found',
 }

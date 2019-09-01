@@ -4,6 +4,7 @@ const colors = {
   facebook: '#3b5998',
   themeColor: '#a25ea7',
   purple: '#624b6d',
+  red: '#ff0000',
   primaryColor: '#a25ea7',
   primaryColorI: '#573679',
   primaryColorII: '#38265f',

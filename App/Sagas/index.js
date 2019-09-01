@@ -18,7 +18,7 @@ import { onCreateFamily, onFetchFamily } from "./FamilySagas";
 //api urls
 import {APP_URL} from "../Lib/AppConstants";
 import {onGetFolders} from "./FolderSagas";
-import {onCreateRoute, onGetRoutes} from "./RouteSagas";
+import {onCreateRoute, onDeleteRoute, onGetRoutes, onGetSpecificRoute, onUpdateRouteStatus} from "./RouteSagas";
 
 /* ------------- Types ------------- */
 /* ------------- Sagas ------------- */
@@ -59,7 +59,10 @@ export default function* root() {
 
         //Route
         takeLatest(RouteTypes.CREATE_ROUTE, onCreateRoute, api),
-        takeLatest(RouteTypes.GET_ROUTES, onGetRoutes, api)
+        takeLatest(RouteTypes.GET_ROUTES, onGetRoutes, api),
+        takeLatest(RouteTypes.UPDATE_ROUTE_STATUS, onUpdateRouteStatus, api),
+        takeLatest(RouteTypes.DELETE_ROUTE, onDeleteRoute, api),
+        takeLatest(RouteTypes.GET_SPECIFIC_ROUTE, onGetSpecificRoute, api),
 
     ])
 }
