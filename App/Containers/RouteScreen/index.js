@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Dimensions, FlatList, SafeAreaView, StatusBar} from 'react-native'
+import {Dimensions, FlatList, SafeAreaView, StatusBar, View} from 'react-native'
 import MapView from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -19,6 +19,8 @@ import {ProgressDialog} from "../../Components/ProgressDialog";
 import {MAPS_KEY} from "../../Lib/AppConstants";
 import AnimatedAlert from "../../Components/AnimatedAlert";
 import RNLocation from "react-native-location";
+import LinearGradient from "react-native-linear-gradient";
+import CurrentLocationMarker from "../../Components/CurrentLocationMarker";
 
 const {width, height} = Dimensions.get('window');
 
@@ -30,19 +32,18 @@ const DefaultDelta = {
 class RouteScreen extends Component {
     constructor(props) {
         super(props)
-        const { currentLocation, routes } = props
+        const {currentLocation, routes} = props
         StatusBar.setBackgroundColor(Colors.primaryColorI)
         this.state = {
             location: {},
             selectedRouteId: '',
-            userCurrentLocation: currentLocation,
             activeRoute: {}
         }
         this.mapView = null;
         this.activeRoute = false
     }
 
-    componentDidMount () {
+    async componentDidMount() {
         const {getAllRoutes} = this.props
         getAllRoutes({status: null})
         RNLocation.configure({
@@ -63,29 +64,14 @@ class RouteScreen extends Component {
                 }
             }
         })).then(granted => {
+            console.tron.warn(granted)
             if (granted) {
+                console.tron.warn('in if.')
                 this._startUpdatingLocation();
+            } else {
+                console.tron.warn('in else.')
             }
         });
-    }
-
-    _startUpdatingLocation = () => {
-        this.locationSubscription = RNLocation.subscribeToLocationUpdates(
-            locations => {
-                console.tron.warn({locations})
-                const {0: { longitude = 0, latitude = 0 } = {}} = locations
-                this.setState({ userCurrentLocation: {latitude, longitude} });
-            }
-        );
-    };
-
-    _stopUpdatingLocation = () => {
-        this.locationSubscription && this.locationSubscription();
-        // this.setState({ userCurrentLocation: null });
-    };
-
-    componentWillUnmount(){
-        this._stopUpdatingLocation()
     }
 
     onPressedRoutesActions = (index) => {
@@ -116,7 +102,6 @@ class RouteScreen extends Component {
 
     render() {
         const {fetching, fetchingTasks, routes = [], route = {}, currentLocation} = this.props
-        const { userCurrentLocation } = this.state
         let activeRoute = {}
         let tasksList = []
         const {selectedRouteId} = this.state
@@ -138,6 +123,7 @@ class RouteScreen extends Component {
                 wayPoints = (locationCoordinates.length > 2) ? locationCoordinates.slice(1, -1) : null
             }
         }
+        locationCoordinates = [currentLocation, ...locationCoordinates]
         return (
             <SafeAreaView style={styles.mainContainer}>
                 <MapView
@@ -149,13 +135,14 @@ class RouteScreen extends Component {
                     {locationCoordinates.map((coordinate, index) =>
                         <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate}/>
                     )}
+                    <CurrentLocationMarker defaultLocation={currentLocation} isTracking={true} />
                     {(locationCoordinates.length >= 2) && (
                         <MapViewDirections
                             origin={locationCoordinates[0]}
                             destination={locationCoordinates[locationCoordinates.length - 1]}
                             waypoints={wayPoints}
                             apikey={MAPS_KEY}
-                            strokeWidth={3}
+                            strokeWidth={5}
                             strokeColor={Colors.red}
                             optimizeWaypoints={true}
                             onStart={(params) => {
@@ -178,7 +165,8 @@ class RouteScreen extends Component {
                     )}
                 </MapView>
                 <CircleIcon iconName='navigation' iconType='Feather' iconContainer={styles.navigationContainer}/>
-                <CircleIcon onPress={() => {}} iconContainer={styles.locationContainer}/>
+                <CircleIcon onPress={() => {
+                }} iconContainer={styles.locationContainer}/>
                 <FlatList
                     data={this.activeRoute ? tasksList : routes}
                     style={styles.routeContainer}
