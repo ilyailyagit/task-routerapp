@@ -13,10 +13,12 @@ import ActionSheet from "react-native-actionsheet";
 import strings from "../../Constants/strings";
 import {Colors} from "../../Themes";
 import RouteActions from "../../Redux/RouteRedux";
+import UserActions from "../../Redux/UserRedux";
 import {connect} from "react-redux";
 import {ProgressDialog} from "../../Components/ProgressDialog";
 import {MAPS_KEY} from "../../Lib/AppConstants";
 import AnimatedAlert from "../../Components/AnimatedAlert";
+import RNLocation from "react-native-location";
 
 const {width, height} = Dimensions.get('window');
 
@@ -28,18 +30,62 @@ const DefaultDelta = {
 class RouteScreen extends Component {
     constructor(props) {
         super(props)
+        const { currentLocation, routes } = props
         StatusBar.setBackgroundColor(Colors.primaryColorI)
         this.state = {
             location: {},
             selectedRouteId: '',
+            userCurrentLocation: currentLocation,
+            activeRoute: {}
         }
         this.mapView = null;
         this.activeRoute = false
     }
 
-    componentDidMount() {
+    componentDidMount () {
         const {getAllRoutes} = this.props
-        getAllRoutes({status: 'active'})
+        getAllRoutes({status: null})
+        RNLocation.configure({
+            distanceFilter: 1,
+            androidProvider: "auto",
+            interval: 1000, // Milliseconds
+            fastestInterval: 1000, // Milliseconds
+            maxWaitTime: 1000, // Milliseconds
+        }).then(() => RNLocation.requestPermission({
+            ios: "whenInUse",
+            android: {
+                detail: "fine",
+                rationale: {
+                    title: "Location permission",
+                    message: "We use your location to show you real time direactions.",
+                    buttonPositive: "OK",
+                    buttonNegative: "Cancel"
+                }
+            }
+        })).then(granted => {
+            if (granted) {
+                this._startUpdatingLocation();
+            }
+        });
+    }
+
+    _startUpdatingLocation = () => {
+        this.locationSubscription = RNLocation.subscribeToLocationUpdates(
+            locations => {
+                console.tron.warn({locations})
+                const {0: { longitude = 0, latitude = 0 } = {}} = locations
+                this.setState({ userCurrentLocation: {latitude, longitude} });
+            }
+        );
+    };
+
+    _stopUpdatingLocation = () => {
+        this.locationSubscription && this.locationSubscription();
+        // this.setState({ userCurrentLocation: null });
+    };
+
+    componentWillUnmount(){
+        this._stopUpdatingLocation()
     }
 
     onPressedRoutesActions = (index) => {
@@ -70,6 +116,7 @@ class RouteScreen extends Component {
 
     render() {
         const {fetching, fetchingTasks, routes = [], route = {}, currentLocation} = this.props
+        const { userCurrentLocation } = this.state
         let activeRoute = {}
         let tasksList = []
         const {selectedRouteId} = this.state
@@ -104,7 +151,7 @@ class RouteScreen extends Component {
                     )}
                     {(locationCoordinates.length >= 2) && (
                         <MapViewDirections
-                            origin={originLocation}
+                            origin={locationCoordinates[0]}
                             destination={locationCoordinates[locationCoordinates.length - 1]}
                             waypoints={wayPoints}
                             apikey={MAPS_KEY}
@@ -165,7 +212,8 @@ const mapDispatchToProps = (dispatch) => {
         getAllRoutes: (params) => dispatch(RouteActions.getRoutes(params)),
         deleteRoute: (routeId) => dispatch(RouteActions.deleteRoute(routeId)),
         getSpecificRoute: (routeId) => dispatch(RouteActions.getSpecificRoute(routeId)),
-        updateRouteStatus: (routeId, params) => dispatch(RouteActions.updateRouteStatus(routeId, params))
+        updateRouteStatus: (routeId, params) => dispatch(RouteActions.updateRouteStatus(routeId, params)),
+        getCurrentLocation: () => dispatch(UserActions.getCurrentLocation())
     }
 }
 

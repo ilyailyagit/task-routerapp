@@ -34,6 +34,7 @@ import CreateRoute from "../Containers/CreateRoute";
 import SelectTaskOrder from "../Containers/SelectTaskOrder";
 import UserProfile from '../Containers/UserProfile';
 import FamilyMembers from '../Containers/FamilyMembers';
+import TestLocation from "../Containers/TestLocation";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
