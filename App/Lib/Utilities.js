@@ -243,6 +243,11 @@ export const getCurrentLocation = () => {
     })
 }
 
+export const TASK_STATUSES = {
+    COMPLETED: 'completed',
+    INCOMPLETE: 'uncompleted'
+}
+
 export const getLatLonDiffInMeters = (lat1, lon1, lat2, lon2) => {
     let R = 6371; // radius of the earth in km
     let dLat = deg2rad(lat2-lat1);  // deg2rad below
@@ -259,4 +264,26 @@ export const getLatLonDiffInMeters = (lat1, lon1, lat2, lon2) => {
 
 export const deg2rad = (deg) => {
     return deg * (Math.PI/180)
+}
+
+export const ARRIVED_DISTANCE_THRESHOLD = 10; //in meters
+
+// Route & Tasks Specific Utils
+export const routeHasIncompleteTask = (route) => {
+    const { tasks = [] } = route
+    if (!Array.isArray(tasks) || !tasks.length) {
+        return false
+    }
+    for (let task of tasks) {
+        const { task: { taskStatus = ''} = {} } = task
+        if (taskStatus === TASK_STATUSES.INCOMPLETE) {
+            return true
+        }
+    }
+    return false
+}
+
+export const routeHasTasks = (route) => {
+    const { tasks = [] } = route
+    return Array.isArray(tasks) || tasks.length
 }

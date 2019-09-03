@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import {Dimensions, FlatList, SafeAreaView, StatusBar, View} from 'react-native'
+import {Dimensions, FlatList, SafeAreaView, StatusBar} from 'react-native'
 import MapView from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
+import * as _ from 'lodash'
 
 import styles from "./styles";
 import CircleIcon from "../../Components/CircleIcon";
@@ -19,12 +20,11 @@ import {ProgressDialog} from "../../Components/ProgressDialog";
 import {MAPS_KEY} from "../../Lib/AppConstants";
 import AnimatedAlert from "../../Components/AnimatedAlert";
 import RNLocation from "react-native-location";
-import LinearGradient from "react-native-linear-gradient";
-import CurrentLocationMarker from "../../Components/CurrentLocationMarker";
+import {routeHasIncompleteTask, routeHasTasks, showMessage, TASK_STATUSES} from "../../Lib/Utilities";
 
 const {width, height} = Dimensions.get('window');
 
-const DefaultDelta = {
+export const DefaultDelta = {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
 }
@@ -32,12 +32,12 @@ const DefaultDelta = {
 class RouteScreen extends Component {
     constructor(props) {
         super(props)
-        const {currentLocation, routes} = props
+        const {currentLocation, routes, route} = props
         StatusBar.setBackgroundColor(Colors.primaryColorI)
         this.state = {
             location: {},
-            selectedRouteId: '',
-            activeRoute: {}
+            selectedRouteId: route.id || null,
+            activeRoute: route || {}
         }
         this.mapView = null;
         this.activeRoute = false
@@ -45,7 +45,7 @@ class RouteScreen extends Component {
 
     async componentDidMount() {
         const {getAllRoutes} = this.props
-        getAllRoutes({status: null})
+        getAllRoutes({status: null, sort: 'today'})
         RNLocation.configure({
             distanceFilter: 1,
             androidProvider: "auto",
@@ -64,12 +64,9 @@ class RouteScreen extends Component {
                 }
             }
         })).then(granted => {
-            console.tron.warn(granted)
             if (granted) {
-                console.tron.warn('in if.')
                 this._startUpdatingLocation();
             } else {
-                console.tron.warn('in else.')
             }
         });
     }
@@ -78,42 +75,88 @@ class RouteScreen extends Component {
         const {selectedRouteId} = this.state
         const {updateRouteStatus, deleteRoute, getSpecificRoute} = this.props
         if (index === 0) {
-            updateRouteStatus(selectedRouteId, {status: 'active'})
-            getSpecificRoute(selectedRouteId)
+            updateRouteStatus(selectedRouteId, {status: 'active'}, true)
         } else if (index === 1) {
             deleteRoute(selectedRouteId)
         }
     }
 
     onPressedRouteItem = (selectedRouteId) => {
-        if (!this.activeRoute) {
+        if (_.isEmpty(this.getActiveRoute())) {
             this.setState({selectedRouteId})
             this.RouteAction.show()
         }
     }
 
     renderRouteItem = ({item}) => {
-        return <CalendarItem onPress={() => this.onPressedRouteItem(item.id)} item={item}/>
+        return <CalendarItem onPress={() => this.onPressedRouteItem(item.id)} item={item} onMarkTaskDone={this.onMarkTaskDone} />
+    }
+
+    onMarkTaskDone = (taskId, status) => {
+        const {updateTaskStatusReq, route} = this.props
+        const {selectedRouteId} = this.state
+        updateTaskStatusReq(taskId, (selectedRouteId || route.id), status)
     }
 
     renderListHeaderComponent = (activeRoute) => {
-        return <SelectedRoute item={activeRoute}/>
+        return <SelectedRoute item={activeRoute} onCloseTask={this.removeActiveTask} />
+    }
+
+    removeActiveTask = () => {
+        const { updateRouteStatus, getSpecificRoute, route } = this.props
+        const { selectedRouteId } = this.state
+        const routeId = selectedRouteId || route.id
+
+        if (_.isEmpty(route) || !routeId) {
+            return
+        }
+        updateRouteStatus(routeId, {status: 'inactive'}, true)
+    }
+
+    onShowDirections = () => {
+        const {fetching, fetchingTasks, route = {}} = this.props
+        if (fetching || fetchingTasks) {
+            return
+        }
+        const {id = '', tasks = []} = route || {}
+        let nextTask = tasks.find((item) => item.task.taskStatus === TASK_STATUSES.INCOMPLETE)
+        if (_.isEmpty(nextTask)) {
+            const hasTasks = routeHasTasks(route)
+            if (hasTasks) {
+                showMessage(strings.allTasksCompletedForRoute)
+            } else {
+               showMessage(strings.noTaskFound)
+            }
+        } else {
+            Actions.push('navigateToTask', {nextTask, nextRouteId: route.id})
+        }
+    }
+
+    onMarkerPress = (item) => {
+        if (item && item.taskStatus === TASK_STATUSES.INCOMPLETE) {
+            // todo: show Directions to next Task.
+            this.onShowDirections()
+        }
+    }
+
+    getActiveRoute = () => {
+        const {route = {}} = this.props
+        return route && route.routeStatus === 'active' ? route : {}
     }
 
     render() {
         const {fetching, fetchingTasks, routes = [], route = {}, currentLocation} = this.props
-        let activeRoute = {}
+        let activeRoute = this.getActiveRoute()
         let tasksList = []
-        const {selectedRouteId} = this.state
+        const {selectedRouteId, isTracking} = this.state
         const originLocation = {...currentLocation, ...DefaultDelta}
         let locationCoordinates = []
         let wayPoints = null
         if (!fetchingTasks) {
             const {id = '', tasks = []} = route || {}
             if (id.toString() === selectedRouteId.toString() && route.routeStatus === 'active') {
-                this.activeRoute = true
-                tasksList = tasks.map((item) => item.task || {})
-                activeRoute = routes[0]
+                tasksList = tasks.map((item) => ({...item.task, order: item.order} || {}))
+                activeRoute = route.id === selectedRouteId ? route : (routes[0].id === selectedRouteId ? routes[0] : {})
                 locationCoordinates.push(currentLocation)
                 locationCoordinates = tasksList.map((item) => {
                     const {locationCoordinates = []} = item || {}
@@ -124,6 +167,8 @@ class RouteScreen extends Component {
             }
         }
         locationCoordinates = [currentLocation, ...locationCoordinates]
+        const showDirections = (locationCoordinates.length >= 2) && routeHasIncompleteTask(activeRoute)
+        this.activeRoute = showDirections
         return (
             <SafeAreaView style={styles.mainContainer}>
                 <MapView
@@ -132,11 +177,23 @@ class RouteScreen extends Component {
                     style={styles.mapContainer}
                     ref={c => this.mapView = c}
                 >
-                    {locationCoordinates.map((coordinate, index) =>
-                        <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate}/>
-                    )}
-                    <CurrentLocationMarker defaultLocation={currentLocation} isTracking={true} />
-                    {(locationCoordinates.length >= 2) && (
+                    {
+                        showDirections && tasksList.map((item, index) => {
+                            const {locationCoordinates = [0, 0], taskStatus, name} = item
+                            return <MapView.Marker key={`${item.id}`}
+                                                   coordinate={{
+                                                       latitude: locationCoordinates[0],
+                                                       longitude: locationCoordinates[1]
+                                                   }}
+                                                   title={name}
+                                                   onPress={() => this.onMarkerPress(item)}
+                                                   pinColor={taskStatus === TASK_STATUSES.COMPLETED ? Colors.green : Colors.red}/>
+                        })
+                    }
+                    <MapView.Marker key={'userCurrentLocationMarker'}
+                                    coordinate={currentLocation}
+                                    title={strings.startOf}/>
+                    {showDirections && (
                         <MapViewDirections
                             origin={locationCoordinates[0]}
                             destination={locationCoordinates[locationCoordinates.length - 1]}
@@ -164,11 +221,14 @@ class RouteScreen extends Component {
                         />
                     )}
                 </MapView>
-                <CircleIcon iconName='navigation' iconType='Feather' iconContainer={styles.navigationContainer}/>
+                <CircleIcon iconName='navigation'
+                            iconType='Feather'
+                            iconContainer={styles.navigationContainer}
+                            onPress={this.onShowDirections}/>
                 <CircleIcon onPress={() => {
                 }} iconContainer={styles.locationContainer}/>
                 <FlatList
-                    data={this.activeRoute ? tasksList : routes}
+                    data={!_.isEmpty(activeRoute) && routeHasTasks(activeRoute) ? tasksList : routes}
                     style={styles.routeContainer}
                     renderItem={this.renderRouteItem}
                     keyExtractor={item => String(item.id)}
@@ -200,8 +260,9 @@ const mapDispatchToProps = (dispatch) => {
         getAllRoutes: (params) => dispatch(RouteActions.getRoutes(params)),
         deleteRoute: (routeId) => dispatch(RouteActions.deleteRoute(routeId)),
         getSpecificRoute: (routeId) => dispatch(RouteActions.getSpecificRoute(routeId)),
-        updateRouteStatus: (routeId, params) => dispatch(RouteActions.updateRouteStatus(routeId, params)),
-        getCurrentLocation: () => dispatch(UserActions.getCurrentLocation())
+        updateRouteStatus: (routeId, params, fetchAfterUpdate) => dispatch(RouteActions.updateRouteStatus(routeId, params, fetchAfterUpdate)),
+        getCurrentLocation: () => dispatch(UserActions.getCurrentLocation()),
+        updateTaskStatusReq: (taskId, routeId, status, fetchAfterUpdate) => dispatch(RouteActions.updateTaskStatus(taskId, routeId, status, fetchAfterUpdate))
     }
 }
 

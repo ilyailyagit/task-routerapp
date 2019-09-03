@@ -16,13 +16,17 @@ const {Types, Creators} = createActions({
     getSpecificRouteSuccess: ['route'],
     getSpecificRouteFailure: ['error'],
 
-    updateRouteStatus: ['routeId', 'params'],
+    updateRouteStatus: ['routeId', 'params', 'fetchAfterUpdate'],
     updateRouteStatusSuccess: ['route'],
     updateRouteStatusFailure: ['error'],
 
     deleteRoute: ['routeId'],
     deleteRouteSuccess: ['routeId'],
-    deleteRouteFailure: ['error']
+    deleteRouteFailure: ['error'],
+
+    updateTaskStatus: ['taskId', 'routeId', 'status', 'fetchAfterUpdate'],
+    updateTaskStatusSuccess: null,
+    updateTaskStatusFailure: null
 })
 
 export const RouteTypes = Types
@@ -55,12 +59,21 @@ export const updateRouteStatus = (state) => state.merge({fetching: true})
 export const updateRouteStatusSuccess = (state, {route}) => state.merge({fetching: false, error: null, route})
 export const updateRouteStatusFailure = (state) => state.merge({fetching: false, error: true})
 
+//Update Route Status
+export const updateTaskStatus = (state) => state.merge({fetching: true})
+export const updateTaskStatusSuccess = (state) => {return state.merge({fetching: false, error: null})}
+export const updateTaskStatusFailure = (state) => state.merge({fetching: false, error: true})
+
 //Delete Route
 export const deleteRoute = (state) => state.merge({fetching: true})
 export const deleteRouteSuccess = (state, {routeId}) =>{
     let routes = Immutable.asMutable(state.routes || [])
     routes = routes.filter(({id}) => id.toString() !== routeId.toString())
-    return state.merge({fetching: false, error: null, routes})
+    let newRoute = state.route
+    if(state.route.id === routeId) {
+        newRoute = {}
+    }
+    return state.merge({fetching: false, error: null, routes, newRoute})
 }
 export const deleteRouteFailure = (state) => state.merge({fetching: false, error: true})
 
@@ -93,5 +106,9 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SPECIFIC_ROUTE]: getSpecificRoute,
     [Types.GET_SPECIFIC_ROUTE_SUCCESS]: getSpecificRouteSuccess,
     [Types.GET_SPECIFIC_ROUTE_FAILURE]: getSpecificRouteFailure,
+
+    [Types.UPDATE_TASK_STATUS]: updateTaskStatus,
+    [Types.UPDATE_TASK_STATUS_SUCCESS]: updateTaskStatusSuccess,
+    [Types.UPDATE_TASK_STATUS_FAILURE]: updateTaskStatusFailure,
 
 })

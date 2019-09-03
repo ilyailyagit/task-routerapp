@@ -4,6 +4,7 @@ import {View} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Colors from "../../Themes/Colors";
 import RNLocation from "react-native-location";
+import {ARRIVED_DISTANCE_THRESHOLD, getLatLonDiffInMeters} from "../../Lib/Utilities";
 
 export default class CurrentLocationMarker extends Component {
     constructor(props) {
@@ -40,24 +41,30 @@ export default class CurrentLocationMarker extends Component {
         })).then(granted => {
             console.tron.warn(granted)
             if (granted) {
-                console.tron.warn('in if.')
                 this._startUpdatingLocation();
             } else {
-                console.tron.warn('in else.')
             }
         });
     }
 
     _startUpdatingLocation = () => {
         this.locationSubscription = RNLocation.subscribeToLocationUpdates(
-            locations => {
+            (locations) => {
                 console.tron.warn({locations})
                 const {0: {longitude = 0, latitude = 0} = {}} = locations
-                this.currentLocation = {latitude, longitude}
+                this.currentLocation = { latitude, longitude }
                 this.setState({currentLocation: {latitude, longitude}}, () => {
                     if (this.trackingMarker && this.trackingMarker.redraw) {
-                        console.tron.warn('redrawing...')
                         this.trackingMarker.redraw()
+                    }
+                    const { destination } = this.props
+                    const distance = getLatLonDiffInMeters(latitude, longitude, destination.latitude, destination.longitude);
+                    console.tron.warn({distance})
+                    if (Math.abs(distance)) {
+                        if(distance <= ARRIVED_DISTANCE_THRESHOLD) {
+                            this.props.onArrived()
+                            this._stopUpdatingLocation()
+                        }
                     }
                 });
             }

@@ -35,6 +35,7 @@ import SelectTaskOrder from "../Containers/SelectTaskOrder";
 import UserProfile from '../Containers/UserProfile';
 import FamilyMembers from '../Containers/FamilyMembers';
 import TestLocation from "../Containers/TestLocation";
+import NavigationToTask from "../Components/NavigationToTask";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
@@ -103,6 +104,15 @@ export const Routes = Actions.create(
                 title='CREATE ROUTE'
                 component={CreateRoute}
                 renderLeftButton={<BackButton/>}
+                titleStyle={styles.navBarTextTabs}
+                navigationBarStyle={styles.primaryNavBar}
+                renderRightButton={<View style={styles.emptyRightButton}/>}
+            />
+            <Scene
+                key='navigateToTask'
+                title='Turn by Turn Navigation'
+                component={NavigationToTask}
+                renderLeftButton={<BackButton />}
                 titleStyle={styles.navBarTextTabs}
                 navigationBarStyle={styles.primaryNavBar}
                 renderRightButton={<View style={styles.emptyRightButton}/>}
