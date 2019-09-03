@@ -154,7 +154,7 @@ class RouteScreen extends Component {
         let wayPoints = null
         if (!fetchingTasks) {
             const {id = '', tasks = []} = route || {}
-            if (id.toString() === selectedRouteId.toString() && route.routeStatus === 'active') {
+            if (String(id) === String(selectedRouteId) && route.routeStatus === 'active') {
                 tasksList = tasks.map((item) => ({...item.task, order: item.order} || {}))
                 activeRoute = route.id === selectedRouteId ? route : (routes[0].id === selectedRouteId ? routes[0] : {})
                 locationCoordinates.push(currentLocation)

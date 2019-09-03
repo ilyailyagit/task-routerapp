@@ -68,7 +68,7 @@ export const updateTaskStatusFailure = (state) => state.merge({fetching: false, 
 export const deleteRoute = (state) => state.merge({fetching: true})
 export const deleteRouteSuccess = (state, {routeId}) =>{
     let routes = Immutable.asMutable(state.routes || [])
-    routes = routes.filter(({id}) => id.toString() !== routeId.toString())
+    routes = routes.filter(({id}) => String(id) !== String(routeId))
     let newRoute = state.route
     if(state.route.id === routeId) {
         newRoute = {}

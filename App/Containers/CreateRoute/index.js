@@ -39,12 +39,12 @@ class CreateRoute extends Component {
     onSelectRoute = (item) => {
         const {id: routeId} = item || {}
         let {taskId = [], selectedTasks} = this.state
-        if (taskId.includes(routeId.toString())) {
+        if (taskId.includes(String(routeId))) {
             const index = taskId.findIndex((item) => item === routeId)
             taskId.splice(index, 1)
-            selectedTasks = selectedTasks.filter(({id}) => { return id.toString() !== routeId.toString()})
+            selectedTasks = selectedTasks.filter(({id}) => { return String(id) !== String(routeId)})
         } else {
-            taskId.push(routeId.toString())
+            taskId.push(String(routeId))
             selectedTasks.push(item)
         }
         this.setState({taskId, selectedTasks})
@@ -99,7 +99,7 @@ class CreateRoute extends Component {
                     <View style={styles.dateInput}>
                         <Text>No of Events</Text>
                         <View style={styles.noOfEventsContainer}>
-                            <Text>{noOfTasks.toString()}</Text>
+                            <Text>{noOfTasks}</Text>
                         </View>
                     </View>
                 </View>
