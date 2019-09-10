@@ -56,6 +56,7 @@
     "react-native-material-dropdown": "^0.11.1",
     "react-native-modal": "^11.2.0",
     "react-native-modal-datetime-picker": "^7.5.0",
+    "react-native-open-maps": "^0.3.3",
     "react-native-open-settings": "waqas19921/react-native-open-settings",
     "react-native-permissions": "^1.2.0",
     "react-native-phone-input": "^0.2.4",

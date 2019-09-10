@@ -60,5 +60,6 @@ export default {
     markedTaskDone: 'Task marked done successfully.',
     completed: 'completed',
     allTasksCompletedForRoute: 'All tasks for this route has been completed',
-    navigationStarted: 'Navigation Starting...'
+    navigationStarted: 'Navigation Starting...',
+    navigationInProgress: `Navigation is in Progress in google maps app`
 }

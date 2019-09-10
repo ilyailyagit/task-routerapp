@@ -1,18 +1,15 @@
 import React, {Component} from 'react'
 import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native'
-import MapView from "react-native-maps";
 import Colors from "../../Themes/Colors";
 import strings from "../../Constants/strings";
 import CurrentLocationMarker from "../CurrentLocationMarker";
-import MapViewDirections from "react-native-maps-directions";
 import {Actions} from 'react-native-router-flux'
 import RouteActions from '../../Redux/RouteRedux'
-
-import {MAPS_KEY} from "../../Lib/AppConstants";
 import {connect} from "react-redux";
-import Metrics from "../../Themes/Metrics";
 import {ProgressDialog} from "../ProgressDialog";
 import {showMessage, TASK_STATUSES} from "../../Lib/Utilities";
+import {Fonts} from "../../Themes";
+import openMap from 'react-native-open-maps';
 
 const DefaultNavigationDelta = {
     latitudeDelta: 0.0422,
@@ -24,43 +21,35 @@ const {width, height} = Dimensions.get('window');
 class NavigationToTask extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            taskInProgress: true,
+        }
     }
 
     componentDidMount(){
-        showMessage(strings.navigationStarted)
+        const {currentLocation, nextTask, nextRouteId} = this.props
+        const {task: {locationCoordinates = [0, 0]} = {}} = nextTask
+        const destination = {latitude: locationCoordinates[0], longitude: locationCoordinates[1]}
+        const mapUrl = {latitude: currentLocation.latitude, longitude: currentLocation.longitude, start: `${currentLocation.latitude},${currentLocation.longitude}`, end: `${destination.latitude},${destination.longitude}`}
+        setTimeout(() => {
+            showMessage(strings.navigationStarted)
+            openMap(mapUrl)
+        }, 1000)
     }
 
+
     render() {
+        const {taskInProgress} = this.state
         const {currentLocation, nextTask, nextRouteId} = this.props
         const {task: {locationName: destinationName, name, id: taskID, locationCoordinates = [0, 0]} = {}} = nextTask
-        const destination = {latitude: locationCoordinates[0], longitude: locationCoordinates[1]}
+        const destination = {latitude: 30.275691, longitude: 70.728191}
         return (
             <View style={styles.mainContainer}>
-                <View style={styles.topContainer}>
-                    <View style={[styles.row, styles.borderBottom]}>
-                        <Text>From: {currentLocation.latitude}, {currentLocation.longitude}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <Text>To: {destinationName}</Text>
-                    </View>
-                </View>
-                <MapView
-                    region={{...currentLocation, ...DefaultNavigationDelta}}
-                    initialRegion={{...currentLocation, ...DefaultNavigationDelta}}
-                    style={styles.mapContainer}
-                    ref={c => this.mapView = c}
-                >
-                    <MapView.Marker key={`${taskID}`}
-                                    coordinate={destination}
-                                    title={destinationName}
-                                    pinColor={Colors.red}/>
-                    <MapView.Marker key={'userCurrentLocationMarker'}
-                                    coordinate={currentLocation}
-                                    title={strings.startOf}/>
+                {taskInProgress && <Text style={styles.navInProgress}>{strings.navigationInProgress}</Text>}
                     <CurrentLocationMarker defaultLocation={currentLocation}
                                            isTracking={true}
                                            onArrived={() => {
+                                               this.setState({taskInProgress: false})
                                                Alert.alert(
                                                    'Arrived',
                                                    'your destination has arrived. ',
@@ -79,33 +68,6 @@ class NavigationToTask extends Component {
                                                );
                                            }}
                                            destination={destination}/>
-                    <MapViewDirections
-                        origin={currentLocation}
-                        destination={destination}
-                        apikey={MAPS_KEY}
-                        strokeWidth={5}
-                        strokeColor={Colors.red}
-                        optimizeWaypoints={true}
-                        onStart={(params) => {
-                            console.tron.warn(`Started routing between "${params.origin}" and "${params.destination}"`);
-                        }}
-                        onReady={result => {
-                            this.setState({startedNavigation: true}, () => {
-                                this.mapView.fitToCoordinates(result.coordinates, {
-                                    edgePadding: {
-                                        right: (width / 20),
-                                        bottom: (height / 20),
-                                        left: (width / 20),
-                                        top: (height / 20),
-                                    }
-                                });
-                            })
-                        }}
-                        onError={(errorMessage) => {
-                            console.tron.warn(errorMessage)
-                        }}
-                    />
-                </MapView>
                 <ProgressDialog hide={!this.props.fetching}/>
             </View>
         )
@@ -129,34 +91,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(NavigationToTask)
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
+        justifyContent: 'center',
+        backgroundColor: Colors.snow,
     },
-    topContainer: {
-        width: '100%',
-        padding: Metrics.doubleBaseMargin,
-        backgroundColor: Colors.snow
-    },
-    row: {
-        flexDirection: 'row',
-        paddingVertical: Metrics.smallMargin,
-    },
-    borderBottom: {
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: Colors.grayI
-    },
-    mapContainer: {
-        flex: 1
-    },
-    navigationContainer: {
-        width: 40,
-        right: 25,
-        height: 40,
-        borderRadius: 20,
-        bottom: Metrics.screenHeight / 2
-    },
-    locationContainer: {
-        bottom: Metrics.screenHeight / 2 - 60
-    },
-    routeContainer: {
-        flex: 1
+    navInProgress: {
+        color: Colors.gray,
+        textAlign: 'center',
+        fontSize: Fonts.size.h5
     }
 })
