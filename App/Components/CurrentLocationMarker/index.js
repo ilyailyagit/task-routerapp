@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
-import MapView from "react-native-maps";
-import {View, AppState} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import Colors from "../../Themes/Colors";
+import {AppState} from "react-native";
 import RNLocation from "react-native-location";
 import {ARRIVED_DISTANCE_THRESHOLD, getLatLonDiffInMeters} from "../../Lib/Utilities";
+import firebase from "react-native-firebase";
 
 export default class CurrentLocationMarker extends Component {
     constructor(props) {
@@ -16,6 +14,22 @@ export default class CurrentLocationMarker extends Component {
             arrived: false
         }
     }
+
+    buildNotification = () => {
+        const notification = new firebase.notifications.Notification()
+            .setNotificationId('1')
+            .setTitle('Arrived')
+            .setBody('Your destination has arrived.')
+            .android.setPriority(firebase.notifications.Android.Priority.High)
+            .android.setChannelId('reminder')
+            .android.setAutoCancel(true)
+
+        return notification;
+    };
+
+    setNotification = async () => {
+        firebase.notifications().displayNotification(this.buildNotification())
+    };
 
     async componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -50,10 +64,6 @@ export default class CurrentLocationMarker extends Component {
         });
     }
 
-    componentWillUnmount() {
-        AppState.removeEventListener('change', this._handleAppStateChange);
-    }
-
     _handleAppStateChange = (nextAppState) => {
         if (
             this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
@@ -81,6 +91,7 @@ export default class CurrentLocationMarker extends Component {
                         if(distance <= ARRIVED_DISTANCE_THRESHOLD) {
                             this.setState({arrived: true})
                             this.props.onArrived()
+                            this.setNotification()
                             this._stopUpdatingLocation()
                         }
                     }
@@ -95,6 +106,7 @@ export default class CurrentLocationMarker extends Component {
     };
 
     componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
         this._stopUpdatingLocation()
     }
 

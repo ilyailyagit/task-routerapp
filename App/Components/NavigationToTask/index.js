@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native'
+import {Alert, Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Colors from "../../Themes/Colors";
 import strings from "../../Constants/strings";
 import CurrentLocationMarker from "../CurrentLocationMarker";
@@ -8,7 +8,7 @@ import RouteActions from '../../Redux/RouteRedux'
 import {connect} from "react-redux";
 import {ProgressDialog} from "../ProgressDialog";
 import {showMessage, TASK_STATUSES} from "../../Lib/Utilities";
-import {Fonts} from "../../Themes";
+import {Fonts, Metrics} from "../../Themes";
 import openMap from 'react-native-open-maps';
 
 const DefaultNavigationDelta = {
@@ -35,6 +35,7 @@ class NavigationToTask extends Component {
             showMessage(strings.navigationStarted)
             openMap(mapUrl)
         }, 1000)
+
     }
 
 
@@ -42,17 +43,18 @@ class NavigationToTask extends Component {
         const {taskInProgress} = this.state
         const {currentLocation, nextTask, nextRouteId} = this.props
         const {task: {locationName: destinationName, name, id: taskID, locationCoordinates = [0, 0]} = {}} = nextTask
-        const destination = {latitude: 30.275691, longitude: 70.728191}
+        const destination = {latitude: locationCoordinates[0], longitude: locationCoordinates[1]}
         return (
             <View style={styles.mainContainer}>
                 {taskInProgress && <Text style={styles.navInProgress}>{strings.navigationInProgress}</Text>}
+                {taskInProgress && <Text style={styles.closeApp}>{strings.closeApp}</Text>}
                     <CurrentLocationMarker defaultLocation={currentLocation}
                                            isTracking={true}
                                            onArrived={() => {
                                                this.setState({taskInProgress: false})
                                                Alert.alert(
                                                    'Arrived',
-                                                   'your destination has arrived. ',
+                                                   'Your destination has arrived. Mark Task as completed or Cancel.',
                                                    [
                                                        {
                                                            text: 'Cancel',
@@ -93,10 +95,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: Colors.snow,
+        paddingHorizontal: Metrics.marginThirty,
     },
     navInProgress: {
-        color: Colors.gray,
+        color: Colors.black,
         textAlign: 'center',
         fontSize: Fonts.size.h5
+    },
+    closeApp: {
+        color: Colors.gray,
+        textAlign: 'center',
+        fontSize: Fonts.size.regular,
+        marginTop: Metrics.marginFifteen
     }
 })

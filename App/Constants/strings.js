@@ -61,5 +61,6 @@ export default {
     completed: 'completed',
     allTasksCompletedForRoute: 'All tasks for this route has been completed',
     navigationStarted: 'Navigation Starting...',
-    navigationInProgress: `Navigation is in Progress in google maps app`
+    navigationInProgress: `Navigation is in Progress in google maps app`,
+    closeApp: `Please don't close App when Navigation is in progress`,
 }
