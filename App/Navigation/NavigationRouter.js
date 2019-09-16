@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {View, Text} from 'react-native'
-import {connect} from 'react-redux'
+import {Text, View} from 'react-native'
 import {Actions, Drawer, Router, Scene, Stack, Tabs} from 'react-native-router-flux'
-import {createReactNavigationReduxMiddleware, createReduxContainer} from 'react-navigation-redux-helpers'
+import {createReactNavigationReduxMiddleware} from 'react-navigation-redux-helpers'
 import styles from './Styles/NavigationContainerStyle'
 import TabIcon from '../Components/TabIcon'
 import HomeScreen from '../Containers/HomeScreen'
@@ -34,32 +33,39 @@ import CreateRoute from "../Containers/CreateRoute";
 import SelectTaskOrder from "../Containers/SelectTaskOrder";
 import UserProfile from '../Containers/UserProfile';
 import FamilyMembers from '../Containers/FamilyMembers';
-import TestLocation from "../Containers/TestLocation";
 import NavigationToTask from "../Components/NavigationToTask";
 import firebase from "react-native-firebase";
+import RouteActions from "../Redux/RouteRedux";
+import {connect} from "react-redux";
 
 export const navigationMiddleware = createReactNavigationReduxMiddleware(state => state.nav)
 Defaults.loadGlobalTextProps(TextConfig.customTextProps)
 Defaults.loadGlobalInputTextProps(TextConfig.customTextInputProps)
 
-export default class NavigationRouter extends Component {
-
+class NavigationRouter extends Component {
     componentDidMount() {
         // Create notification channel required for Android devices
         this.createNotificationChannel();
-
-        // Ask notification permission and add notification listener
         this.checkPermission();
     }
 
+    onPressTab = (tab) => {
+        const {getAllRoutes, getActiveRoute} = this.props
+        const {navigation: {state: {key = ''} = {}} = {}} = tab
+        if(key === 'tab1'){
+            getAllRoutes({status: null, sort: 'today'})
+        }else if(key === 'tab5'){
+            getActiveRoute({status: 'active', sort: 'today'})
+        }
+        Actions.jump(key)
+    }
+
     createNotificationChannel = () => {
-        // Build a android notification channel
         const channel = new firebase.notifications.Android.Channel(
             "reminder", // channelId
             "Reminders Channel", // channel name
             firebase.notifications.Android.Importance.High // channel importance
         ).setDescription("Used for getting reminder notification"); // channel description
-        // Create the android notification channel
         firebase.notifications().android.createChannel(channel);
     };
 
@@ -153,13 +159,11 @@ export default class NavigationRouter extends Component {
                             renderRightButton={<View style={styles.emptyRightButton}/>}
                         />
                         <Scene
+                            hideNavBar
                             key='navigateToTask'
-                            title='Turn by Turn Navigation'
                             component={NavigationToTask}
-                            renderLeftButton={<BackButton/>}
                             titleStyle={styles.navBarTextTabs}
                             navigationBarStyle={styles.primaryNavBar}
-                            renderRightButton={<View style={styles.emptyRightButton}/>}
                         />
                         <Scene
                             key='userProfile'
@@ -220,6 +224,7 @@ export default class NavigationRouter extends Component {
                             showLabel={false}
                             tabBarPosition={'bottom'}
                             tabBarStyle={styles.tabBar}
+                            tabBarOnPress={this.onPressTab}
                             titleStyle={styles.navBarTextTabs}
                             tabStyle={styles.tabBarIcon}>
                             <Scene
@@ -227,7 +232,7 @@ export default class NavigationRouter extends Component {
                                 iconName='map'
                                 key='tab1'
                                 icon={TabIcon}
-                                component={RouteScreen}
+                                component={RouteScreen}items
                                 IconClass={Entypo}
                                 title={'VIEW ROUTE'}
                                 navigationBarStyle={styles.primaryNavBar}
@@ -286,3 +291,13 @@ export default class NavigationRouter extends Component {
 
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAllRoutes: (params) => dispatch(RouteActions.getRoutes(params)),
+        getActiveRoute: (params) => dispatch(RouteActions.getActiveRoute(params)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(NavigationRouter)
+

@@ -32,7 +32,7 @@ export const DefaultDelta = {
 class RouteScreen extends Component {
     constructor(props) {
         super(props)
-        const {currentLocation, routes, route} = props
+        const {route} = props
         StatusBar.setBackgroundColor(Colors.primaryColorI)
         this.state = {
             location: {},
@@ -58,7 +58,7 @@ class RouteScreen extends Component {
                 detail: "fine",
                 rationale: {
                     title: "Location permission",
-                    message: "We use your location to show you real time direactions.",
+                    message: "We use your location to show you real time directions.",
                     buttonPositive: "OK",
                     buttonNegative: "Cancel"
                 }

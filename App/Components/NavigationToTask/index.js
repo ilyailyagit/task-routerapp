@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Alert, Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Alert, Dimensions, StyleSheet, Text, BackAndroid, BackHandler, View, SafeAreaView} from 'react-native'
 import Colors from "../../Themes/Colors";
 import strings from "../../Constants/strings";
 import CurrentLocationMarker from "../CurrentLocationMarker";
@@ -10,13 +10,12 @@ import {ProgressDialog} from "../ProgressDialog";
 import {showMessage, TASK_STATUSES} from "../../Lib/Utilities";
 import {Fonts, Metrics} from "../../Themes";
 import openMap from 'react-native-open-maps';
+import NavigationButton from "../NavigationButton";
 
 const DefaultNavigationDelta = {
     latitudeDelta: 0.0422,
     longitudeDelta: 0.0421,
 }
-
-const {width, height} = Dimensions.get('window');
 
 class NavigationToTask extends Component {
     constructor(props) {
@@ -27,6 +26,7 @@ class NavigationToTask extends Component {
     }
 
     componentDidMount(){
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         const {currentLocation, nextTask, nextRouteId} = this.props
         const {task: {locationCoordinates = [0, 0]} = {}} = nextTask
         const destination = {latitude: locationCoordinates[0], longitude: locationCoordinates[1]}
@@ -35,9 +35,41 @@ class NavigationToTask extends Component {
             showMessage(strings.navigationStarted)
             openMap(mapUrl)
         }, 1000)
-
     }
 
+    componentWillUnmount() {
+        this.backHandler.remove()
+    }
+
+
+    onPressedBack = () => {
+       return Alert.alert(
+            'Navigation is in progress',
+            'Do you want to cancel the current navigation to task',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => Actions.tabbar({type: 'reset'}),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Mark Task Done',
+                    onPress: () => this.props.updateTaskStatusReq(nextTask.task.id, nextRouteId, TASK_STATUSES.COMPLETED)
+                },
+                {
+                    text: 'Do Nothing',
+                    onPress: () => {},
+                    style: 'cancel',
+                },
+            ],
+            {cancelable: false},
+        );
+    }
+
+    handleBackPress = () => {
+        this.onPressedBack()
+        return true;
+    }
 
     render() {
         const {taskInProgress} = this.state
@@ -45,7 +77,13 @@ class NavigationToTask extends Component {
         const {task: {locationName: destinationName, name, id: taskID, locationCoordinates = [0, 0]} = {}} = nextTask
         const destination = {latitude: locationCoordinates[0], longitude: locationCoordinates[1]}
         return (
-            <View style={styles.mainContainer}>
+            <SafeAreaView style={styles.mainContainer}>
+                <View style={styles.navBar}>
+                    <NavigationButton onPress={this.onPressedBack} iconName={'chevron-thin-left'} iconType={'Entypo'}  size={20} style={styles.backIcon} />
+                    <Text style={styles.title}>{strings.turnByTurnNav}</Text>
+                    <View style={styles.dummyView}/>
+                </View>
+                <View style={styles.innerContainer}>
                 {taskInProgress && <Text style={styles.navInProgress}>{strings.navigationInProgress}</Text>}
                 {taskInProgress && <Text style={styles.closeApp}>{strings.closeApp}</Text>}
                     <CurrentLocationMarker defaultLocation={currentLocation}
@@ -71,7 +109,8 @@ class NavigationToTask extends Component {
                                            }}
                                            destination={destination}/>
                 <ProgressDialog hide={!this.props.fetching}/>
-            </View>
+                </View>
+            </SafeAreaView>
         )
     }
 }
@@ -93,8 +132,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(NavigationToTask)
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        justifyContent: 'center',
         backgroundColor: Colors.snow,
+    },
+    innerContainer: {
+        flex: 1,
+        justifyContent: 'center',
         paddingHorizontal: Metrics.marginThirty,
     },
     navInProgress: {
@@ -107,5 +149,29 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: Fonts.size.regular,
         marginTop: Metrics.marginFifteen
+    },
+    navBar: {
+        height: 55,
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: Metrics.screenWidth,
+        backgroundColor: Colors.primaryColorI,
+    },
+    backIcon: {
+        padding: 10,
+        fontSize: 20,
+        color: Colors.snow
+    },
+    title: {
+        flex: 1,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontWeight: null,
+        fontFamily: Fonts.type.medium,
+        color: Colors.snow
+    },
+    dummyView: {
+        width: 40
     }
 })
