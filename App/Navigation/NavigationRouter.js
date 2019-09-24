@@ -228,7 +228,6 @@ class NavigationRouter extends Component {
                             titleStyle={styles.navBarTextTabs}
                             tabStyle={styles.tabBarIcon}>
                             <Scene
-                                initial
                                 iconName='map'
                                 key='tab1'
                                 icon={TabIcon}
@@ -273,6 +272,7 @@ class NavigationRouter extends Component {
                                 navigationBarStyle={styles.primaryNavBar}
                             />
                             <Scene
+                                initial
                                 key='tab5'
                                 icon={TabIcon}
                                 title={strings.zeloo}

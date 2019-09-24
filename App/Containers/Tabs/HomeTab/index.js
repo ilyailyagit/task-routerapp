@@ -34,6 +34,8 @@ import FoldersComponent from "../../../Components/FoldersComponent";
 import {Actions} from "react-native-router-flux";
 import ActionButtons from "../../../Components/ActionButtons";
 import RouteActions from "../../../Redux/RouteRedux";
+import {isEmpty} from "ramda";
+import moment from "moment";
 
 class HomeTab extends Component {
 
@@ -196,15 +198,19 @@ class HomeTab extends Component {
     renderCurrentTask = () => {
         const {route: {tasks = []} = {}} = this.props
         const activeTask = tasks[0] || {}
-        const {task: {name: taskName = strings.noTaskPlanned} = {}} = activeTask
+        let {task: {name: taskName, fromTime= '', toTime = ''} = {}} = activeTask
+             if(!isEmpty(taskName)){
+                 taskName = `${taskName} at ${moment(fromTime).format('MM/DD/YYYY')}\n${moment(fromTime).format('HH:mm')} to ${moment(toTime).format('HH:mm')}`
+             } else {
+                 taskName = strings.noTaskPlanned
+             }
             return <Text style={styles.noTaskText}>{taskName}</Text>
     }
 
     renderActiveRoute = () => {
-        const {activeRoute = {}, route: {tasks = []} = {}} = this.props
-        const activeTask = tasks[0] || {}
-        const {task: {locationName = strings.noLocationAvailable} = {}} = activeTask
-        const {name = strings.noTaskAvailable} = activeRoute
+        const {route: {tasks = []} = {}} = this.props
+        const activeTask = tasks[1] || {}
+        const {task: {locationName = strings.noLocationAvailable, name = strings.noTaskAvailable} = {}} = activeTask
         return (
             <>
                 <View style={styles.routeLeftIconContainer}>

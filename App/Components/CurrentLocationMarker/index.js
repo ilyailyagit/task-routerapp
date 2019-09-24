@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {AppState} from "react-native";
+import {AppState, View} from "react-native";
 import RNLocation from "react-native-location";
 import {ARRIVED_DISTANCE_THRESHOLD, getLatLonDiffInMeters} from "../../Lib/Utilities";
 import firebase from "react-native-firebase";
@@ -59,6 +59,7 @@ export default class CurrentLocationMarker extends Component {
             console.tron.warn(granted)
             if (granted) {
                 this._startUpdatingLocation();
+                console.tron.warn('Start updating location')
             } else {
             }
         });
@@ -117,6 +118,6 @@ export default class CurrentLocationMarker extends Component {
             return null
         }
 
-        return  null
+        return  <View/>
     }
 }
