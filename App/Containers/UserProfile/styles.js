@@ -22,5 +22,8 @@ export default StyleSheet.create({
     inputContainerMain: {
         color: Colors.snow,
         backgroundColor: Colors.transparent
+    },
+    buttonText: {
+        color: Colors.snow
     }
 })

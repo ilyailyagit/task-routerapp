@@ -42,7 +42,7 @@ class CreateRoute extends Component {
         const {id: routeId} = item || {}
         let {taskId = [], selectedTasks} = this.state
         if (taskId.includes(String(routeId))) {
-            const index = taskId.findIndex((item) => item === routeId)
+            const index = taskId.findIndex((item) => item === String(routeId))
             taskId.splice(index, 1)
             selectedTasks = selectedTasks.filter(({id}) => { return String(id) !== String(routeId)})
         } else {
