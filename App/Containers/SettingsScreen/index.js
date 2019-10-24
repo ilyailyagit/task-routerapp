@@ -23,8 +23,9 @@ class SettingsScreen extends Component {
     }
 
     componentDidMount() {
-        const {user: {familyId = ''}, fetchFamilyReq} = this.props
+        const {user: {familyId = ''}, fetchFamilyReq, getPermissions} = this.props
         fetchFamilyReq(familyId)
+        getPermissions()
         RNCalendarEvents.authorizeEventStore().then(() => {
             RNCalendarEvents.findCalendars().then((calendars) => {
                   this.setState({calendars})
@@ -32,19 +33,25 @@ class SettingsScreen extends Component {
         })
     }
 
+    changePermission = ({id, permissions}) => {
+        const {changePermissions} = this.props
+        changePermissions(id, permissions)
+    }
     render() {
         const {pushNotification, showCalendarDialog, calendars, showPaymentDialog} = this.state
-        const {family: {users = {}}} = this.props
-        const familyMembers = users.map((item) => {
-            return {id: item.phone, value: item.name}
+        let {permissions = []} = this.props
+        permissions = permissions.filter(family => family.user.status === 'active')
+        const familyMembers = permissions.map((item) => {
+            const {id = '', user: {name = ''} = {},calendarPermission = false, budgetPermission = false, routePermission = false} = item
+            return {id, value: name, calendarPermission, budgetPermission, routePermission}
         })
         return (
             <SafeAreaView style={styles.mainContainer}>
                 <ScrollView>
                     <Text onPress={() => this.setState({showPaymentDialog: true})} style={styles.premiumVersion}>{strings.premiumVersion}</Text>
-                    <SwitchButtonGroup type={'route'} groupSettingsLabel='Route' groupSettings={familyMembers}/>
-                    <SwitchButtonGroup type={'calendar'} groupSettingsLabel='Calendar' groupSettings={familyMembers}/>
-                    <SwitchButtonGroup type={'budget'} groupSettingsLabel='Budget' groupSettings={familyMembers}/>
+                    <SwitchButtonGroup type={'routePermission'} groupSettingsLabel='Route' onChangeSetting={this.changePermission} groupSettings={familyMembers}/>
+                    <SwitchButtonGroup type={'calendarPermission'} groupSettingsLabel='Calendar' onChangeSetting={this.changePermission} groupSettings={familyMembers}/>
+                    <SwitchButtonGroup type={'budgetPermission'} groupSettingsLabel='Budget' onChangeSetting={this.changePermission} groupSettings={familyMembers}/>
                     <SwitchButton label='Push Notification' showBorder={false} checked={pushNotification}
                                   onChangeSetting={() => {
                                       this.setState({pushNotification: !pushNotification})
@@ -64,16 +71,18 @@ class SettingsScreen extends Component {
 
 const mapStateToProps = ({
                              user: {user = {}} = {},
-                             family: {fetching, family} = {},
+                             family: {fetching, family, permissions} = {},
                          }) => {
     return {
-        fetching, family, user
+        fetching, family, user, permissions
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchFamilyReq: (familyId) => dispatch(FamilyActions.fetchFamily(familyId))
+        fetchFamilyReq: (familyId) => dispatch(FamilyActions.fetchFamily(familyId)),
+        getPermissions: () => dispatch(FamilyActions.getFamilyPermissions()),
+        changePermissions: (familyId, permissions) => dispatch(FamilyActions.changeFamilyPermissions(familyId, permissions))
     }
 }
 

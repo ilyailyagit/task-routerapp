@@ -20,7 +20,7 @@ import {
     onSignUp,
     onVerifyPin
 } from './UserSagas'
-import {onCreateFamily, onFetchFamily} from "./FamilySagas";
+import {onChangeFamilyPermissions, onCreateFamily, onFetchFamily, onGetFamilyPermissions} from "./FamilySagas";
 //api urls
 import {onGetFolders} from "./FolderSagas";
 import {
@@ -67,6 +67,8 @@ export default function* root() {
         // Family
         takeLatest(FamilyTypes.CREATE_FAMILY, onCreateFamily, api),
         takeLatest(FamilyTypes.FETCH_FAMILY, onFetchFamily, api),
+        takeLatest(FamilyTypes.GET_FAMILY_PERMISSIONS, onGetFamilyPermissions, api),
+        takeLatest(FamilyTypes.CHANGE_FAMILY_PERMISSIONS, onChangeFamilyPermissions, api),
 
         //Folders
         takeLatest(FolderTypes.GET_FOLDERS, onGetFolders, api),

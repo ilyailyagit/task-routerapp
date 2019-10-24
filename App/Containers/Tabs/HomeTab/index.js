@@ -351,7 +351,8 @@ class HomeTab extends Component {
     render() {
         const {familyName, selectedContacts, showContactsList, contact, showAddFamilyMember} = this.state
         const {isSignup, family = {}, fetching, contacts, folders, routesFetching} = this.props
-        const {name, users = []} = family
+        let {name, users = []} = family
+        users = users.filter(family => family.status === 'active')
         if (fetching) {
             return (
                 <View style={styles.mainContainer}>

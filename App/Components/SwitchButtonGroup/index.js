@@ -9,13 +9,15 @@ export default class SwitchButtonGroup extends Component {
     static propTypes = {
         groupSettingsLabel: PropTypes.strings,
         groupSettings: PropTypes.array,
-        type: PropTypes.strings
+        type: PropTypes.strings,
+        onChangeSetting: PropTypes.function
     }
 
     static defaultProps = {
         groupSettingsLabel: '',
         groupSettings: [],
-        type: ''
+        type: '',
+        onChangeSetting: () => {}
     }
 
     constructor(props) {
@@ -23,9 +25,9 @@ export default class SwitchButtonGroup extends Component {
         this.state = {
             settingsStatus: false,
             settings: {
-                route: {},
-                budget: {},
-                calendar: {}
+                routePermission: {},
+                budgetPermission: {},
+                calendarPermission: {}
             }
         }
     }
@@ -34,16 +36,18 @@ export default class SwitchButtonGroup extends Component {
         const {groupSettings, type} = this.props
         const {settings} = this.state
         groupSettings.forEach((item) => {
-            settings[type][item.id] = true
+            settings[type][item.id] = item[type] || false
         })
         this.setState({settings})
     }
 
     onChangeSettings = (setting) => {
-        const {type} = this.props
+        const {id = ''} = setting
+        const {type, onChangeSetting} = this.props
         const {settings} = this.state
-        settings[type][setting.id] = !settings[type][setting.id]
+        settings[type][id] = !settings[type][id]
         this.setState({settings})
+        onChangeSetting({id, permissions: {[type]: settings[type][id]}})
     }
 
     render() {
@@ -54,9 +58,10 @@ export default class SwitchButtonGroup extends Component {
                 <SwitchButton label={groupSettingsLabel} isHeading checked={settingsStatus} onChangeSetting={() => {
                     this.setState({settingsStatus: !settingsStatus})
                 }}/>
-                {settingsStatus && groupSettings.map((setting)=> {
+                {settingsStatus && groupSettings.map((setting) => {
                     const currentSetting = settings[type][setting.id]
-                    return <SwitchButton label={setting.value} checked={currentSetting} onChangeSetting={() => this.onChangeSettings(setting)}/>
+                    return <SwitchButton label={setting.value} checked={currentSetting}
+                                         onChangeSetting={() => this.onChangeSettings(setting)}/>
                 })}
             </View>
         )

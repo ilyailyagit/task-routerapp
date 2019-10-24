@@ -53,6 +53,8 @@ const create = (baseURL = `${APP_URL}api/`) => {
     // family
     const createFamily = (data) => api.post('families', data)
     const fetchFamily = ({ familyId }) => api.get(`families/${familyId}`)
+    const getFamilyPermissions = () => api.get(`userpermissions`)
+    const changeFamilyPermission = (permissions, familyId) => api.put(`userpermissions/${familyId}`, permissions)
 
     //folders
     const getFolders = () => api.get('folders')
@@ -92,6 +94,8 @@ const create = (baseURL = `${APP_URL}api/`) => {
 
         createFamily,
         fetchFamily,
+        getFamilyPermissions,
+        changeFamilyPermission,
 
         getFolders,
 
