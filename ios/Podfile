@@ -75,12 +75,12 @@ target 'Zeloo' do
   pod 'Google-Maps-iOS-Utils'
   pod 'GoogleUtilities'
   pod 'GoogleAppMeasurement'
-  
+
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
   pod 'react-native-google-maps', path: '../node_modules/react-native-maps'
-  
-  pod 'react-native-location', :path => '../node_modules/react-native-location'
+
+  pod 'react-native-location', :path => '../node_modules/react-native-location/react-native-location.podspec'
 
 end
 

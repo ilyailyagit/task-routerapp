@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Dimensions, FlatList, Modal, SafeAreaView, StatusBar, Text, View} from 'react-native'
+import {Dimensions, FlatList, Modal, SafeAreaView, StatusBar, Text, View, Platform} from 'react-native'
 import MapView from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
 import * as _ from 'lodash'
@@ -214,7 +214,8 @@ class RouteScreen extends Component {
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
             start: `${currentLocation.latitude},${currentLocation.longitude}`,
-            end: `${destination.latitude},${destination.longitude}`
+            end: `${destination.latitude},${destination.longitude}`,
+            provider: 'google'
         }
         showMessage(strings.navigationStarted)
         openMap(mapUrl)

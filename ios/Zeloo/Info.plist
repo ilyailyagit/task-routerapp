@@ -28,7 +28,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.6</string>
+	<string>1.0.7</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -73,6 +73,8 @@
 	<string>${PRODUCT_NAME} requires camera permissions to capture and upload user image</string>
 	<key>NSContactsUsageDescription</key>
 	<string>${PRODUCT_NAME} requires contacts permissions to send messages and to add your family members into your family.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>${PRODUCT_NAME} requires location permissions to provide you task and routing.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>${PRODUCT_NAME} requires location permissions to provide you task and routing.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -106,6 +108,10 @@
 		<string>Myriad_Pro_Bold.ttf</string>
 		<string>Myriad_Pro_Regular.ttf</string>
 		<string>Myriad_Pro_Semibold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
