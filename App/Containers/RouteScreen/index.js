@@ -234,7 +234,7 @@ class RouteScreen extends Component {
     }
 
     render() {
-        const {fetching, fetchingTasks, routes = [], route = {}, currentLocation} = this.props
+        const {userSettings, fetching, fetchingTasks, routes = [], route = {}, currentLocation} = this.props
         let activeRoute = this.getActiveRoute()
         let tasksList = []
         const {selectedRouteId, navigationInProgress, nextTask, nextRouteId, arrived} = this.state
@@ -347,7 +347,7 @@ class RouteScreen extends Component {
                     </View>
                     </View>
                 </Modal>
-                <ActionButtons onPressActionButton1={Actions.createActivity}
+                <ActionButtons userSettings={userSettings} onPressActionButton1={Actions.createActivity}
                                onPressActionButton2={Actions.createRoute}/>
                 <ActionSheet
                     cancelButtonIndex={2}
@@ -363,8 +363,9 @@ class RouteScreen extends Component {
     }
 }
 
-const mapStateToProps = ({route: {fetching, activeRoute, fetchingTasks, routes = [], route = {}}, user: {currentLocation}}) => {
-    return {fetching, routes, route, currentLocation, activeRoute, fetchingTasks}
+const mapStateToProps = ({route: {fetching, activeRoute, fetchingTasks, routes = [], route = {}},
+                          user: {user: { userSettings = {} } = {}, currentLocation} = {}}) => {
+    return {fetching, routes, route, currentLocation, activeRoute, fetchingTasks, userSettings}
 }
 
 const mapDispatchToProps = (dispatch) => {
