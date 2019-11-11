@@ -204,7 +204,7 @@ class HomeTab extends Component {
              } else {
                  taskName = strings.noTaskPlanned
              }
-            return <Text style={styles.noTaskText}>{taskName}</Text>
+            return <Text style={styles.noTaskText}>{isEmpty(activeTask) ? strings.noTaskFound : taskName}</Text>
     }
 
     renderActiveRoute = () => {
@@ -285,10 +285,14 @@ class HomeTab extends Component {
     }
 
     renderTaskActions = () => {
+        const {route: {tasks = []} = {}} = this.props
+        const activeTask = tasks[0] || {}
+        const noActiveTask = isEmpty(activeTask)
         return (
             <View style={styles.bottomActionsRow}>
                 <TouchableOpacity style={styles.taskLeftActionBtn}
                                   activeOpacity={0.8}
+                                  disabled={noActiveTask}
                                   onPress={this.onMarkTaskDone}>
                     <Text style={styles.taskBtnText}>{strings.markDone}</Text>
                 </TouchableOpacity>
@@ -299,6 +303,7 @@ class HomeTab extends Component {
                 </View>
                 <TouchableOpacity style={styles.taskRightActionBtn}
                                   activeOpacity={0.8}
+                                  disabled={noActiveTask}
                                   onPress={this.onIgnoreTask}>
                     <Text style={styles.taskBtnText}>{strings.ignoreForNow}</Text>
                 </TouchableOpacity>
