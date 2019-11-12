@@ -12,7 +12,7 @@ export const photosPermissionTypes = {
   PHOTOS: 'photo'
 }
 export const MAPS_KEY = 'AIzaSyBEhXXp2d0qDvVOJnDHTmQCD2hNeG2fDDg'
-export const APP_URL = 'https://b689516c.ngrok.io/' // 'http://18.191.149.64:3030/' //http://18.191.149.64:3030/api/'
+export const APP_URL = 'http://18.191.149.64:3030/' //http://18.191.149.64:3030/api/'
 
 export const CloudinaryCred  = {
   "apiKey": "713915523318189",
