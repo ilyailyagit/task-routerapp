@@ -71,4 +71,6 @@ export default {
     getPremium: 'Get Premium Version.',
     cantCreateActivity: 'You are not allowed to create Activity.',
     cantCreateRoute: 'You are not allowed to create Route.',
+    folderNameMandatory: 'Folder name is mandatory.',
+    folderIdNeededToUpdate: 'Folder Id is mandatory to update folder.'
 }

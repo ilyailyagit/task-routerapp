@@ -22,13 +22,14 @@ import styles from './styles'
 import {ProgressDialog} from "../../../Components/ProgressDialog";
 import images from "../../../Themes/Images";
 import FamilyActions from "../../../Redux/FamilyRedux";
+import FolderActions from "../../../Redux/FolderRedux";
 import FamilyMember from "../../../Components/FamilyMember";
-import {ADD_FAMILY_MEMBER_BUTTON_ID} from "../../../Lib/AppConstants";
+import {ADD_FAMILY_MEMBER_BUTTON_ID, imageOptions, photosPermissionTypes} from "../../../Lib/AppConstants";
 import Colors from "../../../Themes/Colors";
 import AddContacts from "../../../Components/AddContacts";
 import ModalComponent from "../../../Components/ModalComponent";
 import strings from "../../../Constants/strings";
-import {showErrorMessage, TASK_STATUSES} from "../../../Lib/Utilities";
+import {handlePermissionError, showErrorMessage, TASK_STATUSES, uploadImageToCloudinary} from "../../../Lib/Utilities";
 import CreateNewContact from "../../../Components/CreateNewContact";
 import FoldersComponent from "../../../Components/FoldersComponent";
 import {Actions} from "react-native-router-flux";
@@ -36,6 +37,7 @@ import ActionButtons from "../../../Components/ActionButtons";
 import RouteActions from "../../../Redux/RouteRedux";
 import {isEmpty} from "ramda";
 import moment from "moment";
+import ImagePicker from "react-native-image-crop-picker";
 
 class HomeTab extends Component {
 
@@ -47,7 +49,10 @@ class HomeTab extends Component {
             showFamilyMembers: false,
             selectedContacts: [],
             showContactsList: false,
-            showAddFamilyMember: false
+            showAddFamilyMember: false,
+            folderId: null,
+            uploadingFolderImage: false,
+            selectedFolderIcon: ''
         }
         StatusBar.setBackgroundColor(Colors.primaryColorI)
     }
@@ -62,10 +67,13 @@ class HomeTab extends Component {
         }
     }
 
-    componentWillReceiveProps({fetching: newFetching}) {
+    componentWillReceiveProps({fetching: newFetching, folderFetching: newFolderFetching}) {
         const {showAddFamilyMember} = this.state
         if (!newFetching && newFetching !== this.props.fetching && showAddFamilyMember) {
             this.setState({showAddFamilyMember: false})
+        }
+        if (!newFolderFetching && this.props.folderFetching !== newFolderFetching) {
+            this.setState({uploadingFolderImage: false, folderId: null})
         }
     }
 
@@ -345,7 +353,10 @@ class HomeTab extends Component {
 
     onFolderActionPressed = (index) => {
         switch (index){
-            case 0: this.photoAction.show()
+            case 0:
+                if (this.photoAction && this.photoAction.show) {
+                    this.photoAction.show();
+                }
             break
             case 1: () => {}
             break
@@ -353,8 +364,50 @@ class HomeTab extends Component {
         }
     }
 
-    render() {
-        const {familyName, selectedContacts, showContactsList, contact, showAddFamilyMember} = this.state
+    onImageActionPressed = (index) => {
+        switch (index) {
+            case 0:
+                ImagePicker.openCamera(imageOptions).then(image => {
+                    this.uploadImgAndUpdateViaApi(image.path || '')
+                }).catch(err => {
+                    handlePermissionError(photosPermissionTypes.CAMERA)
+                })
+                break
+            case 1:
+                ImagePicker.openPicker(imageOptions).then(image => {
+                    this.uploadImgAndUpdateViaApi(image.path || '')
+                }).catch(err => {
+                    handlePermissionError(photosPermissionTypes.PHOTOS)
+                })
+                break
+        }
+    }
+
+    uploadImgAndUpdateViaApi = (path) => {
+        const { updateFolder, folderFetching } = this.props
+        const { uploadingFolderImage, folderId } = this.state
+        if (folderFetching || uploadingFolderImage) {
+            return
+        }
+        this.setState({selectedFolderIcon: '', uploadingFolderImage: true})
+        uploadImageToCloudinary(path)
+            .then((picUrl) => {
+                console.tron.warn('uploadedFolderImageSuccess: ' + picUrl)
+                this.setState({picUrl}, () => {
+                    updateFolder({id: folderId, imgUrl: picUrl})
+                })
+            })
+            .catch(err => {
+                console.tron.warn({errorUploadingImageTOCloudinary: err})
+            })
+            .finally(() => {
+                this.setState({uploadingFolderImage: false})
+            })
+    }
+
+    render () {
+        const {familyName, selectedContacts, showContactsList, contact,
+            uploadingFolderImage, showAddFamilyMember} = this.state
         const {isSignup, family = {}, fetching, contacts, folders, routesFetching, user: { userSettings = {} } = {}} = this.props
         let {name, users = []} = family
         users = users.filter(family => family.status === 'active')
@@ -425,7 +478,12 @@ class HomeTab extends Component {
                     {this.renderCurrentRoutePanel()}
                     <FoldersComponent containerStyles={styles.foldersComponentContainer}
                                       folders={folders}
-                                      onPressFolder={() => this.folderActions.show()}
+                                      uploadingFolderImage={uploadingFolderImage}
+                                      selectedFolderId={this.state.folderId}
+                                      onPressFolder={(folderId) => {
+                                          this.setState({folderId})
+                                          this.folderActions.show()
+                                      }}
                                       onAddFolder={this.onAddFolder}/>
                 </ScrollView>
                 <ProgressDialog hide={!routesFetching}/>
@@ -449,6 +507,7 @@ class HomeTab extends Component {
                     cancelButtonIndex={2}
                     title={strings.chooseIcon}
                     ref={o => this.photoAction = o}
+                    onPress={this.onImageActionPressed}
                     options={[strings.takePhoto, strings.chooseFromLibrary, strings.cancel]}
                 />
             </View>
@@ -461,10 +520,10 @@ const mapStateToProps = ({
                              user: {user, isSignup} = {},
                              family: {fetching, family} = {},
                              route: {activeRoute = {}, route = {}, fetching: routesFetching} = {},
-                             folder: {folders = [], hasNoMore: noMoreFolders = false} = {}
+                             folder: {fetching: folderFetching, folders = [], hasNoMore: noMoreFolders = false} = {}
                          }) => {
     return {
-        user, route, isSignup, fetching, routesFetching, activeRoute, family, contacts, folders, noMoreFolders
+        user, route, isSignup, fetching, routesFetching, activeRoute, family, contacts, folders, noMoreFolders, folderFetching
     }
 }
 
@@ -472,10 +531,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         deleteRoute: (routeId) => dispatch(RouteActions.deleteRoute(routeId)),
         getActiveRoute: (params) => dispatch(RouteActions.getActiveRoute(params)),
+        updateFolder: (params) => dispatch(FolderActions.updateFolder(params)),
         fetchFamilyReq: (familyId) => dispatch(FamilyActions.fetchFamily(familyId)),
         createFamilyReq: (familyName, invites) => dispatch(FamilyActions.createFamily(familyName, invites)),
         updateTaskStatusReq: (taskId, routeId, status) => dispatch(RouteActions.updateTaskStatus(taskId, routeId, status)),
-        updateRouteStatus: (routeId, params, fetchAfterUpdate) => dispatch(RouteActions.updateRouteStatus(routeId, params, fetchAfterUpdate))
+        updateRouteStatus: (routeId, params, fetchAfterUpdate) => dispatch(RouteActions.updateRouteStatus(routeId, params, fetchAfterUpdate)),
     }
 }
 
