@@ -61,6 +61,7 @@ const create = (baseURL = `${APP_URL}api/`) => {
     const getFolders = () => api.get('folders')
     const createFolder = (data) => api.post('folders', data)
     const updateFolder = (data, folderId) => api.put(`folders/${folderId}`, data)
+    const deleteFolder = (data, folderId) => api.delete(`folders/${folderId}`, data)
 
     //Route
     const createRoute = (route) => api.post('routes', route)
@@ -104,6 +105,7 @@ const create = (baseURL = `${APP_URL}api/`) => {
         getFolders,
         createFolder,
         updateFolder,
+        deleteFolder,
 
         createRoute,
         getRoutes,

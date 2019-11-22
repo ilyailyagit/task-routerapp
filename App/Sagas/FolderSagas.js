@@ -29,7 +29,6 @@ export function * onCreateFolder (api, {folder}) {
   }
 }
 
-//todo: test this code.
 export function * onUpdateFolder (api, {folder}) {
   try {
       if (!folder.id) {
@@ -41,5 +40,19 @@ export function * onUpdateFolder (api, {folder}) {
     yield put(FolderActions.updateFolderSuccess(data))
   } catch (e) {
     yield put(FolderActions.updateFolderFailure(e.message))
+  }
+}
+
+export function * onDeleteFolder (api, { id }) {
+  try {
+      if (!id) {
+          showErrorMessage(strings.folderIdNeededToUpdate);
+          throw new Error('Invalid folder update params.')
+      }
+    const { res } = yield call(Api.callServer, api.deleteFolder, {id}, false)
+    console.tron.warn({onDeleteFolder: res})
+    yield put(FolderActions.deleteFolderSuccess(id))
+  } catch (e) {
+    yield put(FolderActions.deleteFolderFailure(e.message))
   }
 }

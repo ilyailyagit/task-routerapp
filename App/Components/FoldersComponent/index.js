@@ -17,6 +17,7 @@ export default class FoldersComponent extends Component {
         folders: PropTypes.array,
         onPressFolder: PropTypes.func,
         uploadingFolderImage: PropTypes.bool,
+        updatingFolder: PropTypes.bool,
         selectedFolderId: PropTypes.number
     }
 
@@ -25,7 +26,7 @@ export default class FoldersComponent extends Component {
     }
 
     renderItem = ({item, index}) => {
-        const {onPressFolder, selectedFolderId, uploadingFolderImage} = this.props
+        const {onPressFolder, selectedFolderId, uploadingFolderImage, updatingFolder} = this.props
         const {id, name, imgUrl, noOfTask, noOfTaskCompleted} = item
         return (
             <TouchableOpacity disabled={uploadingFolderImage}
@@ -37,7 +38,7 @@ export default class FoldersComponent extends Component {
                 </View>
                 <Text style={styles.tasksStatusText}>{noOfTaskCompleted} Tasks Completed</Text>
                 <Text  style={styles.tasksStatusText}>{noOfTask} Total Tasks</Text>
-                {uploadingFolderImage && selectedFolderId === id && <View style={{zIndex: 100, backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
+                {(updatingFolder || uploadingFolderImage) && selectedFolderId === id && <View style={{zIndex: 100, backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
                     <ActivityIndicator size={'large'} color={Colors.snow} />
                 </View>}
             </TouchableOpacity>

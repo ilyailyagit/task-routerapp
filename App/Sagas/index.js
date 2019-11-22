@@ -22,7 +22,7 @@ import {
 } from './UserSagas'
 import {onChangeFamilyPermissions, onCreateFamily, onFetchFamily, onGetFamilyPermissions} from "./FamilySagas";
 //api urls
-import {onCreateFolder, onGetFolders, onUpdateFolder} from "./FolderSagas";
+import {onCreateFolder, onDeleteFolder, onGetFolders, onUpdateFolder} from "./FolderSagas";
 import {
     onCreateRoute,
     onDeleteRoute,
@@ -75,6 +75,7 @@ export default function* root() {
         takeLatest(FolderTypes.GET_FOLDERS, onGetFolders, api),
         takeLatest(FolderTypes.CREATE_FOLDER, onCreateFolder, api),
         takeLatest(FolderTypes.UPDATE_FOLDER, onUpdateFolder, api),
+        takeLatest(FolderTypes.DELETE_FOLDER, onDeleteFolder, api),
 
         //Route
         takeLatest(RouteTypes.CREATE_ROUTE, onCreateRoute, api),

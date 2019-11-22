@@ -38,6 +38,7 @@ import RouteActions from "../../../Redux/RouteRedux";
 import {isEmpty} from "ramda";
 import moment from "moment";
 import ImagePicker from "react-native-image-crop-picker";
+import RenameFolder from "../../../Components/RenameFolder";
 
 class HomeTab extends Component {
 
@@ -52,7 +53,8 @@ class HomeTab extends Component {
             showAddFamilyMember: false,
             folderId: null,
             uploadingFolderImage: false,
-            selectedFolderIcon: ''
+            selectedFolderIcon: '',
+            renamingFolder: false
         }
         StatusBar.setBackgroundColor(Colors.primaryColorI)
     }
@@ -67,13 +69,20 @@ class HomeTab extends Component {
         }
     }
 
-    componentWillReceiveProps({fetching: newFetching, folderFetching: newFolderFetching}) {
-        const {showAddFamilyMember} = this.state
+    UNSAFE_componentWillReceiveProps({fetching: newFetching, folderFetching: newFolderFetching}) {
+        const {showAddFamilyMember, renamingFolder, uploadingFolderImage} = this.state
         if (!newFetching && newFetching !== this.props.fetching && showAddFamilyMember) {
             this.setState({showAddFamilyMember: false})
         }
         if (!newFolderFetching && this.props.folderFetching !== newFolderFetching) {
-            this.setState({uploadingFolderImage: false, folderId: null})
+            let booleansToFalse = {}
+            if (renamingFolder) {
+                booleansToFalse.renamingFolder = false
+            }
+            if (uploadingFolderImage) {
+                booleansToFalse.uploadingFolderImage = false
+            }
+            this.setState({folderId: null, ...booleansToFalse, updatingFolder: false})
         }
     }
 
@@ -177,6 +186,13 @@ class HomeTab extends Component {
         const {showContactsList} = this.state
         if (showContactsList) {
             this.setState({showContactsList: false})
+        }
+    }
+
+    onHideRenameFolder = () => {
+        const {renamingFolder} = this.state
+        if (renamingFolder) {
+            this.setState({renamingFolder: false})
         }
     }
 
@@ -352,16 +368,36 @@ class HomeTab extends Component {
     }
 
     onFolderActionPressed = (index) => {
+        const { renamingFolder, updatingFolder, folderId } = this.state
+        const { deleteFolder } = this.props
         switch (index){
             case 0:
                 if (this.photoAction && this.photoAction.show) {
                     this.photoAction.show();
                 }
             break
-            case 1: () => {}
+            case 1:
+                if (!renamingFolder && !updatingFolder) {
+                    this.setState({updatingFolder: true, renamingFolder: true})
+                }
             break
-            default: () => {}
+            case 2:
+                if (folderId && !updatingFolder) {
+                    this.setState({ updatingFolder: true }, () => {
+                        deleteFolder(folderId)
+                    })
+                }
+            default:
         }
+    }
+
+    onRenameFolder = (newName) => {
+        const { updateFolder, folderFetching } = this.props
+        const { uploadingFolderImage, folderId, renamingFolder } = this.state
+        if (!folderId || !renamingFolder || folderFetching || uploadingFolderImage) {
+            return
+        }
+        updateFolder({id: folderId, name: newName})
     }
 
     onImageActionPressed = (index) => {
@@ -406,8 +442,8 @@ class HomeTab extends Component {
     }
 
     render () {
-        const {familyName, selectedContacts, showContactsList, contact,
-            uploadingFolderImage, showAddFamilyMember} = this.state
+        const {familyName, selectedContacts, showContactsList, contact, renamingFolder,
+            uploadingFolderImage, showAddFamilyMember, updatingFolder} = this.state
         const {isSignup, family = {}, fetching, contacts, folders, routesFetching, user: { userSettings = {} } = {}} = this.props
         let {name, users = []} = family
         users = users.filter(family => family.status === 'active')
@@ -480,6 +516,7 @@ class HomeTab extends Component {
                                       folders={folders}
                                       uploadingFolderImage={uploadingFolderImage}
                                       selectedFolderId={this.state.folderId}
+                                      updatingFolder={updatingFolder}
                                       onPressFolder={(folderId) => {
                                           this.setState({folderId})
                                           this.folderActions.show()
@@ -493,6 +530,8 @@ class HomeTab extends Component {
                         <ContactsSectionList sectionListData={contacts} renderItem={this.renderContactItem}/>
                     </SafeAreaView>
                 </ModalComponent>
+                <RenameFolder isModalVisible={renamingFolder} onChangeName={this.onRenameFolder}
+                              onCloseModal={this.onHideRenameFolder}/>
                 <ActionButtons userSettings={userSettings}
                                onPressActionButton1={this.onCreateTask}
                                onPressActionButton2={Actions.createRoute}/>
@@ -535,6 +574,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchFamilyReq: (familyId) => dispatch(FamilyActions.fetchFamily(familyId)),
         createFamilyReq: (familyName, invites) => dispatch(FamilyActions.createFamily(familyName, invites)),
         updateTaskStatusReq: (taskId, routeId, status) => dispatch(RouteActions.updateTaskStatus(taskId, routeId, status)),
+        deleteFolder: (folderId) => dispatch(FolderActions.deleteFolder(folderId)),
         updateRouteStatus: (routeId, params, fetchAfterUpdate) => dispatch(RouteActions.updateRouteStatus(routeId, params, fetchAfterUpdate)),
     }
 }

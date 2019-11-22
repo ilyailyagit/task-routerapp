@@ -14,7 +14,11 @@ const {Types, Creators} = createActions({
 
     updateFolder: ['folder'],
     updateFolderSuccess: ['folder'],
-    updateFolderFailure: ['error']
+    updateFolderFailure: ['error'],
+
+    deleteFolder: ['id'],
+    deleteFolderSuccess: ['id'],
+    deleteFolderFailure: ['error']
 
 })
 
@@ -49,6 +53,20 @@ export const createFolderReq = (state) => state.merge({fetching: true})
 export const createFolderSuccess = (state, { folder }) =>
     state.merge({fetching: false, error: null, folders: [...state.folders, folder]})
 export const createFolderFailure = (state) => state.merge({fetching: false, error: true})
+
+// DELETE_FOLDER
+export const deleteFolderReq = (state) => state.merge({fetching: true})
+export const deleteFolderSuccess = (state, { id }) => {
+    console.tron.warn({beforeDelFOlder: state.folders})
+    const folders = (state.folders || []).filter(item => item.id !== id)
+    console.tron.warn({afterDelFolder: folders})
+    return state.merge({
+        fetching: false,
+        error: null,
+        folders
+    })
+}
+export const deleteFolderFailure = (state) => state.merge({fetching: false, error: true})
 
 // updateFolderReq
 export const updateFolderReq = (state) => state.merge({fetching: true})
@@ -86,6 +104,11 @@ export const reducer = createReducer(INITIAL_STATE, {
     // updateFolder
     [Types.UPDATE_FOLDER]: updateFolderReq,
     [Types.UPDATE_FOLDER_SUCCESS]: updateFolderSuccess,
-    [Types.UPDATE_FOLDER_FAILURE]: updateFolderFailure
+    [Types.UPDATE_FOLDER_FAILURE]: updateFolderFailure,
+
+    // deleteFolder
+    [Types.DELETE_FOLDER]: deleteFolderReq,
+    [Types.DELETE_FOLDER_SUCCESS]: deleteFolderSuccess,
+    [Types.DELETE_FOLDER_FAILURE]: deleteFolderFailure
 
 })
