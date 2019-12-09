@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import React, {Component} from 'react'
+import {ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View} from 'react-native'
 import PropTypes from 'prop-types'
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -7,13 +7,18 @@ import styles from './styles'
 import strings from "../../Constants/strings";
 import IconButton from "../IconButton";
 import Metrics from "../../Themes/Metrics";
+import Colors from "../../Themes/Colors";
+
 export default class FoldersComponent extends Component {
 
     static propTypes = {
         containerStyles: PropTypes.object,
         onAddFolder: PropTypes.func,
         folders: PropTypes.array,
-        onPressFolder: PropTypes.func
+        onPressFolder: PropTypes.func,
+        uploadingFolderImage: PropTypes.bool,
+        updatingFolder: PropTypes.bool,
+        selectedFolderId: PropTypes.number
     }
 
     static defaultProps = {
@@ -21,16 +26,21 @@ export default class FoldersComponent extends Component {
     }
 
     renderItem = ({item, index}) => {
-        const {onPressFolder} = this.props
+        const {onPressFolder, selectedFolderId, uploadingFolderImage, updatingFolder} = this.props
         const {id, name, imgUrl, noOfTask, noOfTaskCompleted} = item
         return (
-            <TouchableOpacity onPress={onPressFolder} style={styles.folderItemContainer}>
+            <TouchableOpacity disabled={uploadingFolderImage}
+                              onPress={() => onPressFolder(id)}
+                              style={styles.folderItemContainer}>
                 <View style={styles.folderHeader}>
                     <Image source={{uri: imgUrl}} style={styles.folderImage}/>
                     <Text style={styles.folderName}>{name}</Text>
                 </View>
                 <Text style={styles.tasksStatusText}>{noOfTaskCompleted} Tasks Completed</Text>
                 <Text  style={styles.tasksStatusText}>{noOfTask} Total Tasks</Text>
+                {(updatingFolder || uploadingFolderImage) && selectedFolderId === id && <View style={{zIndex: 100, backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator size={'large'} color={Colors.snow} />
+                </View>}
             </TouchableOpacity>
         )
     }
@@ -53,7 +63,7 @@ export default class FoldersComponent extends Component {
                                 iconColor={'#d6d5d0'} />
                 </View>
                 <FlatList data={folders}
-                          extraData={folders}
+                          extraData={{folders, props: this.props}}
                           renderItem={this.renderItem}
                           horizontal
                           showsHorizontalScrollIndicator={false}

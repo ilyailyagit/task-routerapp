@@ -37,6 +37,7 @@ const create = (baseURL = `${APP_URL}api/`) => {
     //
     const signUpUser = (info) => api.post('users/signup', info)
     const signIn= (info) => api.post('users/signin', info)
+    const fetchMeReq = (info) => api.get('users/me', info)
     const verifyPinCode = (info) => api.post('users/verify', info)
     const resendPinCode = (info) => api.post('users/resend', info)
     const addProfile = (info, userId) => api.post(`users/addprofile/${userId}`, info)
@@ -58,6 +59,9 @@ const create = (baseURL = `${APP_URL}api/`) => {
 
     //folders
     const getFolders = () => api.get('folders')
+    const createFolder = (data) => api.post('folders', data)
+    const updateFolder = (data, folderId) => api.put(`folders/${folderId}`, data)
+    const deleteFolder = (data, folderId) => api.delete(`folders/${folderId}`, data)
 
     //Route
     const createRoute = (route) => api.post('routes', route)
@@ -83,6 +87,7 @@ const create = (baseURL = `${APP_URL}api/`) => {
         ...api,
         signUpUser,
         signIn,
+        fetchMeReq,
         verifyPinCode,
         resendPinCode,
         addProfile,
@@ -98,6 +103,9 @@ const create = (baseURL = `${APP_URL}api/`) => {
         changeFamilyPermission,
 
         getFolders,
+        createFolder,
+        updateFolder,
+        deleteFolder,
 
         createRoute,
         getRoutes,

@@ -8,6 +8,7 @@ import {showMessage} from "../Lib/Utilities";
 export function* onSignUp(api, {info}) {
     try {
         const {res} = yield call(Api.callServer, api.signUpUser, info, true)
+        console.tron.warn({ onSignUp: res })
         if (res && res.isSuccess) {
             const {id: userId = ''} = res
             Actions.verifyPhone({userId})
@@ -36,6 +37,22 @@ export function* onLogin(api, {info}) {
         }
     } catch (e) {
         yield put(UserActions.loginFailure(e.message))
+    }
+}
+
+export function* onFetchMe (api) {
+    try {
+        const {res} = yield call(Api.callServer, api.fetchMeReq, {}, true)
+        if (res && res.isSuccess && res.data) {
+            yield put(UserActions.fetchMeSuccess(res.data))
+        } else {
+            if (res.error && typeof res.error === "string") {
+                showMessage(res.error)
+            }
+            yield put(UserActions.fetchMeFailure({}))
+        }
+    } catch (e) {
+        yield put(UserActions.fetchMeFailure(e.message))
     }
 }
 

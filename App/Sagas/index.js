@@ -13,7 +13,7 @@ import {onAddNewTask, onDeleteTask, onGetAllTasks, onGetTaskDetails} from './Cal
 import {
     logout,
     onAddProfile,
-    onEditProfile,
+    onEditProfile, onFetchMe,
     onLogin,
     onLoginSuccess,
     onResendPin,
@@ -22,7 +22,7 @@ import {
 } from './UserSagas'
 import {onChangeFamilyPermissions, onCreateFamily, onFetchFamily, onGetFamilyPermissions} from "./FamilySagas";
 //api urls
-import {onGetFolders} from "./FolderSagas";
+import {onCreateFolder, onDeleteFolder, onGetFolders, onUpdateFolder} from "./FolderSagas";
 import {
     onCreateRoute,
     onDeleteRoute,
@@ -50,6 +50,7 @@ export default function* root() {
         takeLatest(StartupTypes.STARTUP, startup, api),
         takeLatest(UserTypes.SIGN_UP, onSignUp, api),
         takeLatest(UserTypes.LOGIN, onLogin, api),
+        takeLatest(UserTypes.FETCH_ME, onFetchMe, api),
         takeLatest(UserTypes.LOGIN_SUCCESS, onLoginSuccess, api),
         takeLatest(UserTypes.VERIFY_PIN, onVerifyPin, api),
         takeLatest(UserTypes.RESEND_PIN, onResendPin, api),
@@ -72,6 +73,9 @@ export default function* root() {
 
         //Folders
         takeLatest(FolderTypes.GET_FOLDERS, onGetFolders, api),
+        takeLatest(FolderTypes.CREATE_FOLDER, onCreateFolder, api),
+        takeLatest(FolderTypes.UPDATE_FOLDER, onUpdateFolder, api),
+        takeLatest(FolderTypes.DELETE_FOLDER, onDeleteFolder, api),
 
         //Route
         takeLatest(RouteTypes.CREATE_ROUTE, onCreateRoute, api),
