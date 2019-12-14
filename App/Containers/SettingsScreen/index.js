@@ -40,7 +40,7 @@ class SettingsScreen extends Component {
     render() {
         const {pushNotification, showCalendarDialog, calendars, showPaymentDialog} = this.state
         let {permissions = [], user: { role = {} } = {}} = this.props
-        permissions = permissions.filter(family => family.user.status === 'active')
+        permissions = permissions.filter(family => family.user && family.user.status === 'active')
         const familyMembers = permissions.map((item) => {
             const {id = '', user: {name = ''} = {},calendarPermission = false, budgetPermission = false, routePermission = false} = item
             return {id, value: name, calendarPermission, budgetPermission, routePermission}

@@ -70,6 +70,16 @@ const create = (baseURL = `${APP_URL}api/`) => {
     const deleteRoute = (routeId) => api.delete(`routes/${routeId}`)
     const getSpecificRoute = (routeId) => api.get(`routes/${routeId}`)
 
+    //Budget
+    const getCategories = () => api.get('categories')
+    const addCategory = (params) => api.post('categories', params)
+    const addNewBudget = (params) => api.post('amounts', params)
+
+    //Locator
+    const getLocations = (params) => api.get('locators', params)
+    const addLocation = (params) => api.post('locators', params)
+
+
     // ------
     // STEP 3
     // ------
@@ -112,7 +122,14 @@ const create = (baseURL = `${APP_URL}api/`) => {
         updateRouteStatus,
         deleteRoute,
         getSpecificRoute,
-        updateTaskStatus
+        updateTaskStatus,
+
+        getCategories,
+        addCategory,
+        addNewBudget,
+
+        getLocations,
+        addLocation,
     }
 }
 
